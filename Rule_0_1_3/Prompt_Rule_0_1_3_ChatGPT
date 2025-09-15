@@ -1,0 +1,116 @@
+System Message:
+You are an expert C++ programmer and dataset generator.
+Your task is to create high-quality training data for fine-tuning a language model. You must generate pairs of C++ code examples that demonstrate the difference between non-compliant and compliant usage of variables.
+
+[cite\_start]A non-compliant code snippet must contain at least one declared variable that is never used within its scope[cite: 4632, 745]. A compliant snippet must ensure all declared variables are used.
+
+User Prompt:
+
+[cite\_start]Here is a seed example of a non-compliant snippet, inspired by MISRA C++:2008[cite: 749].
+
+```cpp
+#include <iostream>
+
+void process_data(int input) {
+    int unused_local_variable; // Non-Compliant: Variable is never used
+    double calculation_result = static_cast<double>(input) / 2.0;
+
+    if (input > 100) {
+        std::cout << "Input is large: " << calculation_result << std::endl;
+    } else {
+        std::cout << "Input is small: " << calculation_result << std::endl;
+    }
+}
+
+int main() {
+    process_data(50);
+    return 0;
+}
+```
+Use diffferent seed examples for different pairs of compliant and non-compliant code generation. Read the seed examples from the uploaded files
+Goal: Produce paired C++03 examples (one non-compliant, one compliant) for MISRA C++:2008 Rule 0-1-3 (“A project shall not contain unused variables.”). Each pair should be minimal, compile-ready, and highlight a distinct real-world pattern that can create unused variables.
+
+Scope & Constraints
+
+Language level: ISO C++03 (as MISRA C++:2008 targets C++03). No C++11+ features (no auto, lambdas, attributes, range-for, etc.).
+
+Focus: Variables declared and never referenced (locals, globals, class members, static, volatile, arrays, pointers, iterators, etc.). Don’t use function parameters here (those are covered by other MISRA rules 0-1-11/0-1-12).
+
+Avoid “fake fixes”: Don’t silence warnings using Q_UNUSED, compiler pragmas, or (void)var as the only “use”. Show a real fix: remove the variable, or meaningfully reference it.
+
+Build intent: Samples should trigger/avoid typical unused-variable diagnostics with -Wall -Wextra -Werror on GCC/Clang (or static analyzers like Cppcheck/Klocwork).
+
+Pair format: For each scenario, provide two files:
+
+NN_<slug>_noncompliant.cpp — clearly commented why it violates Rule 0-1-3.
+
+NN_<slug>_compliant.cpp — corrected version with a brief “what changed” note.
+
+Comment headers: At the top, include a one-line title + why it’s non-compliant/compliant.
+
+Self-contained: Each file must compile on its own (use main() or a callable function).
+
+Diversity requirement: Cover at least these distinct patterns (no overlap):
+
+Namespace-scope variable never referenced
+
+Function-scope static never referenced
+
+Unused class static data member
+
+Unused non-static class/struct member
+
+Unused enumeration object
+
+Unused pointer
+
+Unused array
+
+“Only used in assert” ⇒ becomes unused in NDEBUG builds (release)
+
+Shadowing makes an outer variable effectively unused
+
+Block-scoped variable inside switch case unused
+
+Unused reference variable
+
+Unused union object
+
+Conditional compilation leaves a variable unused in some builds
+
+Declared variable + sizeof(type) (not sizeof(var)) ⇒ var unused
+
+Unused variable inside try block
+
+Named RAII guard object never referenced (destructor side-effect isn’t a “use”)
+
+Iterator declared but never used
+
+volatile variable declared but never referenced
+
+Extra variable in for init-list never used
+
+Unused const char* (debug string)
+
+**Guidelines:**
+
+  * Keep each snippet around \~50 lines of code.
+  * Ensure diversity across the 20 pairs (e.g., different data types, control flow, classes, structs, templates, member variables, file I/O, etc.). Each pair should use a different seed example from the uploaded zip file
+  * Generate individual pairs as separate cpp files and upload it in Pairs_Rule_0_1_3 folder
+  * The ONLY compliance difference should be the presence of unused variables.
+  * Do not generate a script to create these functions, create it yourself.
+
+Documentation: For each pair, add a one-sentence rationale pointing to Rule 0-1-3 and why the compliant version is actually compliant (variable genuinely used or removed).
+
+Reference context (patterns & diagnostics)
+
+Rule 0-1-3 requires eliminating unused variables; rationale: they’re noise and often signal mistakes. (See summaries by static analysis vendors and rule checkers.)
+docs.scitools.com
+help.klocwork.com
+
+Common sources of false “usage” that don’t help safety/compliance include using (void)var or macros like Q_UNUSED; these only silence warnings and are discouraged for MISRA conformance.
+Stack Overflow
++1
+Qt Forum
+
+A frequent real-world pitfall: variable used only in assert becomes unused when NDEBUG is set. Prefer guarding code or using different release-path logic

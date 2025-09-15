@@ -1,0 +1,19 @@
+Based on the MISRA C++ document, here are the rules that correspond to your statements:
+
+* **There shall be no unused variables.**
+    [cite_start]This corresponds to `Rule 0-1-3 (Required)`: "A project shall not contain unused variables." [cite: 4632]
+
+* **Every defined function shall be called at least once.**
+    [cite_start]This corresponds to `Rule 0-1-10 (Required)`: "Every defined function shall be called at least once." [cite: 4638]
+
+* **Literal suffixes shall be upper case.**
+    [cite_start]This corresponds to `Rule 2-13-4 (Required)`: "Literal suffixes shall be upper case." [cite: 4667]
+
+* **Only valid C++ style comments (//) shall be used.**
+    The document does not have a single rule mandating the exclusive use of C++ style comments (`//`). Instead, it has rules restricting the use of C-style comments (`/* ... */`).
+    * [cite_start]`Rule 2-7-1 (Required)`: "The character sequence `/*` shall not be used within a C-style comment." [cite: 4654]
+    * [cite_start]`Rule 2-7-2 (Required)`: "Sections of code shall not be 'commented out' using C-style comments." [cite: 4655]
+    * [cite_start]`Rule 2-7-3 (Advisory)`: "Sections of code should not be 'commented out' using C++ comments." [cite: 4656]
+
+* **A class, union or enum name shall be a unique identifier.**
+    [cite_start]This corresponds to `Rule 2-10-4 (Required)`: "A class, union or enum name (including qualification, if any) shall be a unique identifier." [cite: 4660]

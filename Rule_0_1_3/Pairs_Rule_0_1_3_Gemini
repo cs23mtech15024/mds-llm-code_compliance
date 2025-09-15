@@ -1,0 +1,1035 @@
+### Pair 1
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+class Calculator {
+public:
+    int calculate_area(int length, int width) {
+        // Non-Compliant: 'unused_variable' is declared but never used.
+        int unused_variable;
+        int area = length * width;
+        return area;
+    }
+};
+
+int main() {
+    Calculator calc;
+    int length = 5;
+    int width = 10;
+    int area = calc.calculate_area(length, width);
+    std::cout << "The area is: " << area << std::endl;
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+class Calculator {
+public:
+    int calculate_area(int length, int width) {
+        // Compliant: The unused variable has been removed.
+        int area = length * width;
+        return area;
+    }
+};
+
+int main() {
+    Calculator calc;
+    int length = 5;
+    int width = 10;
+    int area = calc.calculate_area(length, width);
+    std::cout << "The area is: " << area << std::endl;
+    return 0;
+}
+```
+
+-----
+
+### Pair 2
+
+#### Non-Compliant
+
+```cpp
+#include <string>
+#include <vector>
+
+class DataProcessor {
+private:
+    // Non-Compliant: 'm_buffer' is a member variable that is never used.
+    std::vector<char> m_buffer;
+    std::string m_data;
+
+public:
+    void set_data(const std::string& data) {
+        m_data = data;
+    }
+    std::string get_data() const {
+        return m_data;
+    }
+};
+
+int main() {
+    DataProcessor dp;
+    dp.set_data("Hello, world!");
+    std::cout << "Data: " << dp.get_data() << std::endl;
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <string>
+#include <vector>
+
+class DataProcessor {
+private:
+    // Compliant: The unused member variable 'm_buffer' has been removed.
+    std::string m_data;
+
+public:
+    void set_data(const std::string& data) {
+        m_data = data;
+    }
+    std::string get_data() const {
+        return m_data;
+    }
+};
+
+int main() {
+    DataProcessor dp;
+    dp.set_data("Hello, world!");
+    std::cout << "Data: " << dp.get_data() << std::endl;
+    return 0;
+}
+```
+
+-----
+
+### Pair 3
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+void process_array(int arr[], int size) {
+    // Non-Compliant: 'unused_flag' is declared but never used.
+    bool unused_flag = true;
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] % 2 == 0) {
+            std::cout << arr[i] << " is even." << std::endl;
+        }
+    }
+}
+
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    process_array(numbers, 5);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+void process_array(int arr[], int size) {
+    // Compliant: The unused variable has been removed.
+    for (int i = 0; i < size; ++i) {
+        if (arr[i] % 2 == 0) {
+            std::cout << arr[i] << " is even." << std::endl;
+        }
+    }
+}
+
+int main() {
+    int numbers[] = {1, 2, 3, 4, 5};
+    process_array(numbers, 5);
+    return 0;
+}
+```
+
+-----
+
+### Pair 4
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+// Non-Compliant: The parameter 'unused_param' is never used.
+void log_message(const std::string& message, int unused_param) {
+    std::cout << "LOG: " << message << std::endl;
+}
+
+int main() {
+    log_message("System started.", 100);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+// Compliant: The unused parameter has been removed.
+void log_message(const std::string& message) {
+    std::cout << "LOG: " << message << std::endl;
+}
+
+int main() {
+    log_message("System started.");
+    return 0;
+}
+```
+
+-----
+
+### Pair 5
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+
+template <typename T>
+void find_max(const std::vector<T>& data) {
+    // Non-Compliant: 'found_max' is declared but never used.
+    bool found_max = false;
+    if (data.empty()) {
+        std::cout << "Vector is empty." << std::endl;
+        return;
+    }
+    T max_val = data[0];
+    for (size_t i = 1; i < data.size(); ++i) {
+        if (data[i] > max_val) {
+            max_val = data[i];
+        }
+    }
+    std::cout << "Max value is: " << max_val << std::endl;
+}
+
+int main() {
+    std::vector<int> numbers = {10, 20, 5, 30, 15};
+    find_max(numbers);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+
+template <typename T>
+void find_max(const std::vector<T>& data) {
+    // Compliant: The unused variable 'found_max' has been removed.
+    if (data.empty()) {
+        std::cout << "Vector is empty." << std::endl;
+        return;
+    }
+    T max_val = data[0];
+    for (size_t i = 1; i < data.size(); ++i) {
+        if (data[i] > max_val) {
+            max_val = data[i];
+        }
+    }
+    std::cout << "Max value is: " << max_val << std::endl;
+}
+
+int main() {
+    std::vector<int> numbers = {10, 20, 5, 30, 15};
+    find_max(numbers);
+    return 0;
+}
+```
+
+-----
+
+### Pair 6
+
+#### Non-Compliant
+
+```cpp
+#include <fstream>
+#include <iostream>
+
+void read_file_data(const std::string& filename) {
+    std::ifstream file(filename);
+    // Non-Compliant: 'line_count' is declared but never used.
+    int line_count = 0;
+    std::string line;
+
+    if (file.is_open()) {
+        while (std::getline(file, line)) {
+            // Processing lines...
+        }
+        std::cout << "File read successfully." << std::endl;
+        file.close();
+    } else {
+        std::cerr << "Failed to open file." << std::endl;
+    }
+}
+
+int main() {
+    // Assuming 'data.txt' exists for a successful read scenario.
+    // In a real project, this would be handled with care.
+    read_file_data("data.txt");
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <fstream>
+#include <iostream>
+
+void read_file_data(const std::string& filename) {
+    std::ifstream file(filename);
+    std::string line;
+
+    if (file.is_open()) {
+        int line_count = 0; // Compliant: 'line_count' is now used.
+        while (std::getline(file, line)) {
+            line_count++;
+        }
+        std::cout << "File read successfully, " << line_count << " lines." << std::endl;
+        file.close();
+    } else {
+        std::cerr << "Failed to open file." << std::endl;
+    }
+}
+
+int main() {
+    read_file_data("data.txt");
+    return 0;
+}
+```
+
+-----
+
+### Pair 7
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+enum class Status {
+    INITIALIZING,
+    RUNNING,
+    STOPPED,
+    // Non-Compliant: 'UNUSED' is an enumerator that is never used.
+    UNUSED
+};
+
+void print_status(Status s) {
+    if (s == Status::RUNNING) {
+        std::cout << "System is running." << std::endl;
+    } else {
+        std::cout << "System is not running." << std::endl;
+    }
+}
+
+int main() {
+    print_status(Status::RUNNING);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+enum class Status {
+    INITIALIZING,
+    RUNNING,
+    STOPPED
+    // Compliant: The unused enumerator 'UNUSED' has been removed.
+};
+
+void print_status(Status s) {
+    if (s == Status::RUNNING) {
+        std::cout << "System is running." << std::endl;
+    } else {
+        std::cout << "System is not running." << std::endl;
+    }
+}
+
+int main() {
+    print_status(Status::RUNNING);
+    return 0;
+}
+```
+
+-----
+
+### Pair 8
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+struct Config {
+    int baud_rate;
+    int parity;
+    // Non-Compliant: 'checksum' is a member variable that is never used.
+    int checksum;
+};
+
+void configure_device(const Config& settings) {
+    std::cout << "Configuring device with:" << std::endl;
+    std::cout << "  Baud rate: " << settings.baud_rate << std::endl;
+    std::cout << "  Parity: " << settings.parity << std::endl;
+}
+
+int main() {
+    Config my_config;
+    my_config.baud_rate = 9600;
+    my_config.parity = 1;
+    my_config.checksum = 0;
+    configure_device(my_config);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+struct Config {
+    int baud_rate;
+    int parity;
+    // Compliant: The unused member variable has been removed.
+};
+
+void configure_device(const Config& settings) {
+    std::cout << "Configuring device with:" << std::endl;
+    std::cout << "  Baud rate: " << settings.baud_rate << std::endl;
+    std::cout << "  Parity: " << settings.parity << std::endl;
+}
+
+int main() {
+    Config my_config;
+    my_config.baud_rate = 9600;
+    my_config.parity = 1;
+    configure_device(my_config);
+    return 0;
+}
+```
+
+-----
+
+### Pair 9
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+void perform_operation(int x, int y) {
+    int result = x + y;
+    // Non-Compliant: 'intermediate_result' is declared but never used.
+    int intermediate_result;
+
+    if (result > 10) {
+        std::cout << "Result is large." << std::endl;
+    } else {
+        std::cout << "Result is small." << std::endl;
+    }
+}
+
+int main() {
+    perform_operation(5, 7);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+void perform_operation(int x, int y) {
+    int result = x + y;
+    // Compliant: 'intermediate_result' is now used in a calculation.
+    int intermediate_result = result * 2;
+
+    if (intermediate_result > 10) {
+        std::cout << "Result is large." << std::endl;
+    } else {
+        std::cout << "Result is small." << std::endl;
+    }
+}
+
+int main() {
+    perform_operation(5, 7);
+    return 0;
+}
+```
+
+-----
+
+### Pair 10
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+// Non-Compliant: 'MyClass' is declared but never instantiated or used.
+class MyClass {
+public:
+    void do_something() {
+        std::cout << "Doing something." << std::endl;
+    }
+};
+
+void some_function() {
+    int a = 10;
+    int b = 20;
+    int sum = a + b;
+    std::cout << "Sum: " << sum << std::endl;
+}
+
+int main() {
+    some_function();
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+class MyClass {
+public:
+    void do_something() {
+        std::cout << "Doing something." << std::endl;
+    }
+};
+
+void some_function() {
+    int a = 10;
+    int b = 20;
+    int sum = a + b;
+    std::cout << "Sum: " << sum << std::endl;
+    // Compliant: An instance of MyClass is now created and used.
+    MyClass obj;
+    obj.do_something();
+}
+
+int main() {
+    some_function();
+    return 0;
+}
+```
+
+-----
+
+### Pair 11
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <numeric>
+
+void calculate_average(const std::vector<int>& data) {
+    // Non-Compliant: 'total' is declared but never used.
+    double total = 0.0;
+    if (data.empty()) {
+        std::cout << "Cannot calculate average for empty data." << std::endl;
+        return;
+    }
+    double average = std::accumulate(data.begin(), data.end(), 0.0) / data.size();
+    std::cout << "Average is: " << average << std::endl;
+}
+
+int main() {
+    std::vector<int> numbers = {1, 2, 3, 4, 5};
+    calculate_average(numbers);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <numeric>
+
+void calculate_average(const std::vector<int>& data) {
+    // Compliant: 'total' is now used in the calculation.
+    double total = std::accumulate(data.begin(), data.end(), 0.0);
+    if (data.empty()) {
+        std::cout << "Cannot calculate average for empty data." << std::endl;
+        return;
+    }
+    double average = total / data.size();
+    std::cout << "Average is: " << average << std::endl;
+}
+
+int main() {
+    std::vector<int> numbers = {1, 2, 3, 4, 5};
+    calculate_average(numbers);
+    return 0;
+}
+```
+
+-----
+
+### Pair 12
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+#include <string>
+
+// Non-Compliant: The 'main' function declares 'program_name' but never uses it.
+int main() {
+    std::string program_name = "MyProgram";
+    std::cout << "Hello from main function!" << std::endl;
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+#include <string>
+
+// Compliant: The 'program_name' variable is now used.
+int main() {
+    std::string program_name = "MyProgram";
+    std::cout << "Hello from " << program_name << "!" << std::endl;
+    return 0;
+}
+```
+
+-----
+
+### Pair 13
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void sort_vector(std::vector<int>& vec) {
+    // Non-Compliant: 'size_t unused_index' is declared but never used.
+    size_t unused_index = 0;
+    if (vec.empty()) {
+        return;
+    }
+    for (size_t i = 0; i < vec.size(); ++i) {
+        for (size_t j = i + 1; j < vec.size(); ++j) {
+            if (vec[i] > vec[j]) {
+                std::swap(vec[i], vec[j]);
+            }
+        }
+    }
+}
+
+int main() {
+    std::vector<int> numbers = {3, 1, 4, 1, 5, 9};
+    sort_vector(numbers);
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void sort_vector(std::vector<int>& vec) {
+    // Compliant: The unused variable has been removed.
+    if (vec.empty()) {
+        return;
+    }
+    for (size_t i = 0; i < vec.size(); ++i) {
+        for (size_t j = i + 1; j < vec.size(); ++j) {
+            if (vec[i] > vec[j]) {
+                std::swap(vec[i], vec[j]);
+            }
+        }
+    }
+}
+
+int main() {
+    std::vector<int> numbers = {3, 1, 4, 1, 5, 9};
+    sort_vector(numbers);
+    for (int num : numbers) {
+        std::cout << num << " ";
+    }
+    return 0;
+}
+```
+
+-----
+
+### Pair 14
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+struct Packet {
+    int id;
+    double data;
+    // Non-Compliant: 'timestamp' is a member variable that is never used.
+    long timestamp;
+};
+
+void send_packet(const Packet& p) {
+    std::cout << "Sending Packet ID: " << p.id << std::endl;
+}
+
+int main() {
+    Packet my_packet = {1, 3.14, 123456789};
+    send_packet(my_packet);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+#include <chrono>
+
+struct Packet {
+    int id;
+    double data;
+    long timestamp;
+};
+
+void send_packet(const Packet& p) {
+    std::cout << "Sending Packet ID: " << p.id << std::endl;
+    // Compliant: The timestamp is now used to show when the packet was created.
+    std::cout << "Packet created at timestamp: " << p.timestamp << std::endl;
+}
+
+int main() {
+    Packet my_packet = {1, 3.14, std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count()};
+    send_packet(my_packet);
+    return 0;
+}
+```
+
+-----
+
+### Pair 15
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+void initialize_system() {
+    // Non-Compliant: 'init_stage' is declared but never used.
+    int init_stage = 0;
+    std::cout << "System initialization started." << std::endl;
+    std::cout << "System initialization complete." << std::endl;
+}
+
+int main() {
+    initialize_system();
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+void initialize_system() {
+    // Compliant: The variable 'init_stage' is now used to log progress.
+    int init_stage = 0;
+    std::cout << "System initialization started." << std::endl;
+    init_stage = 1;
+    std::cout << "Stage " << init_stage << " complete." << std::endl;
+    init_stage = 2;
+    std::cout << "Stage " << init_stage << " complete." << std::endl;
+    std::cout << "System initialization complete." << std::endl;
+}
+
+int main() {
+    initialize_system();
+    return 0;
+}
+```
+
+-----
+
+### Pair 16
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+void process_status(bool status) {
+    // Non-Compliant: 'int status_code_unused' is declared but never used.
+    int status_code_unused = status ? 1 : 0;
+    if (status) {
+        std::cout << "Status is true." << std::endl;
+    } else {
+        std::cout << "Status is false." << std::endl;
+    }
+}
+
+int main() {
+    process_status(true);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+void process_status(bool status) {
+    // Compliant: The unused variable has been removed.
+    if (status) {
+        std::cout << "Status is true." << std::endl;
+    } else {
+        std::cout << "Status is false." << std::endl;
+    }
+}
+
+int main() {
+    process_status(true);
+    return 0;
+}
+```
+
+-----
+
+### Pair 17
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void process_matrix(const std::vector<std::vector<int>>& matrix) {
+    // Non-Compliant: 'total_elements' is declared but never used.
+    int total_elements = 0;
+    if (matrix.empty()) {
+        std::cout << "Matrix is empty." << std::endl;
+        return;
+    }
+    for (const auto& row : matrix) {
+        for (int val : row) {
+            std::cout << val << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
+int main() {
+    std::vector<std::vector<int>> my_matrix = {{1, 2}, {3, 4}};
+    process_matrix(my_matrix);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+#include <vector>
+
+void process_matrix(const std::vector<std::vector<int>>& matrix) {
+    // Compliant: The variable 'total_elements' is now used to count elements.
+    int total_elements = 0;
+    if (matrix.empty()) {
+        std::cout << "Matrix is empty." << std::endl;
+        return;
+    }
+    for (const auto& row : matrix) {
+        for (int val : row) {
+            std::cout << val << " ";
+            total_elements++;
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "Total elements: " << total_elements << std::endl;
+}
+
+int main() {
+    std::vector<std::vector<int>> my_matrix = {{1, 2}, {3, 4}};
+    process_matrix(my_matrix);
+    return 0;
+}
+```
+
+-----
+
+### Pair 18
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+void compare_values(int a, int b) {
+    // Non-Compliant: 'int result_difference' is declared but never used.
+    int result_difference = a - b;
+    if (a > b) {
+        std::cout << "A is greater than B." << std::endl;
+    } else {
+        std::cout << "B is greater than or equal to A." << std::endl;
+    }
+}
+
+int main() {
+    compare_values(20, 10);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+void compare_values(int a, int b) {
+    // Compliant: The variable 'result_difference' is now used.
+    int result_difference = a - b;
+    if (result_difference > 0) {
+        std::cout << "A is greater than B." << std::endl;
+    } else {
+        std::cout << "B is greater than or equal to A." << std::endl;
+    }
+}
+
+int main() {
+    compare_values(20, 10);
+    return 0;
+}
+```
+
+-----
+
+### Pair 19
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+// Non-Compliant: The named bit-field 'pad' is never used.
+struct MessageStatus {
+    unsigned int is_ready : 1;
+    unsigned int has_error : 1;
+    unsigned int pad : 1; // Unused named bit-field
+};
+
+void print_status(const MessageStatus& status) {
+    std::cout << "Is ready: " << status.is_ready << std::endl;
+    std::cout << "Has error: " << status.has_error << std::endl;
+}
+
+int main() {
+    MessageStatus my_status = {1, 0, 0};
+    print_status(my_status);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+// Compliant: The padding bit-field is now unnamed.
+struct MessageStatus {
+    unsigned int is_ready : 1;
+    unsigned int has_error : 1;
+    unsigned int : 1; // Unnamed padding bit-field
+};
+
+void print_status(const MessageStatus& status) {
+    std::cout << "Is ready: " << status.is_ready << std::endl;
+    std::cout << "Has error: " << status.has_error << std::endl;
+}
+
+int main() {
+    MessageStatus my_status = {1, 0};
+    print_status(my_status);
+    return 0;
+}
+```
+
+-----
+
+### Pair 20
+
+#### Non-Compliant
+
+```cpp
+#include <iostream>
+
+void process_data(int data) {
+    // Non-Compliant: 'const int& ref' is declared but never used.
+    const int& ref = data;
+    int processed_data = data * 2;
+    std::cout << "Processed data: " << processed_data << std::endl;
+}
+
+int main() {
+    process_data(5);
+    return 0;
+}
+```
+
+#### Compliant
+
+```cpp
+#include <iostream>
+
+void process_data(int data) {
+    // Compliant: The reference variable is now used.
+    const int& ref = data;
+    int processed_data = ref * 2;
+    std::cout << "Processed data: " << processed_data << std::endl;
+}
+
+int main() {
+    process_data(5);
+    return 0;
+}
+```
