@@ -26,7 +26,7 @@ namespace drdo {
 // Compliant function: same logic, identifier without leading underscore
 void process_sensors(size_t samples) {
     static double sensorValue = 0.0; // COMPLIANT: identifier does not begin with underscore
-    std::ofstream log("sensor_nc.log", std::ios::app);
+    std::ofstream log("sensor_c.log", std::ios::app);
     if (!log) {
         std::cerr << "[C] Log open failed\n";
         return;

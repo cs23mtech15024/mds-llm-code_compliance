@@ -23,7 +23,7 @@ void log_event_C(int events) {
             log << "[C] Event " << i << ": total count = " << count << '\n';
             log.close();
         } else {
-            std::cerr << "[C] Log open failed\n';
+            std::cerr << "[C] Log open failed\n";
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(5));
     }
