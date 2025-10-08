@@ -31,7 +31,8 @@ void trajectory_compute_C(const std::vector<WaypointC> &wp, const std::string &l
     std::ofstream out(logpath, std::ios::app);
     if (!out) std::cerr << "[C] Failed to open log\n";
 
-    double total = 0.0, maxd = 0.0;
+    double total = 0.0;
+    double maxd = 0.0;
     // iterate consecutive waypoint pairs, accumulate distances
     for (size_t i = 1; i < wp.size(); ++i) {
         double d = distance(wp[i-1], wp[i]);

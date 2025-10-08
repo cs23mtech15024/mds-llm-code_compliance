@@ -28,8 +28,8 @@ public:
         std::mt19937 rng(123);
         std::uniform_int_distribution<int> dist(0, 255);
         std::vector<unsigned> frame;
-        frame.reserve(16);
-        for (int i = 0; i < 16; ++i) frame.push_back(static_cast<unsigned>(dist(rng)));
+        frame.reserve(16u);                                                        // NC: lowercase 'u'
+        for (unsigned i = 0u; i < 16u; ++i) frame.push_back(static_cast<unsigned>(dist(rng)));  // NC: lowercase 'u'
 
         unsigned hits = countHits(frame);
         std::cout << "[NC] Threshold = " << threshold_ << ", Hits = " << hits << "\n";

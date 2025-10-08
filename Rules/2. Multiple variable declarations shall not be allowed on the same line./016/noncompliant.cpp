@@ -16,7 +16,7 @@
 #include <sstream>
 
 void normalize_samples_NC(const std::vector<float>& samples, const std::string &logpath = "norm_nc.log") {
-    float f1 = 1.0f, f2 = 2.0f;    // ❌ Violation: Multiple declarations on same line
+    float f1 = 1.0f, f2 = 2.0f; // NON-COMPLIANT: multiple declarators in one declaration
 
 
     std::ofstream out(logpath, std::ios::app);
@@ -61,6 +61,6 @@ void normalize_samples_NC(const std::vector<float>& samples, const std::string &
 int main() {
     // deterministic sample set
     std::vector<float> samples = {0.0f, 1.0f, 4.0f, 9.0f, 16.0f, 25.0f, 36.0f, 49.0f};
-    normalize_samples_C(samples);
+    normalize_samples_NC(samples);
     return 0;
 }

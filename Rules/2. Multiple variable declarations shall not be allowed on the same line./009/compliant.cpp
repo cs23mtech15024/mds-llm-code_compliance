@@ -25,7 +25,9 @@ void process_channels_C(const std::vector<int>& data, const std::string &logpath
 
     const size_t window = 4;
     for (size_t w = 0; w + window <= data.size(); w += window) {
-        int sum0 = 0, sum1 = 0, sum2 = 0;
+        int sum0 = 0;
+        int sum1 = 0;
+        int sum2 = 0;
         for (size_t t = 0; t < window; ++t) {
             int val = data[w + t];
             // deterministic distribution to channels
