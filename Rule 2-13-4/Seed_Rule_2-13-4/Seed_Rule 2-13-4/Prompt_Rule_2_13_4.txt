@@ -1,0 +1,51 @@
+# Generation Prompt — MISRA C++:2008 Rule 2-13-4 (Literal suffixes shall be upper case)
+
+System Message:
+You are an expert C++ programmer and dataset generator.
+Your task is to create high-quality training data for fine-tuning a language model. You must generate pairs of C++ code examples that demonstrate the difference between **non-compliant** and **compliant** usage of literal suffixes according to **MISRA C++:2008 Rule 2-13-4 (Required): "Literal suffixes shall be upper case."**
+
+**Goal**: Produce *paired* C++03 examples (one **non-compliant**, one **compliant**) for MISRA C++:2008 **Rule 2-13-4**. Each pair must be minimal, compile-ready, and highlight a **distinct real-world pattern** where a literal suffix is not written in uppercase in the non-compliant file and corrected in the compliant file.
+
+**Scope & Constraints**
+- **Language level**: ISO C++03 (no C++11+: no auto, lambdas, range-for, attributes, nullptr, u8/u16/u32 literals, etc.).
+- **Focus**: Numeric and character/string literals with suffixes/prefixes (e.g., `u`, `l`, `ul`, `ull`, `f`, `lf`, `L` for wide-char and long double). Ensure the **non-compliant** file uses lowercase suffixes (e.g., `1u`, `1l`, `1ul`, `3.5f`) and the **compliant** file uses uppercase (`1U`, `1L`, `1UL`, `3.5F`, `1.0L`, `L'a'`, `L"..."`). 
+- **Build intent**: Non-compliant samples should be realistically detectable by MISRA-style checks that flag lowercase literal suffixes.
+- **Pair format**:
+  - `NN_<slug>_noncompliant.cpp` — contains at least one literal with a **lowercase suffix** (violates Rule 2-13-4).
+  - `NN_<slug>_compliant.cpp` — fixes the same by converting all literal suffixes to **UPPERCASE**.
+- **Header comments**: Start each file with a concise title and a one-sentence rationale referencing Rule 2-13-4.
+- **Self-contained**: Each file must compile standalone (provide `main()` or a callable entry).
+
+**Diversity requirement (no overlap) — cover at least these 20 distinct patterns**
+1) Decimal integer with `l` vs `L`
+2) Unsigned decimal `u` vs `U`
+3) Unsigned long `ul` vs `UL`
+4) Unsigned long long `ull` vs `ULL`
+5) Float literals `f` vs `F`
+6) Scientific-notation float `e...f` vs `e...F`
+7) Long double suffix `l` vs `L`
+8) Hex integer `0x...u` vs `0x...U`
+9) Octal-like prefix case mixed with suffix `052u` (for pedagogy only; still lowercase suffix) vs `052U` (note: avoid using octal except zero elsewhere)
+10) Character literal wide-prefix misuse `L` vs lowercase `l` (non-standard) — demonstrate via comments and proper `L` usage; main focus remains suffix case in numeric literals in same file
+11) Mixed-case suffix `Ul`/`uL` vs `UL`
+12) Macro defines with lowercase suffixes
+13) Const globals initialized with lowercase suffixes
+14) Template argument expressions using lowercase suffixes
+15) Function return expressions using lowercase suffixes
+16) Enum initializers with lowercase suffixes
+17) Array initializers containing lowercase suffixes
+18) Bitmask/shift idioms using `1ul` vs `1UL`
+19) Literal in conditional/ternary using lowercase suffixes
+20) Mixed precision math combining `f` with `L` — fix to `F`/`L` uppercase appropriately
+
+**Output requirements**
+- Generate **20 pairs (40 files)**, each pair targeting exactly one pattern above.
+- The **only** compliance difference is the case of the literal suffixes (and any absolutely necessary casts/comments). Avoid introducing other MISRA rule violations.
+- Each file includes a one-sentence *rationale* referencing Rule 2-13-4.
+- Keep identifiers and contexts varied; ensure **C++03-portable** code.
+
+**Seed usage**
+- Use **different seed ideas** across pairs. Draw inspiration from common open-source patterns like `1ul << n`, `0xFFu`, `3.14f`, etc., but author **original** code.
+- Keep examples short and compilable with a freestanding toolchain.
+
+**Note**: Rule 2-13-4 is specified in MISRA C++:2008. Ensure compliant files use uppercase suffixes everywhere they appear.

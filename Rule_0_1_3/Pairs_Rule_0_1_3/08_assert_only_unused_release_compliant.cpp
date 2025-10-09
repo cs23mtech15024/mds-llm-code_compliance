@@ -11,6 +11,7 @@ int main() {
     assert(res == 42);
     std::cout << "dbg=" << res << std::endl;
 #else
+    std::cout << "Not DebugMode=" << std::endl;
     std::cout << "rel=" << calc() << std::endl;
 #endif
     // Rationale: No configuration leaves a declared variable unused — compliant.

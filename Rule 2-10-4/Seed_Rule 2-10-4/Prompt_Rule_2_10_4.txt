@@ -1,0 +1,48 @@
+# Generation Prompt — MISRA C++:2008 Rule 2-10-4 (A class, union or enum name shall be a unique identifier)
+
+System Message:
+You are an expert C++ programmer and dataset generator.
+Your task is to create high-quality training data for fine-tuning a language model. You must generate pairs of C++ code examples that demonstrate the difference between **non-compliant** and **compliant** usage according to **MISRA C++:2008 Rule 2-10-4 (Required): "A class, union or enum name (including qualification, if any) shall be a unique identifier."**
+
+**Goal**: Produce *paired* C++03 examples (one **non-compliant**, one **compliant**) that show duplicate use of a **class/struct**, **union**, or **enum** name anywhere in a project (including reuse for *any* other purpose: object, function, namespace, typedef, macro, template parameter, etc.) in the **non-compliant** file; and fix the duplication in the **compliant** file by renaming or removing the offending identifier.
+
+**Scope & Constraints**
+- **Language level**: ISO C++03 (no C++11+: no enum class, auto, nullptr, attributes, etc.).
+- **Focus**: The *name* of a class/struct, union, or enum must be **unique across the project**, even if used for a different entity (variable, function, typedef, etc.). Duplicates hidden in different functions or blocks are still violations for this dataset, reflecting project-wide uniqueness.
+- **Pair format**:
+  - `NN_<slug>_noncompliant.cpp` — contains at least one **duplicate use** of a class/union/enum name (violates Rule 2-10-4).
+  - `NN_<slug>_compliant.cpp` — fixes the violation by renaming the non-type entity or the type so the name is unique across the file/pair.
+- **Header comments**: Start each file with a concise title and a one-sentence rationale referencing Rule 2-10-4.
+- **Self-contained**: Each file must compile standalone (provide `main()` or a small driver). Avoid introducing other MISRA rule violations where possible.
+- **No ODR collisions**: Keep duplicates within one translation unit using different blocks/functions so both non-compliant and compliant variants compile cleanly.
+
+**Diversity requirement (no overlap) — cover at least these 20 distinct patterns**
+1) Class name reused as a variable name in another function/block
+2) Class name reused as a function name
+3) Class name reused as a namespace name
+4) Class name reused as a `typedef`/alias
+5) Class name reused as a macro name (preprocessor symbol)
+6) Class name reused as a template **type parameter** identifier
+7) Union name reused as a variable name
+8) Union name reused as a function name
+9) Union name reused as a `typedef`
+10) Enum name reused as a variable name
+11) Enum name reused as a function name
+12) Enum name reused as a namespace name
+13) Enum name reused as a `typedef`
+14) Duplicate class names in two different local scopes (e.g., two functions), both named identically
+15) Duplicate union names in two different local scopes
+16) Duplicate enum names in two different local scopes
+17) Class template name reused as a non-template function name
+18) Forward-declared class name reused for a non-type identifier in another scope
+19) Nested type name (e.g., `Outer::State` enum) reused as a different identifier in the enclosing scope
+20) Name introduced via `using` declaration collides with an existing class/enum/union name
+
+**Output requirements**
+- Generate **20 pairs (40 files)**, each pair targeting exactly one pattern above.
+- The **ONLY** compliance difference is the naming fix to ensure the class/union/enum name is unique; logic should remain equivalent.
+- Each file includes a one-sentence *rationale* referencing Rule 2-10-4.
+- Use varied, realistic identifiers to avoid trivial duplication.
+- Stay C++03-portable; use standard headers only when needed.
+
+**Note**: Rule 2-10-4 states that class/union/enum names shall not be duplicated anywhere in the project (header-inclusion duplication of the same definition is excluded). Ensure compliant files resolve the duplication by making the type name unique or renaming the other entity.

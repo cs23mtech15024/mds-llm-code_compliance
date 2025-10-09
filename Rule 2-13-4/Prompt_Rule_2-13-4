@@ -1,0 +1,63 @@
+### ✅ **Generation Prompt — MISRA C++:2008 Rule 2-13-4 (Literal suffixes shall be upper case)**
+
+**System Message:**
+You are an expert C++ programmer and dataset generator.
+Your task is to create high-quality training data for fine-tuning a language model.
+You must generate pairs of C++ code examples that demonstrate the difference between **non-compliant** and **compliant** usage of literal suffixes according to **MISRA C++:2008 Rule 2-13-4 (Required): “Literal suffixes shall be upper case.”**
+
+**Goal:**
+Produce *paired* C++03 examples (one **non-compliant**, one **compliant**) for MISRA C++:2008 **Rule 2-13-4**.
+Each pair should be minimal, compile-ready, and highlight a **distinct real-world pattern** where a literal suffix is not written in uppercase.
+
+---
+
+### **Scope & Constraints**
+
+* **Language level:** ISO C++03 (no C++11+: no auto, lambdas, range-for, attributes, etc.)
+* **Focus:** Numeric, character, and string literals with suffixes such as
+  `u`, `l`, `ul`, `f`, `lf`, `ll`, `ull`, etc.
+  Ensure suffixes are **lowercase** (non-compliant) vs **uppercase** (compliant).
+* **Target:** Static analyzers should flag lowercase suffixes (`1l`, `1ul`, `3.5f`) as violations.
+* **Build intent:** Non-compliant samples should trigger warnings such as *“literal suffix should be uppercase”* under MISRA or style checks.
+* **Pair format:**
+
+  * `NN_<slug>_noncompliant.cpp` — contains at least one literal with a **lowercase suffix**.
+  * `NN_<slug>_compliant.cpp` — fixes the same by converting all literal suffixes to **uppercase** (`L`, `U`, `UL`, `F`, `LF`, etc.).
+* **Header comments:** Start each file with a one-line title and short rationale describing why it violates or complies with Rule 2-13-4.
+* **Self-contained:** Each file must compile standalone (provide `main()` or a simple function body).
+
+---
+
+### **Diversity Requirement (no overlap) — cover at least these 20 distinct patterns**
+
+1. Integer literal with lowercase `l`
+2. Unsigned literal with lowercase `u`
+3. Unsigned long literal `ul`
+4. Unsigned long long `ull`
+5. Floating-point literal `f`
+6. Double literal `lf`
+7. Character literal with `l` prefix (`'a'` vs `L'a'`) misuse
+8. Wide-string literal with lowercase `l` prefix
+9. Mixed suffixes (e.g. `1ul` vs `1UL`)
+10. Hexadecimal literal (`0x1l`)
+11. Octal literal (`012u`)
+12. Scientific notation float (`1.2e3f`)
+13. `const` declaration with lowercase literal suffix
+14. Macro defining lowercase literal suffix
+15. Template argument using lowercase literal suffix
+16. Function returning literal with lowercase suffix
+17. Enum initializer using lowercase literal suffix
+18. Global constant initialized with lowercase suffix
+19. Expression combining literals of mixed case suffixes
+20. Literal suffix inside array initializer
+
+---
+
+### **Output Requirements**
+
+* Generate **20 pairs (40 files)**, each pair targeting one pattern above.
+* The **only** difference is suffix case.
+* Avoid introducing other MISRA rule violations.
+* Each file includes a *one-sentence rationale* referencing Rule 2-13-4.
+* Keep names, identifiers, and examples varied for dataset richness.
+* Ensure **compilable** and **C++03-portable** examples.

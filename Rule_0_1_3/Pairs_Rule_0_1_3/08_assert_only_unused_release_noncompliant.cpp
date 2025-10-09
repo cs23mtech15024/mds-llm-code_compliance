@@ -1,5 +1,6 @@
 // Title: Variable used only in assert -> unused in NDEBUG (Non-compliant per Rule 0-1-3)
 // Seed example: 08_assert_release_unused (from /mnt/data/Rule_0_1_3)
+#define NDEBUG
 #include <iostream>
 #include <cassert>
 
