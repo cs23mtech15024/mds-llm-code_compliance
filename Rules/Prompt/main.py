@@ -1,18 +1,12 @@
 """
 PROGRAM Meta Prompt Template (Generic MISRA C++ Rule)
-This module contains the prompt template for generating MISRA C++ compliant and non-compliant code pairs.
+This is a ready-to-use prompt that can be copied and pasted into an LLM UI.
+Simply fill in the placeholder values before using.
 """
 
-# Rule Configuration Variables
-RULE_CONFIG = {
-    "RULE_NUMBER": "{{RULE_NUMBER}}",
-    "RULE_DESCRIPTION": "{{RULE_DESCRIPTION}}",
-    "VIOLATION_TYPE": "{{VIOLATION_TYPE}}",
-    "FIX_PATTERN": "{{FIX_PATTERN}}"
-}
+PROGRAM_PROMPT = """
+# PROGRAM Meta Prompt Template (Generic MISRA C++ Rule)
 
-# Main Prompt Template
-PROMPT_TEMPLATE = """
 You are an expert C++ programmer and dataset engineer.  
 Your goal is to generate two complete `.cpp` programs — one **Non-Compliant** and one **Compliant** — demonstrating a specific MISRA C++ rule violation and its fix.
 
@@ -20,10 +14,10 @@ Your goal is to generate two complete `.cpp` programs — one **Non-Compliant** 
 
 ## RULE CONFIGURATION (Fill these in):
 ```
-RULE_NUMBER: {RULE_NUMBER}
-RULE_DESCRIPTION: {RULE_DESCRIPTION}
-VIOLATION_TYPE: {VIOLATION_TYPE}
-FIX_PATTERN: {FIX_PATTERN}
+RULE_NUMBER: {{RULE_NUMBER}}
+RULE_DESCRIPTION: {{RULE_DESCRIPTION}}
+VIOLATION_TYPE: {{VIOLATION_TYPE}}
+FIX_PATTERN: {{FIX_PATTERN}}
 ```
 
 ---
@@ -38,7 +32,7 @@ You will receive seed data in JSONL format with these fields:
 
 **Example seed input:**
 ```json
-{{"seed":1,"context":"Autonomous drone altitude hold loop","noncompliant":"#include <iostream>\\nint main(){{\\n    float error=0.0F, integral=0.0F; // NC\\n    double kp=1.1, ki=0.05; // NC\\n    int samples=0, drops=0; // NC\\n    error += 0.2F; integral += error;\\n    std::cout<<kp<<\\\",\\\"<<ki<<\\\",\\\"<<samples<<\\\",\\\"<<drops<<\\\"\\\\n\\\";\\n    return 0;\\n}}\\n","compliant":"#include <iostream>\\nint main(){{\\n    float error=0.0F; // C\\n    float integral=0.0F; // C\\n    double kp=1.1; // C\\n    double ki=0.05; // C\\n    int samples=0; // C\\n    int drops=0; // C\\n    error += 0.2F; integral += error;\\n    std::cout<<kp<<\\\",\\\"<<ki<<\\\",\\\"<<samples<<\\\",\\\"<<drops<<\\\"\\\\n\\\";\\n    return 0;\\n}}\\n"}}
+{"seed":1,"context":"Autonomous drone altitude hold loop","noncompliant":"#include <iostream>\\nint main(){\\n    float error=0.0F, integral=0.0F; // NC\\n    double kp=1.1, ki=0.05; // NC\\n    int samples=0, drops=0; // NC\\n    error += 0.2F; integral += error;\\n    std::cout<<kp<<\\\",\\\"<<ki<<\\\",\\\"<<samples<<\\\",\\\"<<drops<<\\\"\\\\n\\\";\\n    return 0;\\n}\\n","compliant":"#include <iostream>\\nint main(){\\n    float error=0.0F; // C\\n    float integral=0.0F; // C\\n    double kp=1.1; // C\\n    double ki=0.05; // C\\n    int samples=0; // C\\n    int drops=0; // C\\n    error += 0.2F; integral += error;\\n    std::cout<<kp<<\\\",\\\"<<ki<<\\\",\\\"<<samples<<\\\",\\\"<<drops<<\\\"\\\\n\\\";\\n    return 0;\\n}\\n"}
 ```
 
 ---
@@ -74,27 +68,27 @@ Both NC and C versions must be **identical** except for:
 
 ### Non-Compliant Program:
 ```cpp
-// ------ Non-Compliant Program ({{{{SEED_NUM}}}}_nc.cpp)
-// Seed {{{{SEED_NUM}}}} — Context: {{{{CONTEXT}}}}
-// Reference: MISRA C++ {{{{RULE_NUMBER}}}} — {{{{RULE_DESCRIPTION}}}}
-// Violation: {{{{VIOLATION_TYPE}}}}
+// ------ Non-Compliant Program ({{SEED_NUM}}_nc.cpp)
+// Seed {{SEED_NUM}} — Context: {{CONTEXT}}
+// Reference: MISRA C++ {{RULE_NUMBER}} — {{RULE_DESCRIPTION}}
+// Violation: {{VIOLATION_TYPE}}
 
 #include <iostream>
 #include <vector>
 #include <cmath>
 // Add other headers as needed based on seed code
 
-namespace app_{{{{SEED_NUM}}}} {{
+namespace app_{{SEED_NUM}} {
     // Type definitions (domain-appropriate)
-    struct {{{{DomainType}}}} {{ /* fields matching context */ }};
+    struct {{DomainType}} { /* fields matching context */ };
     
     // Helper functions (expand seed logic)
-    static {{{{ReturnType}}}} helperFunction({{{{params}}}}) {{
+    static {{ReturnType}} helperFunction({{params}}) {
         // Implementation supporting main logic
-    }}
+    }
     
     // Main logic function (wrap seed code here)
-    void mainFunction() {{
+    void mainFunction() {
         // EXPAND SEED NONCOMPLIANT CODE HERE
         // Keep the violations from seed: float a=1, b=2; // NC
         
@@ -102,38 +96,38 @@ namespace app_{{{{SEED_NUM}}}} {{
         
         // Output showing results
         std::cout << /* results */ << "\\n";
-    }}
-}}
+    }
+}
 
-int main() {{
-    app_{{{{SEED_NUM}}}}::mainFunction();
+int main() {
+    app_{{SEED_NUM}}::mainFunction();
     return 0;
-}}
+}
 ```
 
 ### Compliant Program:
 ```cpp
-// ------ Compliant Program ({{{{SEED_NUM}}}}_c.cpp)
-// Seed {{{{SEED_NUM}}}} — Context: {{{{CONTEXT}}}}
-// Reference: MISRA C++ {{{{RULE_NUMBER}}}} — {{{{RULE_DESCRIPTION}}}}
-// Fix: {{{{FIX_PATTERN}}}}
+// ------ Compliant Program ({{SEED_NUM}}_c.cpp)
+// Seed {{SEED_NUM}} — Context: {{CONTEXT}}
+// Reference: MISRA C++ {{RULE_NUMBER}} — {{RULE_DESCRIPTION}}
+// Fix: {{FIX_PATTERN}}
 
 #include <iostream>
 #include <vector>
 #include <cmath>
 // Add other headers as needed (same as NC)
 
-namespace app_{{{{SEED_NUM}}}} {{
+namespace app_{{SEED_NUM}} {
     // Type definitions (IDENTICAL to NC)
-    struct {{{{DomainType}}}} {{ /* fields matching context */ }};
+    struct {{DomainType}} { /* fields matching context */ };
     
     // Helper functions (IDENTICAL to NC)
-    static {{{{ReturnType}}}} helperFunction({{{{params}}}}) {{
+    static {{ReturnType}} helperFunction({{params}}) {
         // Implementation supporting main logic
-    }}
+    }
     
     // Main logic function (wrap seed code here)
-    void mainFunction() {{
+    void mainFunction() {
         // EXPAND SEED COMPLIANT CODE HERE
         // Apply the fix from seed: float a=1; float b=2; // C
         
@@ -141,13 +135,13 @@ namespace app_{{{{SEED_NUM}}}} {{
         
         // Output showing results (IDENTICAL to NC)
         std::cout << /* results */ << "\\n";
-    }}
-}}
+    }
+}
 
-int main() {{
-    app_{{{{SEED_NUM}}}}::mainFunction();
+int main() {
+    app_{{SEED_NUM}}::mainFunction();
     return 0;
-}}
+}
 ```
 
 ---
@@ -157,9 +151,9 @@ int main() {{
 When expanding the seed code (8-15 lines → 40-60 lines), add:
 
 1. **Domain-specific types** based on `context`:
-   - UAV/drone → `struct State {{ float alt; float vel; }}`
-   - Factory/industrial → `struct Event {{ int code; std::string msg; }}`
-   - Medical → `struct Sample {{ double flow; double pressure; }}`
+   - UAV/drone → `struct State { float alt; float vel; }`
+   - Factory/industrial → `struct Event { int code; std::string msg; }`
+   - Medical → `struct Sample { double flow; double pressure; }`
 
 2. **Helper functions** that support the seed logic:
    - `clamp()` for range limiting
@@ -200,7 +194,7 @@ When expanding the seed code (8-15 lines → 40-60 lines), add:
    - Expand around it, don't replace it
    - Keep the violation/fix pattern from the seed
 
-5. **Namespacing**: Use `app_{{{{SEED_NUM}}}}` format
+5. **Namespacing**: Use `app_{{SEED_NUM}}` format
 
 6. **Standard library only**: No external dependencies
 
@@ -211,7 +205,7 @@ When expanding the seed code (8-15 lines → 40-60 lines), add:
 Generate output as JSONL with fields: `program`, `context`, `noncompliant`, `compliant`
 
 ```json
-{{"program":{{{{PROGRAM_NUM}}}},"context":"{{{{CONTEXT}}}}","noncompliant":"{{{{ESCAPED_NC_CODE}}}}","compliant":"{{{{ESCAPED_C_CODE}}}}"}}
+{"program":{{PROGRAM_NUM}},"context":"{{CONTEXT}}","noncompliant":"{{ESCAPED_NC_CODE}}","compliant":"{{ESCAPED_C_CODE}}"}
 ```
 
 **Escaping rules:**
@@ -226,8 +220,8 @@ Generate output as JSONL with fields: `program`, `context`, `noncompliant`, `com
 
 Generate **two compilable C++ programs** for each seed:
 
-1️⃣ **Non-Compliant Program** (`{{{{PROGRAM_NUM}}}}_nc.cpp`)  
-2️⃣ **Compliant Program** (`{{{{PROGRAM_NUM}}}}_c.cpp`)
+1️⃣ **Non-Compliant Program** (`{{PROGRAM_NUM}}_nc.cpp`)  
+2️⃣ **Compliant Program** (`{{PROGRAM_NUM}}_c.cpp`)
 
 **Both must:**
 - Contain a top comment header with metadata (program number, rule, context, violation).
@@ -250,7 +244,7 @@ Before generating output, verify:
 - [ ] Violations marked with `// NC`, fixes with `// C`
 - [ ] JSONL uses `\\n` for newlines (not `\\\\n`)
 - [ ] JSONL syntax is valid
-- [ ] Namespace format: `app_{{{{PROGRAM_NUM}}}}`
+- [ ] Namespace format: `app_{{PROGRAM_NUM}}`
 - [ ] Context description matches the domain
 
 ---
@@ -275,42 +269,3 @@ Before generating output, verify:
 4. Verify using the checklist
 5. Output as JSONL format
 """
-
-# Example usage function
-def generate_prompt(rule_number, rule_description, violation_type, fix_pattern):
-    """
-    Generate a formatted prompt with the given rule configuration.
-    
-    Args:
-        rule_number (str): The MISRA C++ rule number
-        rule_description (str): Description of the rule
-        violation_type (str): Type of violation
-        fix_pattern (str): Pattern for fixing the violation
-    
-    Returns:
-        str: Formatted prompt template
-    """
-    return PROMPT_TEMPLATE.format(
-        RULE_NUMBER=rule_number,
-        RULE_DESCRIPTION=rule_description,
-        VIOLATION_TYPE=violation_type,
-        FIX_PATTERN=fix_pattern
-    )
-
-
-# Example seed data structure
-EXAMPLE_SEED = {
-    "seed": 1,
-    "context": "Autonomous drone altitude hold loop",
-    "noncompliant": "#include <iostream>\nint main(){\n    float error=0.0F, integral=0.0F; // NC\n    double kp=1.1, ki=0.05; // NC\n    int samples=0, drops=0; // NC\n    error += 0.2F; integral += error;\n    std::cout<<kp<<\",\"<<ki<<\",\"<<samples<<\",\"<<drops<<\"\\n\";\n    return 0;\n}\n",
-    "compliant": "#include <iostream>\nint main(){\n    float error=0.0F; // C\n    float integral=0.0F; // C\n    double kp=1.1; // C\n    double ki=0.05; // C\n    int samples=0; // C\n    int drops=0; // C\n    error += 0.2F; integral += error;\n    std::cout<<kp<<\",\"<<ki<<\",\"<<samples<<\",\"<<drops<<\"\\n\";\n    return 0;\n}\n"
-}
-
-
-# Example output structure
-EXAMPLE_OUTPUT = {
-    "program": 1,
-    "context": "Autonomous drone altitude hold loop",
-    "noncompliant": "// Full 40-60 line non-compliant C++ program with \\n escapes",
-    "compliant": "// Full 40-60 line compliant C++ program with \\n escapes"
-}
