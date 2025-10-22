@@ -1,0 +1,6 @@
+Rules/primevul data/*.jsonl
+
+
+.DS_Store
+.vscode/
+Rules/.DS_Store
