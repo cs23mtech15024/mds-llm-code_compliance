@@ -30,7 +30,7 @@ public:
             rttvar_ms = (1.0f - prm.alpha) * rttvar_ms + prm.alpha * std::abs(err);
             srtt_ms   = (1.0f - prm.alpha) * srtt_ms   + prm.alpha * rtt_ms_sample;
         }
-        rto_ms = std::min(srtt_ms + prm.beta * rttvar_ms, 200.0f, 60000.0f); // non-compliant
+        rto_ms = std::min(std::max(srtt_ms + prm.beta * rttvar_ms, 200.0f), 60000.0f); // non-compliant
         (void)prm.dbg_mask; // just to use it
     }
 

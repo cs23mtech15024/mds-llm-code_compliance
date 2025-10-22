@@ -49,7 +49,7 @@ int main() {
         float j = static_cast<float>(seed & cfg.jitterMask) / 1024.0F; // compliant
         backoff += j * cfg.jitterFrac;
 
-        backoff = std::min(backoff, minS, maxS);
+        backoff = std::min(std::max(backoff, minS), maxS);
 
         long delayMs = static_cast<long>(backoff * 1000.0F); // compliant
         delayMs = std::max(delayMs, cfg.baseDelayMs);

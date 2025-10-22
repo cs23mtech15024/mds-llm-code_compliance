@@ -44,7 +44,7 @@ int main() {
     // Inject tiny deterministic jitter into the duty's LSB domain
     uint32_t j = pseudoJitter(prngSeed, cfg.jitterMask);
     float jitter = static_cast<float>(j) / 1024.0f; // non-compliant
-    float duty = std::min(cfg.duty + jitter * 0.001f, minDuty, maxDuty); // non-compliant
+    float duty = std::min(std::max(cfg.duty + jitter * 0.001f, minDuty), maxDuty); // non-compliant
 
     // Compute compare value with deadtime; clamp within [deadtime, period - deadtime]
     uint32_t cmp = static_cast<uint32_t>(duty * static_cast<float>(cfg.periodTicks));
