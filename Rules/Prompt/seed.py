@@ -17,7 +17,7 @@ RANGE_END: {{RANGE_END}}
 
 ---
 ## GOAL
-For each seed, output concise C++ code pairs (15–35 lines) that:
+For each seed, output concise C++ code pairs (10–15 lines) that:
 - Show one clear violation (`// NC`) and its fix (`// C`).
 - Are domain-realistic and compilable with `g++ -std=c++17 -fsyntax-only`.
 - Follow consistent structure and naming.
@@ -30,7 +30,7 @@ Each seed must have a **unique context**.
 ---
 ## CONSTRAINTS
 1. Seeds numbered sequentially from `{{RANGE_START}}`–`{{RANGE_END}}`.
-2. Code must be 15–35 lines, compilable, and domain-appropriate.
+2. Code must be 10–15 lines, compilable, and domain-appropriate.
 3. Only one violation per non-compliant snippet.
 4. Compliant version fixes only that violation.
 5. Avoid unrelated issues and placeholders.
