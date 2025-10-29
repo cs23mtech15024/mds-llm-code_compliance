@@ -1,14 +1,14 @@
-// Context: Solar tracker dual-axis controller
+// Context: Firefighting foam proportioner
 
 #include <iostream>
 int main(){
-    float az=0.0F;        // C
-    float el=0.0F;        // C
-    float k=0.2F;         // C
-    float bias=0.0F;      // C
-    unsigned steps=0U;    // C
-    unsigned faults=0U;   // C
-    az += 0.5F; el += 0.3F; steps++;
-    std::cout<<az<<","<<el<<","<<k<<","<<bias<<","<<steps<<","<<faults<<"\n";
+    float waterFlow=500.0F;    // C
+    float foamRate=3.0F;       // C
+    double pressure=100.0;     // C
+    double ratio=0.03;         // C
+    unsigned nozzles=4U;       // C
+    unsigned alarms=0U;        // C
+    waterFlow += 10.0F; nozzles++;
+    std::cout<<waterFlow<<","<<foamRate<<","<<pressure<<","<<ratio<<","<<nozzles<<","<<alarms<<"\n";
     return 0;
 }

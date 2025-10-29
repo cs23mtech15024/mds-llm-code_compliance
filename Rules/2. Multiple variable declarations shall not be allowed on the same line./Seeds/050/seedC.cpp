@@ -1,14 +1,14 @@
-// Context: Planetary rover slip detection module
+// Context: Planetary habitat thermal radiator manager
 
 #include <iostream>
 int main(){
-    float omega=5.0F;      // C
-    float v=0.5F;          // C
-    float mu=0.6F;         // C
-    float slip=0.0F;       // C
-    unsigned frames=0U;    // C
-    unsigned alarms=0U;    // C
-    slip = (omega*0.1F - v);
-    std::cout<<omega<<","<<v<<","<<mu<<","<<slip<<","<<frames<<","<<alarms<<"\n";
+    double temp=290.0;     // C
+    double tgt=295.0;      // C
+    float pump=0.0F;       // C
+    float valve=0.0F;      // C
+    unsigned cycles=0U;    // C
+    unsigned trips=0U;     // C
+    pump += 0.1F; valve += 0.1F;
+    std::cout<<temp<<","<<tgt<<","<<pump<<","<<valve<<","<<cycles<<","<<trips<<"\n";
     return 0;
 }

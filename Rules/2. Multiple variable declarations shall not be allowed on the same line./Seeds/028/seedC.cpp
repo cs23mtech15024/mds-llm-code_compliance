@@ -1,14 +1,14 @@
-// Context: Industrial freezer temperature guard
+// Context: Space telescope reaction wheel balancer
 
 #include <iostream>
 int main(){
-    double tA=-18.0;     // C
-    double tB=-19.5;     // C
-    float drift=0.0F;    // C
-    float slope=0.0F;    // C
-    int open=0;          // C
-    int alerts=0;        // C
-    drift += 0.2F; slope = -0.05F;
-    std::cout<<tA<<","<<tB<<","<<drift<<","<<slope<<","<<open<<","<<alerts<<"\n";
+    float wx=0.0F;        // C
+    float wy=0.0F;        // C
+    double bias=0.0;      // C
+    double set=0.02;      // C
+    int alarms=0;         // C
+    int resets=0;         // C
+    wx+=0.01F; set+=0.001;
+    std::cout<<wx<<","<<wy<<","<<bias<<","<<set<<","<<alarms<<","<<resets<<"\n";
     return 0;
 }

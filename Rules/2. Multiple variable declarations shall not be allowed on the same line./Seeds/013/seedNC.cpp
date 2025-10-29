@@ -1,11 +1,11 @@
-// Context: Automated warehouse picker arm
+// Context: Power substation thermal monitor
 
 #include <iostream>
 int main(){
-    long moves=0L, retries=0L;        // NC
-    float x=0.0F, y=0.0F;             // NC
-    bool jam=false, eStop=false;      // NC
-    x+=1.0F; y+=-0.5F;
-    std::cout<<moves<<","<<retries<<","<<x<<","<<y<<","<<jam<<","<<eStop<<"\n";
+    double tCab=36.5, tBus=38.0;      // NC
+    float rmsA=100.0F, rmsB=98.5F;    // NC
+    bool fan=false, alert=false;      // NC
+    alert = (tBus>40.0);
+    std::cout<<tCab<<","<<tBus<<","<<rmsA<<","<<rmsB<<","<<fan<<","<<alert<<"\n";
     return 0;
 }

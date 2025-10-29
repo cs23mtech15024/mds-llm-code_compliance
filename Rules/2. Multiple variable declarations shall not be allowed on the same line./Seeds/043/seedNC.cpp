@@ -1,11 +1,11 @@
-// Context: Autonomous submarine sonar ping scheduler
+// Context: Blockchain mining pool difficulty adjuster
 
 #include <iostream>
 int main(){
-    unsigned interval=2U, jitter=1U; // NC
-    float depth=30.0F, speed=2.5F;   // NC
-    bool mute=false, armed=true;     // NC
-    interval+=1U; speed+=0.1F;
-    std::cout<<interval<<","<<jitter<<","<<depth<<","<<speed<<","<<mute<<","<<armed<<"\n";
+    double diff=1.0, rate=0.0;        // NC
+    unsigned shares=0U, rejects=0U;   // NC
+    float target=0.5F, window=0.0F;   // NC
+    diff += 0.1; rate += 0.05; shares++;
+    std::cout<<diff<<","<<rate<<","<<shares<<","<<rejects<<","<<target<<","<<window<<"\n";
     return 0;
 }

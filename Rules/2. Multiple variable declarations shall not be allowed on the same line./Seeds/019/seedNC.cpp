@@ -1,11 +1,11 @@
-// Context: Autonomous car lane departure alert
+// Context: Mining haul truck tire pressure monitor
 
 #include <iostream>
 int main(){
-    float lateral=0.0F, yawRate=0.0F; // NC
-    unsigned frames=0U, alarms=0U;    // NC
-    bool left=false, right=false;     // NC
-    lateral+=0.2F; yawRate=0.03F;
-    std::cout<<lateral<<","<<yawRate<<","<<frames<<","<<alarms<<","<<left<<","<<right<<"\n";
+    float pFL=95.0F, pFR=96.0F;      // NC
+    float pRL=100.0F, pRR=99.0F;     // NC
+    unsigned faults=0U, warns=0U;    // NC
+    pFR -= 1.0F; pRR -= 2.0F;
+    std::cout<<pFL<<","<<pFR<<","<<pRL<<","<<pRR<<","<<faults<<","<<warns<<"\n";
     return 0;
 }

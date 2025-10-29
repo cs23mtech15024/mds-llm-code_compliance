@@ -1,14 +1,14 @@
-// Context: Automated dairy vacuum regulator
+// Context: Wind farm battery smoothing controller
 
 #include <iostream>
 int main(){
-    double vac=45.0;       // C
-    double target=50.0;    // C
-    float leak=0.0F;       // C
-    float trim=0.0F;       // C
-    int alarms=0;          // C
-    int resets=0;          // C
-    trim += 0.2F; vac += 0.5;
-    std::cout<<vac<<","<<target<<","<<leak<<","<<trim<<","<<alarms<<","<<resets<<"\n";
+    double p=3.5;        // C
+    double tgt=4.0;      // C
+    float soc=0.6F;      // C
+    float rate=0.0F;     // C
+    unsigned ticks=0U;   // C
+    unsigned trips=0U;   // C
+    rate = 0.2F; p += 0.1; soc += 0.01F;
+    std::cout<<p<<","<<tgt<<","<<soc<<","<<rate<<","<<ticks<<","<<trips<<"\n";
     return 0;
 }

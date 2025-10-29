@@ -1,11 +1,11 @@
-// Context: Electric bus regenerative braking controller
+// Context: Deep-sea ROV buoyancy trim controller
 
 #include <iostream>
 int main(){
-    float speed=12.0F, decel=0.0F;   // NC
-    double soc=0.65, limit=0.90;     // NC
-    int events=0, cutouts=0;         // NC
-    decel += 0.5F; soc += 0.01;
-    std::cout<<speed<<","<<decel<<","<<soc<<","<<limit<<","<<events<<","<<cutouts<<"\n";
+    double depth=50.0, tgt=47.5;   // NC
+    float pump=0.0F, bleed=0.0F;   // NC
+    unsigned steps=0U, trips=0U;   // NC
+    pump += 0.2F; depth -= 0.5;
+    std::cout<<depth<<","<<tgt<<","<<pump<<","<<bleed<<","<<steps<<","<<trips<<"\n";
     return 0;
 }

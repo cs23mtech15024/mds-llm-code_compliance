@@ -1,11 +1,11 @@
-// Context: Deep-sea ROV depth and ballast control
+// Context: High-altitude balloon ballast vent control
 
 #include <iostream>
 int main(){
-    double depth=10.0, ballast=0.0;  // NC
-    bool blow=false, flood=false;    // NC
-    unsigned cycles=0U, alarms=0U;   // NC
-    depth += 1.0; ballast += 0.2;
-    std::cout<<depth<<","<<ballast<<","<<blow<<","<<flood<<","<<cycles<<","<<alarms<<"\n";
+    double alt=10000.0, target=12000.0; // NC
+    float valve=0.0F, leak=0.0F;        // NC
+    unsigned ticks=0U, dumps=0U;        // NC
+    valve += 0.1F; alt += 50.0;
+    std::cout<<alt<<","<<target<<","<<valve<<","<<leak<<","<<ticks<<","<<dumps<<"\n";
     return 0;
 }

@@ -1,14 +1,14 @@
-// Context: Coal plant boiler feedwater control
+// Context: Runway lighting intensity scheduler
 
 #include <iostream>
 int main(){
-    double lvl=50.0;     // C
-    double sp=55.0;      // C
-    float kp=1.1F;       // C
-    float ki=0.04F;      // C
-    int opens=0;         // C
-    int closes=0;        // C
-    lvl += 0.3; opens++;
-    std::cout<<lvl<<","<<sp<<","<<kp<<","<<ki<<","<<opens<<","<<closes<<"\n";
+    unsigned east=10U;     // C
+    unsigned west=8U;      // C
+    float bias=1.0F;       // C
+    float step=0.0F;       // C
+    bool fog=false;        // C
+    bool night=true;       // C
+    step = 0.1F; east+=1U;
+    std::cout<<east<<","<<west<<","<<bias<<","<<step<<","<<fog<<","<<night<<"\n";
     return 0;
 }

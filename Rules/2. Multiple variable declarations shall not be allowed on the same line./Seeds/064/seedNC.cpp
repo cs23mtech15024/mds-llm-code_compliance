@@ -1,12 +1,11 @@
-// Context: Smart greenhouse CO2 enrichment loop
+// Context: Harbor tide-compensated mooring tensioner
 
 #include <iostream>
 int main(){
-    double ppm=420.0, set=800.0;     // NC
-    float valve=0.0F, leak=0.0F;     // NC
-    unsigned ticks=0U, alarms=0U;    // NC
-    valve += 0.1F; ppm += 10.0;
-    if(ppm>set){ alarms++; }
-    std::cout<<ppm<<","<<set<<","<<valve<<","<<leak<<","<<ticks<<","<<alarms<<"\n";
+    double tide=1.2, set=1.5;       // NC
+    float k=0.5F, tension=0.0F;     // NC
+    int cycles=0, trips=0;          // NC
+    tension += static_cast<float>((set-tide)*0.3);
+    std::cout<<tide<<","<<set<<","<<k<<","<<tension<<","<<cycles<<","<<trips<<"\n";
     return 0;
 }

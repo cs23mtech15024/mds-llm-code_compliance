@@ -1,14 +1,14 @@
-// Context: Offshore wind turbine yaw alignment supervisor
+// Context: Cryptocurrency mining pool distributor
 
 #include <iostream>
 int main(){
-    float yaw=0.0F;       // C
-    float err=0.0F;       // C
-    float rate=0.0F;      // C
-    float gain=0.3F;      // C
-    unsigned moves=0U;    // C
-    unsigned faults=0U;   // C
-    err = -0.4F; rate += gain*err;
-    std::cout<<yaw<<","<<err<<","<<rate<<","<<gain<<","<<moves<<","<<faults<<"\n";
+    unsigned shares=0U;    // C
+    unsigned accepted=0U;  // C
+    double hashrate=0.0;   // C
+    double reward=0.0;     // C
+    int workers=4;         // C
+    int active=0;          // C
+    shares++; accepted++;
+    std::cout<<shares<<","<<accepted<<","<<hashrate<<","<<reward<<","<<workers<<","<<active<<"\n";
     return 0;
 }

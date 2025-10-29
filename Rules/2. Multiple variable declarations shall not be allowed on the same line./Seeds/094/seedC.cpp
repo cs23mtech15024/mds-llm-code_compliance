@@ -1,15 +1,14 @@
-// Context: Mars rover wheel slip compensator
+// Context: Stadium scoreboard graphics engine
 
 #include <iostream>
 int main(){
-    double slip=0.0;     // C
-    double set=0.15;     // C
-    float gain=0.4F;     // C
-    float cmd=0.0F;      // C
-    int events=0;        // C
-    int limits=0;        // C
-    cmd += static_cast<float>((set-slip)*0.5);
-    if(cmd>0.8F){ ++limits; }
-    std::cout<<slip<<","<<set<<","<<gain<<","<<cmd<<","<<events<<","<<limits<<"\n";
+    int homeScore=0;           // C
+    int awayScore=0;           // C
+    float brightness=0.8F;     // C
+    float contrast=1.0F;       // C
+    unsigned panels=120U;      // C
+    unsigned errors=0U;        // C
+    homeScore++; panels++;
+    std::cout<<homeScore<<","<<awayScore<<","<<brightness<<","<<contrast<<","<<panels<<","<<errors<<"\n";
     return 0;
 }

@@ -1,14 +1,14 @@
-// Context: Hospital HVAC surgical theater pressure control
+// Context: Photovoltaic MPPT tracker
 
 #include <iostream>
 int main(){
-    double room=2.0;       // C
-    double corridor=0.5;   // C
-    float fan=0.0F;        // C
-    float damper=0.0F;     // C
-    unsigned t=0U;         // C
-    unsigned alarms=0U;    // C
-    fan += 0.3F; room += 0.1; corridor -= 0.05;
-    std::cout<<room<<","<<corridor<<","<<fan<<","<<damper<<","<<t<<","<<alarms<<"\n";
+    float voltage=48.0F;   // C
+    float current=10.0F;   // C
+    double power=0.0;      // C
+    double efficiency=0.0; // C
+    unsigned steps=0U;     // C
+    unsigned cycles=0U;    // C
+    voltage += 0.5F; steps++;
+    std::cout<<voltage<<","<<current<<","<<power<<","<<efficiency<<","<<steps<<","<<cycles<<"\n";
     return 0;
 }

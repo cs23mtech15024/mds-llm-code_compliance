@@ -1,11 +1,11 @@
-// Context: Autonomous forklift proximity guard
+// Context: Hospital negative-pressure room monitor
 
 #include <iostream>
 int main(){
-    float dist=3.0F, thresh=1.5F;   // NC
-    bool slow=false, stop=false;    // NC
-    unsigned events=0U, trips=0U;   // NC
-    slow = (dist<thresh);
-    std::cout<<dist<<","<<thresh<<","<<slow<<","<<stop<<","<<events<<","<<trips<<"\n";
+    double pa=-5.0, target=-8.0;     // NC
+    float flow=0.0F, leak=0.0F;      // NC
+    int alarms=0, warns=0;           // NC
+    flow += 0.2F; pa -= 0.3;
+    std::cout<<pa<<","<<target<<","<<flow<<","<<leak<<","<<alarms<<","<<warns<<"\n";
     return 0;
 }

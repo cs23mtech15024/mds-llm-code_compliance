@@ -1,14 +1,14 @@
-// Context: Medical syringe pump dosage loop
+// Context: Subway door interlock monitor
 
 #include <iostream>
 int main(){
-    double mlPerHr=5.0;    // C
-    double target=6.0;     // C
-    float err=0.0F;        // C
-    float acc=0.0F;        // C
-    int alarms=0;          // C
-    int warns=0;           // C
-    err = static_cast<float>(target-mlPerHr);
-    std::cout<<mlPerHr<<","<<target<<","<<err<<","<<acc<<","<<alarms<<","<<warns<<"\n";
+    bool left=false;        // C
+    bool right=false;       // C
+    int cycles=0;           // C
+    int errors=0;           // C
+    unsigned retries=0U;    // C
+    unsigned trips=0U;      // C
+    left=true; right=false;
+    std::cout<<left<<","<<right<<","<<cycles<<","<<errors<<","<<retries<<","<<trips<<"\n";
     return 0;
 }

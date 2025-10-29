@@ -1,30 +1,78 @@
-// Context: Electric bus regenerative braking controller
+// Context: Deep-sea ROV buoyancy trim controller
 
 // ------ Compliant Program (052_c.cpp)
-// Compliant rewrite using single-declarator declarations.
+// Context: Deep-sea ROV buoyancy trim controller
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-namespace ebus_052 {
-    struct State { float v; float dec; }; // OK
-    static float clip(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void loop(){
-        float speed=12.0F;                      // C
-        float decel=0.0F;                       // C
-        double soc=0.65;                        // C
-        double limit=0.90;                      // C
-        int events=0;                           // C
-        int cutouts=0;                          // C
-        State s{speed,decel};
-        for (int k=0;k<14;++k){
-            float req = (k%2==0)?0.6F:0.2F;
-            float u = clip(req - s.dec, -0.5F, 0.5F);
-            s.dec += u; s.v = clip(s.v - s.dec, 0.0F, 25.0F);
-            soc += (s.dec>0.4F)?0.002:0.0005; if (soc>limit){ cutouts++; s.dec=0.0F; }
-            events++;
-            if ((k%2)==0){ std::cout<<"k="<<k<<" v="<<s.v<<" dec="<<s.dec<<" soc="<<soc<<"\n"; }
+
+namespace ctrl_052 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double depth=50.0;                       // C
+        double tgt=47.5;                       // C
+        float pump=0.0F;                       // C
+        float bleed=0.0F;                       // C
+        unsigned steps=0U;                       // C
+        unsigned trips=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"events="<<events<<" cutouts="<<cutouts<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ ebus_052::loop(); return 0; }
+
+int main() {
+    ctrl_052::execute();
+    return 0;
+}

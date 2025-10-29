@@ -1,11 +1,11 @@
-// Context: Smart building elevator load leveler
+// Context: Lunar habitat airlock pressure equalizer
 
 #include <iostream>
 int main(){
-    int load=0, limit=1200;          // NC
-    float bias=0.0F, rate=0.0F;      // NC
-    bool slow=false, stop=false;     // NC
-    load+=200; bias+=0.1F;
-    std::cout<<load<<","<<limit<<","<<bias<<","<<rate<<","<<slow<<","<<stop<<"\n";
+    double cabin=55.0, lock=10.0;    // NC
+    float valve=0.0F, leak=0.0F;     // NC
+    unsigned t=0U, alarms=0U;        // NC
+    valve = 0.3F; lock += 2.0;
+    std::cout<<cabin<<","<<lock<<","<<valve<<","<<leak<<","<<t<<","<<alarms<<"\n";
     return 0;
 }

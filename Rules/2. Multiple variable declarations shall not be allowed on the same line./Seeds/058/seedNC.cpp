@@ -1,11 +1,11 @@
-// Context: Industrial robot torque observer calibrator
+// Context: Microgrid black-start sequencer
 
 #include <iostream>
 int main(){
-    double tau=0.0, bias=0.0;       // NC
-    float alpha=0.1F, beta=0.0F;    // NC
-    unsigned it=0U, maxIt=4U;       // NC
-    tau += 0.5; beta += 0.02F;
-    std::cout<<tau<<","<<bias<<","<<alpha<<","<<beta<<","<<it<<","<<maxIt<<"\n";
+    unsigned gens=2U, loads=5U;     // NC
+    float freq=0.0F, volt=0.0F;     // NC
+    int steps=0, fails=0;           // NC
+    steps += 1; freq += 0.1F; volt += 0.2F;
+    std::cout<<gens<<","<<loads<<","<<freq<<","<<volt<<","<<steps<<","<<fails<<"\n";
     return 0;
 }

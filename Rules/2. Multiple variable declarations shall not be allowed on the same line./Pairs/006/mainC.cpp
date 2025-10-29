@@ -1,26 +1,83 @@
 // Context: Rail braking cylinder pressure monitor
 
 // ------ Compliant Program (006_c.cpp)
-// Compliant: one declarator per declaration.
+// Context: Rail braking cylinder pressure monitor
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <algorithm>
-#include <cstdint>
-namespace rail_006 {
-    struct Reading { float p; float t; }; // OK
-    static float limit(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void check(){
-        float p=0.0F;                   // C
-        float t=0.0F;                   // C
-        unsigned faults=0U;             // C
-        unsigned resets=0U;             // C
-        int last=-1;                    // C
-        int code=0;                     // C
-        Reading r{0.9F, 30.0F};
-        if (r.p<0.5F){ faults++; last=100; code=1; }
-        p = limit(r.p,0.0F,1.5F);
-        t = limit(r.t,-10.0F,80.0F);
-        if (faults>0U){ resets++; }
-        std::cout<<"p="<<p<<" t="<<t<<" f="<<faults<<" r="<<resets<<" last="<<last<<" code="<<code<<"\n";
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_006 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float p=0.0F;                       // C
+        float t=0.0F;                       // C
+        unsigned faults=0U;                       // C
+        unsigned resets=0U;                       // C
+        int last=-1;                       // C
+        int code=0;                       // C
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
+        }
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ rail_006::check(); return 0; }
+
+int main() {
+    mon_006::monitor();
+    return 0;
+}

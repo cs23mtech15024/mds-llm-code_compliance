@@ -1,29 +1,78 @@
-// Context: Autonomous rail yard switch matrix arbiter
+// Context: Piano tuner frequency analyzer
 
 // ------ Compliant Program (099_c.cpp)
-// Compliant: one declarator per declaration across the file.
+// Context: Piano tuner frequency analyzer
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <deque>
-#include <algorithm>
-namespace yard_099 {
-    struct Net { unsigned tracks; unsigned routes; }; // OK
-    static unsigned clampu(unsigned v,unsigned lo,unsigned hi){ return std::max(lo,std::min(hi,v)); }
-    void arbitrate(){
-        unsigned tracks=7U;                         // C
-        unsigned routes=3U;                         // C
-        float bias=0.0F;                            // C
-        float gain=0.6F;                            // C
-        int moves=0;                                 // C
-        int conflicts=0;                             // C
-        std::deque<unsigned> req{2,1,3,2,4,1,2,3};
-        for (std::size_t i=0;i<req.size();++i){
-            tracks = clampu(tracks + (req[i]>2?1U:0U), 5U, 12U);
-            bias   = std::min(1.0F,std::max(0.0F, bias + (req[i]>2?0.2F:-0.1F)));
-            if (bias>0.8F){ conflicts++; }
-            moves += static_cast<int>(req[i]);
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" tr="<<tracks<<" bias="<<bias<<" moves="<<moves<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_099 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double freq=440.0;                       // C
+        double detune=0.0;                       // C
+        float amplitude=1.0F;                       // C
+        float phase=0.0F;                       // C
+        int key=49;                       // C
+        int octave=4;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"moves="<<moves<<" conflicts="<<conflicts<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ yard_099::arbitrate(); return 0; }
+
+int main() {
+    ctrl_099::execute();
+    return 0;
+}

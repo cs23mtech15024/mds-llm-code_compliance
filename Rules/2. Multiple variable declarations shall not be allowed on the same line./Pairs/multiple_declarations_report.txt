@@ -1,0 +1,651 @@
+
+======================================================================
+MISRA C++ MULTIPLE VARIABLE DECLARATIONS RULE CHECKER
+======================================================================
+Rule: Multiple variable declarations shall not be allowed on the same line
+File Type: main (mainNC.cpp, mainC.cpp)
+Generated: 2025-10-29T18:55:44.291316
+
+===================================================================
+
+RULE DESCRIPTION:
+-----------------
+Each variable declaration should be on its own line for clarity and maintainability.
+
+Examples:
+  ✓ Compliant:
+    int x;
+    int y;
+    int z;
+
+  ✗ Non-compliant:
+    int x, y, z;        // Multiple declarations on one line
+    int a, b; int c;    // Multiple declarations (even if separated)
+
+===================================================================
+
+STATISTICS:
+-----------
+Total unique variable declarations found: 3512
+Total violations (lines with multiple declarations): 300
+Violations in mainNC.cpp files: 299
+Violations in mainC.cpp files: 0
+
+===================================================================
+
+NON-COMPLIANT FILES (mainNC.cpp):
+Expected violations - these files should contain multiple declarations per line
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: amplitude, phase | Type(s): float | Count: 2
+    Line 30 | Variables: detune, freq | Type(s): double | Count: 2
+    Line 32 | Variables: octave, key | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: b, a | Type(s): double | Count: 2
+    Line 32 | Variables: alerts, hits | Type(s): int | Count: 2
+    Line 31 | Variables: thr, env | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 2 violation(s):
+    Line 30 | Variables: qualA, qualC, qualT, qualG | Type(s): float | Count: 4
+    Line 31 | Variables: errors, reads | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: tgt, ph | Type(s): double | Count: 2
+    Line 31 | Variables: base, acid | Type(s): float | Count: 2
+    Line 32 | Variables: adds, alarms | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: posY, posX | Type(s): float | Count: 2
+    Line 31 | Variables: power, speed | Type(s): float | Count: 2
+    Line 32 | Variables: cuts, errors | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: events, limits | Type(s): int | Count: 2
+    Line 30 | Variables: slip, set | Type(s): double | Count: 2
+    Line 31 | Variables: gain, cmd | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: depth, magnitude | Type(s): double | Count: 2
+    Line 30 | Variables: freq, amplitude | Type(s): float | Count: 2
+    Line 32 | Variables: events, alerts | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: leak, valve | Type(s): float | Count: 2
+    Line 32 | Variables: t, alarms | Type(s): unsigned | Count: 2
+    Line 30 | Variables: lock, cabin | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: speed, width | Type(s): float | Count: 2
+    Line 32 | Variables: faults, zones | Type(s): unsigned | Count: 2
+    Line 31 | Variables: bias, rate | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: rate, pitch | Type(s): float | Count: 2
+    Line 31 | Variables: kd, kp | Type(s): double | Count: 2
+    Line 32 | Variables: maxIt, it | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: calibrations, images | Type(s): int | Count: 2
+    Line 31 | Variables: focus, stigY, stigX | Type(s): float | Count: 3
+    Line 30 | Variables: current, voltage | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: pH, temp | Type(s): double | Count: 2
+    Line 32 | Variables: adjustments, samples | Type(s): unsigned | Count: 2
+    Line 31 | Variables: agitation, dissolvedO2 | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: force, vib | Type(s): float | Count: 2
+    Line 31 | Variables: hits, faults | Type(s): unsigned | Count: 2
+    Line 32 | Variables: arc, ice | Type(s): bool | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: weight, flow | Type(s): double | Count: 2
+    Line 30 | Variables: temp, pressure | Type(s): float | Count: 2
+    Line 32 | Variables: shots, flushes | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: ki, kp | Type(s): double | Count: 2
+    Line 32 | Variables: drops, samples | Type(s): int | Count: 2
+    Line 30 | Variables: error, integral | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: bias, step | Type(s): float | Count: 2
+    Line 30 | Variables: east, west | Type(s): unsigned | Count: 2
+    Line 32 | Variables: night, fog | Type(s): bool | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: steps, cycles | Type(s): unsigned | Count: 2
+    Line 31 | Variables: power, efficiency | Type(s): double | Count: 2
+    Line 30 | Variables: current, voltage | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: target, ph | Type(s): double | Count: 2
+    Line 32 | Variables: it, maxIt | Type(s): unsigned | Count: 2
+    Line 31 | Variables: acid, base | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: err, retries | Type(s): int | Count: 2
+    Line 32 | Variables: ok, timeout | Type(s): bool | Count: 2
+    Line 30 | Variables: req, resp | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: alarms, cycles | Type(s): unsigned | Count: 2
+    Line 30 | Variables: flowRate, pressure | Type(s): float | Count: 2
+    Line 31 | Variables: volume, time | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: faults, warns | Type(s): unsigned | Count: 2
+    Line 30 | Variables: pFL, pFR | Type(s): float | Count: 2
+    Line 31 | Variables: pRL, pRR | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: faults, rescales | Type(s): int | Count: 2
+    Line 30 | Variables: nE, nS | Type(s): unsigned | Count: 2
+    Line 31 | Variables: gain, bias | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: payoutRate, jackpot | Type(s): float | Count: 2
+    Line 30 | Variables: bet, credits | Type(s): unsigned | Count: 2
+    Line 32 | Variables: spins, wins | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: temp, target | Type(s): double | Count: 2
+    Line 31 | Variables: bias, gain | Type(s): float | Count: 2
+    Line 32 | Variables: it, alarms | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: outPressure, inPressure | Type(s): double | Count: 2
+    Line 31 | Variables: salinity, flow | Type(s): float | Count: 2
+    Line 32 | Variables: cleanings, hours | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: flow, pressure | Type(s): double | Count: 2
+    Line 32 | Variables: humidOn, heaterOn | Type(s): bool | Count: 2
+    Line 31 | Variables: warnings, alarms | Type(s): long | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: step, eff | Type(s): float | Count: 2
+    Line 30 | Variables: rpm, pitch | Type(s): float | Count: 2
+    Line 32 | Variables: alarms, t | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: rows, cols | Type(s): int | Count: 2
+    Line 30 | Variables: v1, v2 | Type(s): double | Count: 2
+    Line 31 | Variables: kd, ct | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: leak, valve | Type(s): float | Count: 2
+    Line 32 | Variables: ticks, dumps | Type(s): unsigned | Count: 2
+    Line 30 | Variables: alt, target | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: phaseX, phaseY | Type(s): float | Count: 2
+    Line 32 | Variables: pixels, lines | Type(s): int | Count: 2
+    Line 31 | Variables: intensity, wavelength | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: tBus, tCab | Type(s): double | Count: 2
+    Line 32 | Variables: alert, fan | Type(s): bool | Count: 2
+    Line 31 | Variables: rmsA, rmsB | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: bias, gain | Type(s): float | Count: 2
+    Line 30 | Variables: north, east | Type(s): unsigned | Count: 2
+    Line 32 | Variables: holds, cycles | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: fails, steps | Type(s): int | Count: 2
+    Line 31 | Variables: volt, freq | Type(s): float | Count: 2
+    Line 30 | Variables: loads, gens | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: yaw, gain | Type(s): float | Count: 2
+    Line 30 | Variables: fx, fy | Type(s): float | Count: 2
+    Line 32 | Variables: faults, steps | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: pwrB, pwrA | Type(s): double | Count: 2
+    Line 32 | Variables: shed, peak | Type(s): bool | Count: 2
+    Line 30 | Variables: queued, active | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: pumps, heaters | Type(s): unsigned | Count: 2
+    Line 30 | Variables: pH, temp | Type(s): float | Count: 2
+    Line 31 | Variables: alkalinity, salinity | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: kp, ki | Type(s): float | Count: 2
+    Line 30 | Variables: set, rpm | Type(s): double | Count: 2
+    Line 32 | Variables: steps, faults | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: target, pa | Type(s): double | Count: 2
+    Line 32 | Variables: alarms, warns | Type(s): int | Count: 2
+    Line 31 | Variables: leak, flow | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: trim, leak | Type(s): float | Count: 2
+    Line 32 | Variables: resets, alarms | Type(s): int | Count: 2
+    Line 30 | Variables: vac, target | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: leak, k | Type(s): float | Count: 2
+    Line 30 | Variables: flow, set | Type(s): double | Count: 2
+    Line 32 | Variables: trips, warns | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: opens, closes | Type(s): int | Count: 2
+    Line 30 | Variables: lvl, sp | Type(s): double | Count: 2
+    Line 31 | Variables: kp, ki | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: rpm, load | Type(s): float | Count: 2
+    Line 32 | Variables: changes, tools | Type(s): int | Count: 2
+    Line 31 | Variables: depth, feedRate | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: alarms, steps | Type(s): unsigned | Count: 2
+    Line 30 | Variables: out, inflow | Type(s): double | Count: 2
+    Line 31 | Variables: pumpB, pumpA | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: posY, posX | Type(s): float | Count: 2
+    Line 32 | Variables: trips, shots | Type(s): int | Count: 2
+    Line 31 | Variables: intensity, energy | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: p, t | Type(s): float | Count: 2
+    Line 32 | Variables: last, code | Type(s): int | Count: 2
+    Line 31 | Variables: faults, resets | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: reset, tick | Type(s): unsigned | Count: 2
+    Line 32 | Variables: tripped, enabled | Type(s): bool | Count: 2
+    Line 31 | Variables: failCode, lastCode | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: tgt, temp | Type(s): double | Count: 2
+    Line 31 | Variables: pump, valve | Type(s): float | Count: 2
+    Line 32 | Variables: trips, cycles | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: rf, bb | Type(s): double | Count: 2
+    Line 32 | Variables: alarms, sectors | Type(s): unsigned | Count: 2
+    Line 31 | Variables: total, aux | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: nozzle, bed | Type(s): double | Count: 2
+    Line 31 | Variables: ramp, target | Type(s): double | Count: 2
+    Line 32 | Variables: alarms, warns | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: kp, kd | Type(s): float | Count: 2
+    Line 30 | Variables: sway, rate | Type(s): float | Count: 2
+    Line 32 | Variables: it, maxIt | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: damper, fan | Type(s): float | Count: 2
+    Line 30 | Variables: tin, tout | Type(s): double | Count: 2
+    Line 32 | Variables: trips, steps | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: adjustments, days | Type(s): int | Count: 2
+    Line 30 | Variables: setpoint, temp | Type(s): float | Count: 2
+    Line 31 | Variables: alcohol, gravity | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: bags, jam | Type(s): unsigned | Count: 2
+    Line 32 | Variables: divert, halt | Type(s): bool | Count: 2
+    Line 31 | Variables: speed, accel | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: steps, trips | Type(s): unsigned | Count: 2
+    Line 30 | Variables: tgt, depth | Type(s): double | Count: 2
+    Line 31 | Variables: pump, bleed | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: p2, p1 | Type(s): double | Count: 2
+    Line 32 | Variables: alarms, ticks | Type(s): unsigned | Count: 2
+    Line 31 | Variables: rate, gain | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: alarms, ticks | Type(s): unsigned | Count: 2
+    Line 30 | Variables: solar, wind | Type(s): double | Count: 2
+    Line 31 | Variables: battery, diesel | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: k, tension | Type(s): float | Count: 2
+    Line 32 | Variables: trips, cycles | Type(s): int | Count: 2
+    Line 30 | Variables: tide, set | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: faults, beams | Type(s): unsigned | Count: 2
+    Line 30 | Variables: phase, amp | Type(s): float | Count: 2
+    Line 31 | Variables: bw, freq | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: temperature, pressure | Type(s): double | Count: 2
+    Line 31 | Variables: enthalpy, flow | Type(s): float | Count: 2
+    Line 32 | Variables: readings, alarms | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: current, voltage | Type(s): double | Count: 2
+    Line 30 | Variables: gradZ, gradX, gradY | Type(s): float | Count: 3
+    Line 32 | Variables: pulses, faults | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: contrast, brightness | Type(s): float | Count: 2
+    Line 30 | Variables: homeScore, awayScore | Type(s): int | Count: 2
+    Line 32 | Variables: errors, panels | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: glucose, target | Type(s): float | Count: 2
+    Line 32 | Variables: warnings, deliveries | Type(s): int | Count: 2
+    Line 31 | Variables: bolus, basal | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: spikes, n | Type(s): unsigned | Count: 2
+    Line 30 | Variables: ax, ay | Type(s): float | Count: 2
+    Line 31 | Variables: dt, az | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: vy, vx | Type(s): float | Count: 2
+    Line 30 | Variables: y, x | Type(s): float | Count: 2
+    Line 32 | Variables: maxIt, it | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: shares, accepted | Type(s): unsigned | Count: 2
+    Line 31 | Variables: reward, hashrate | Type(s): double | Count: 2
+    Line 32 | Variables: active, workers | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: cutouts, events | Type(s): int | Count: 2
+    Line 31 | Variables: limit, soc | Type(s): double | Count: 2
+    Line 30 | Variables: speed, decel | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: maxIt, it | Type(s): unsigned | Count: 2
+    Line 31 | Variables: temp, amps | Type(s): double | Count: 2
+    Line 30 | Variables: volts, watts | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: wy, wx | Type(s): float | Count: 2
+    Line 31 | Variables: set, bias | Type(s): double | Count: 2
+    Line 32 | Variables: resets, alarms | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: confidence, threshold | Type(s): float | Count: 2
+    Line 32 | Variables: photo, mrz | Type(s): bool | Count: 2
+    Line 31 | Variables: errors, pages | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: games, players | Type(s): int | Count: 2
+    Line 31 | Variables: rate, total | Type(s): float | Count: 2
+    Line 30 | Variables: coins, credits | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: eta, loss | Type(s): float | Count: 2
+    Line 30 | Variables: soc, target | Type(s): double | Count: 2
+    Line 32 | Variables: maxIt, it | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: packets, lost | Type(s): unsigned | Count: 2
+    Line 30 | Variables: temp, altitude | Type(s): double | Count: 2
+    Line 31 | Variables: pressure, humidity | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: right, left | Type(s): bool | Count: 2
+    Line 32 | Variables: retries, trips | Type(s): unsigned | Count: 2
+    Line 31 | Variables: cycles, errors | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: phase, power | Type(s): float | Count: 2
+    Line 30 | Variables: voltage, freq | Type(s): double | Count: 2
+    Line 32 | Variables: cycles, faults | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: room, target | Type(s): float | Count: 2
+    Line 30 | Variables: ki, kd, kp | Type(s): double | Count: 3
+    Line 32 | Variables: heat, cool | Type(s): bool | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: pierces, errors | Type(s): int | Count: 2
+    Line 30 | Variables: height, voltage | Type(s): float | Count: 2
+    Line 31 | Variables: current, speed | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: t, alarms | Type(s): unsigned | Count: 2
+    Line 30 | Variables: co, nox | Type(s): float | Count: 2
+    Line 31 | Variables: fan, damper | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: longitude, latitude | Type(s): float | Count: 2
+    Line 30 | Variables: waveHeight, period | Type(s): double | Count: 2
+    Line 32 | Variables: samples, warnings | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: stars, constellations | Type(s): unsigned | Count: 2
+    Line 31 | Variables: magnitude, color | Type(s): float | Count: 2
+    Line 30 | Variables: ra, dec | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: pumps, valves | Type(s): int | Count: 2
+    Line 31 | Variables: list, trim | Type(s): float | Count: 2
+    Line 30 | Variables: port, starboard | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: thresh, load | Type(s): float | Count: 2
+    Line 31 | Variables: busy, cores | Type(s): unsigned | Count: 2
+    Line 32 | Variables: tasks, queued | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: cycles, batches | Type(s): int | Count: 2
+    Line 30 | Variables: target, temp | Type(s): float | Count: 2
+    Line 31 | Variables: viscosity, crystals | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: corridor, room | Type(s): double | Count: 2
+    Line 31 | Variables: damper, fan | Type(s): float | Count: 2
+    Line 32 | Variables: alarms, t | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: alarms, nozzles | Type(s): unsigned | Count: 2
+    Line 30 | Variables: waterFlow, foamRate | Type(s): float | Count: 2
+    Line 31 | Variables: ratio, pressure | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: v, omega | Type(s): float | Count: 2
+    Line 31 | Variables: mu, slip | Type(s): float | Count: 2
+    Line 32 | Variables: frames, alarms | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: tA, tB | Type(s): double | Count: 2
+    Line 32 | Variables: alerts, open | Type(s): int | Count: 2
+    Line 31 | Variables: drift, slope | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: detections, frames | Type(s): int | Count: 2
+    Line 32 | Variables: armed, alarm | Type(s): bool | Count: 2
+    Line 30 | Variables: hyster, thresh | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: az, el | Type(s): float | Count: 2
+    Line 32 | Variables: faults, moves | Type(s): unsigned | Count: 2
+    Line 31 | Variables: elRate, azRate | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: trips, cycles | Type(s): unsigned | Count: 2
+    Line 30 | Variables: vac, vdc | Type(s): double | Count: 2
+    Line 31 | Variables: ki, kp | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: balls, draws | Type(s): unsigned | Count: 2
+    Line 32 | Variables: selections, matches | Type(s): int | Count: 2
+    Line 31 | Variables: temp, humidity | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: p, limit | Type(s): float | Count: 2
+    Line 32 | Variables: relieve, leak | Type(s): bool | Count: 2
+    Line 31 | Variables: trips, warns | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: density, temperature | Type(s): double | Count: 2
+    Line 31 | Variables: beta, confinement | Type(s): float | Count: 2
+    Line 32 | Variables: disruptions, pulses | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: returnT, supply | Type(s): float | Count: 2
+    Line 31 | Variables: bias, gain | Type(s): float | Count: 2
+    Line 32 | Variables: faults, loops | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: ki, kp | Type(s): float | Count: 2
+    Line 30 | Variables: heading, setpoint | Type(s): double | Count: 2
+    Line 32 | Variables: faults, ticks | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: alarms, trays | Type(s): unsigned | Count: 2
+    Line 31 | Variables: efficiency, throughput | Type(s): double | Count: 2
+    Line 30 | Variables: pressure, temp | Type(s): float | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: flood, blow | Type(s): bool | Count: 2
+    Line 30 | Variables: depth, ballast | Type(s): double | Count: 2
+    Line 32 | Variables: alarms, cycles | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 31 | Variables: rejects, shares | Type(s): unsigned | Count: 2
+    Line 32 | Variables: window, target | Type(s): float | Count: 2
+    Line 30 | Variables: rate, diff | Type(s): double | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: temp, target | Type(s): float | Count: 2
+    Line 31 | Variables: rampRate, holdTime | Type(s): float | Count: 2
+    Line 32 | Variables: segments, alarms | Type(s): int | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 32 | Variables: faults, moves | Type(s): int | Count: 2
+    Line 31 | Variables: bias, load | Type(s): float | Count: 2
+    Line 30 | Variables: plugs, bays | Type(s): unsigned | Count: 2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 30 | Variables: p, tgt | Type(s): double | Count: 2
+    Line 32 | Variables: trips, ticks | Type(s): unsigned | Count: 2
+    Line 31 | Variables: rate, soc | Type(s): float | Count: 2
+
+===================================================================
+
+COMPLIANT FILES CHECK (mainC.cpp):
+Should have 0 violations
+-------------------------------------------------------------------
+  ✓ No violations found - all compliant files are correct
+
+===================================================================
+
+SUMMARY:
+--------
+✓ PASS: All mainC.cpp files are compliant
+✓ mainNC.cpp files contain 299 violations (expected)
+
+===================================================================

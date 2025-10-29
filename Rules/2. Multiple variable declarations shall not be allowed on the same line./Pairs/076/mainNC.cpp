@@ -1,24 +1,75 @@
-// Context: Marine buoy wave spectral estimator
+// Context: Container ship ballast controller
 
 // ------ Non-Compliant Program (076_nc.cpp)
-// Groups multiple declarators per declaration; violates 8-0-1.
+// Context: Container ship ballast controller
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace buoy_076 {
-    struct Acc { float ax; float ay; float az; }; // OK
-    float avg(const std::vector<float>& v){ return v.empty()?0.0F:std::accumulate(v.begin(),v.end(),0.0F)/static_cast<float>(v.size()); }
-    void estimate(){
-        float ax=0.0F, ay=0.0F;                 // NC
-        float az=0.0F, dt=0.05F;                // NC
-        unsigned n=0U, spikes=0U;               // NC
-        std::vector<float> s{0.1F,-0.1F,0.2F,-0.2F,0.3F};
-        for (std::size_t i=0;i<s.size();++i){
-            ax += s[i]; ay -= s[i]*0.8F; az += s[i]*0.5F; n++;
-            if (std::fabs(s[i])>0.25F){ spikes++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" ax="<<ax<<" ay="<<ay<<" az="<<az<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_076 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double port=500.0, starboard=500.0;        // NC
+        float trim=0.0F, list=0.0F;        // NC
+        int pumps=4, valves=8;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"n="<<n<<" spikes="<<spikes<<" mean="<<avg(s)<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ buoy_076::estimate(); return 0; }
+
+int main() {
+    ctrl_076::execute();
+    return 0;
+}

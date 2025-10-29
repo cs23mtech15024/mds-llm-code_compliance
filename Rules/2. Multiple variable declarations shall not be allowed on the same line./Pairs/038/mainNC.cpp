@@ -1,23 +1,80 @@
-// Context: Autonomous mower boundary tracker
+// Context: Solar tracker dual-axis alignment
 
 // ------ Non-Compliant Program (038_nc.cpp)
-// Uses multiple declarators in one declaration (violates 8-0-1).
+// Context: Solar tracker dual-axis alignment
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <cmath>
-namespace mow_038 {
-    struct Pose { float n; float e; }; // OK
-    static float dist2(float a,float b){ return a*a+b*b; }
-    void track(){
-        float north=0.0F, east=0.0F;           // NC
-        float speed=0.5F, turn=0.0F;           // NC
-        unsigned hits=0U, warns=0U;            // NC
-        for (unsigned i=0U;i<14U;++i){
-            north += 0.2F; east += 0.1F; turn = (i%2U)?0.1F:-0.1F;
-            if (dist2(north,east)>25.0F){ warns++; }
-            if ((i%3U)==0U){ hits++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" n="<<north<<" e="<<east<<" t="<<turn<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_038 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float az=0.0F, el=0.0F;             // NC
+        float azRate=0.0F, elRate=0.0F;             // NC
+        unsigned faults=0U, moves=0U;             // NC
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"hits="<<hits<<" warns="<<warns<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ mow_038::track(); return 0; }
+
+int main() {
+    mon_038::monitor();
+    return 0;
+}

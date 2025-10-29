@@ -1,11 +1,11 @@
-// Context: Power substation thermal monitor
+// Context: Industrial freezer temperature guard
 
 #include <iostream>
 int main(){
-    double tCab=36.5, tBus=38.0;      // NC
-    float rmsA=100.0F, rmsB=98.5F;    // NC
-    bool fan=false, alert=false;      // NC
-    alert = (tBus>40.0);
-    std::cout<<tCab<<","<<tBus<<","<<rmsA<<","<<rmsB<<","<<fan<<","<<alert<<"\n";
+    double tA=-18.0, tB=-19.5;       // NC
+    float drift=0.0F, slope=0.0F;    // NC
+    int open=0, alerts=0;            // NC
+    drift += 0.2F; slope = -0.05F;
+    std::cout<<tA<<","<<tB<<","<<drift<<","<<slope<<","<<open<<","<<alerts<<"\n";
     return 0;
 }

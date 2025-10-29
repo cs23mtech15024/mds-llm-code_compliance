@@ -1,14 +1,14 @@
-// Context: Tidal energy converter inverter control
+// Context: Volcano monitoring seismic trigger filter
 
 #include <iostream>
 int main(){
-    double vdc=700.0;     // C
-    double vac=0.0;       // C
-    float kp=0.8F;        // C
-    float ki=0.03F;       // C
-    unsigned cycles=0U;   // C
-    unsigned trips=0U;    // C
-    vac += 5.0; vdc -= 2.0;
-    std::cout<<vdc<<","<<vac<<","<<kp<<","<<ki<<","<<cycles<<","<<trips<<"\n";
+    double a=0.0;         // C
+    double b=0.0;         // C
+    float thr=0.7F;       // C
+    float env=0.0F;       // C
+    int hits=0;           // C
+    int alerts=0;         // C
+    a += 0.2; b += 0.3; env += 0.05F; if(a+b>1.0){ hits++; }
+    std::cout<<a<<","<<b<<","<<thr<<","<<env<<","<<hits<<","<<alerts<<"\n";
     return 0;
 }

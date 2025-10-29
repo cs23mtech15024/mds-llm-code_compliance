@@ -1,29 +1,78 @@
-// Context: Pharmaceutical reactor PH controller
+// Context: Planetary rover slip detection module
 
 // ------ Compliant Program (033_c.cpp)
-// Each declaration has one declarator; logic unchanged.
+// Context: Planetary rover slip detection module
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace ph_033 {
-    struct Titrant { double acid; double base; }; // OK
-    static double mean(const std::vector<double>& v){ return v.empty()?0.0:std::accumulate(v.begin(),v.end(),0.0)/static_cast<double>(v.size()); }
-    void control(){
-        double ph=7.0;                           // C
-        double target=7.2;                       // C
-        double acid=0.0;                         // C
-        double base=0.0;                         // C
-        unsigned it=0U;                          // C
-        unsigned maxIt=8U;                       // C
-        Titrant tr{0.0,0.0};
-        std::vector<double> phlog;
-        for (; it<maxIt; ++it){
-            double err = target - ph;
-            acid += (err<0.0)?-err*0.1:0.0; base += (err>0.0)?err*0.1:0.0;
-            ph += (base - acid)*0.02; phlog.push_back(ph);
-            if ((it%2U)==0U){ std::cout<<"i="<<it<<" ph="<<ph<<" err="<<err<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_033 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float omega=5.0F;                       // C
+        float v=0.5F;                       // C
+        float mu=0.6F;                       // C
+        float slip=0.0F;                       // C
+        unsigned frames=0U;                       // C
+        unsigned alarms=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"ph_avg="<<mean(phlog)<<" acid="<<acid<<" base="<<base<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ ph_033::control(); return 0; }
+
+int main() {
+    ctrl_033::execute();
+    return 0;
+}

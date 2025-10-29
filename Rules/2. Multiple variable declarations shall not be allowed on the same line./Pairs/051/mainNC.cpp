@@ -1,31 +1,75 @@
-// Context: Smart hydroponics nutrient dosing mixer
+// Context: Urban traffic adaptive signal phasing
 
 // ------ Non-Compliant Program (051_nc.cpp)
-// Rule: MISRA C++ 8-0-1 — one declarator per declaration required.
-// This file intentionally groups declarators (// NC) to demonstrate violations.
+// Context: Urban traffic adaptive signal phasing
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace hydro_051 {
-    struct Mix { double ec; double valve; }; // OK: distinct members
-    static double clamp(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    double mean(const std::vector<double>& v){ return v.empty()?0.0:std::accumulate(v.begin(),v.end(),0.0)/static_cast<double>(v.size()); }
-    void run(){
-        double ec=1.5, target=1.8;              // NC
-        float aDose=0.0F, bDose=0.0F;           // NC
-        unsigned cycles=0U, alarms=0U;          // NC
-        Mix m{ec,0.0};
-        std::vector<double> log;
-        for (unsigned i=0U;i<12U;++i){
-            double err = target - m.ec;
-            float uA = static_cast<float>(clamp(err*0.6, -0.1, 0.1));
-            float uB = static_cast<float>(clamp(err*0.3, -0.1, 0.1));
-            aDose += uA; bDose += uB; m.ec = clamp(m.ec + uA + uB, 0.8, 2.2);
-            log.push_back(m.ec); cycles++;
-            if (m.ec<1.0 || m.ec>2.1){ alarms++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" ec="<<m.ec<<" a="<<aDose<<" b="<<bDose<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_051 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        unsigned north=12U, east=8U;        // NC
+        float bias=0.4F, gain=0.2F;        // NC
+        int cycles=0, holds=0;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"cycles="<<cycles<<" alarms="<<alarms<<" ec_mean="<<mean(log)<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ hydro_051::run(); return 0; }
+
+int main() {
+    ctrl_051::execute();
+    return 0;
+}

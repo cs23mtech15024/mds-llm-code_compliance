@@ -1,11 +1,11 @@
-// Context: Swarm drone collision avoidance
+// Context: Precision agriculture variable-rate sprayer
 
 #include <iostream>
 int main(){
-    float x=0.0F, y=0.0F;           // NC
-    float vx=0.1F, vy=-0.1F;        // NC
-    unsigned peers=5U, alerts=0U;   // NC
-    x+=vx; y+=vy;
-    std::cout<<x<<","<<y<<","<<vx<<","<<vy<<","<<peers<<","<<alerts<<"\n";
+    float speed=2.5F, width=12.0F;  // NC
+    float rate=0.0F, bias=0.0F;     // NC
+    unsigned zones=8U, faults=0U;   // NC
+    rate = 0.3F; zones += 2U;
+    std::cout<<speed<<","<<width<<","<<rate<<","<<bias<<","<<zones<<","<<faults<<"\n";
     return 0;
 }

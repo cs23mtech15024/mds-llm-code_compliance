@@ -1,11 +1,11 @@
-// Context: Smart dam spillway gate scheduler
+// Context: Weather balloon telemetry decoder
 
 #include <iostream>
 int main(){
-    double level=7.2, set=6.8;       // NC
-    float open=0.0F, rate=0.0F;      // NC
-    int alerts=0, cycles=0;          // NC
-    open += 0.1F; level -= 0.2;
-    std::cout<<level<<","<<set<<","<<open<<","<<rate<<","<<alerts<<","<<cycles<<"\n";
+    double altitude=0.0, temp=0.0;        // NC
+    float humidity=0.0F, pressure=1013.0F; // NC
+    unsigned packets=0U, lost=0U;         // NC
+    altitude += 10.0; packets++;
+    std::cout<<altitude<<","<<temp<<","<<humidity<<","<<pressure<<","<<packets<<","<<lost<<"\n";
     return 0;
 }

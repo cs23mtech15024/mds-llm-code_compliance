@@ -1,0 +1,1080 @@
+
+======================================================================
+MISRA C++ HEXADECIMAL CONSTANTS RULE CHECKER
+======================================================================
+Rule: Hexadecimal constants shall use uppercase letters (A-F)
+File Type: main (mainNC.cpp, mainC.cpp)
+Generated: 2025-10-29T15:44:55.746667
+
+===================================================================
+
+RULE DESCRIPTION:
+-----------------
+Hexadecimal constants should use uppercase letters (A-F), not lowercase (a-f).
+
+Examples:
+  ✓ Compliant:     0xFF, 0xABCD, 0x1234
+  ✗ Non-compliant: 0xff, 0xabcd, 0x1a2b, 0xDeAdBeEf (mixed case)
+
+===================================================================
+
+STATISTICS:
+-----------
+Total hexadecimal literals found: 1872
+Total violations found: 734
+Violations in mainNC.cpp files: 734
+Violations in mainC.cpp files: 0
+
+===================================================================
+
+NON-COMPLIANT FILES (mainNC.cpp):
+Expected violations - these files should contain lowercase hex
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 17 | 0x000000ff
+    Line 18 | 0x1f
+    Line 65 | 0xabcdef12
+    Line 66 | 0xfedcba98
+    Line 66 | 0xdeadbeef
+    Line 66 | 0xcafebabe
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 17 | 0x000000ff
+    Line 18 | 0x1f
+    Line 65 | 0xabcdef12
+    Line 66 | 0xfedcba98
+    Line 66 | 0xdeadbeef
+    Line 66 | 0xcafebabe
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 23 | 0xaf
+    Line 24 | 0x3b
+    Line 25 | 0xff
+    Line 26 | 0x0f
+    Line 27 | 0xaa
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 50 | 0xff
+    Line 17 | 0xa5
+    Line 18 | 0x1f
+    Line 19 | 0xbe
+    Line 20 | 0xcd
+    Line 21 | 0xff00
+    Line 22 | 0x00ff
+    Line 69 | 0x0a
+    Line 70 | 0x3f
+    Line 71 | 0xef
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 32 | 0x0a
+    Line 32 | 0x0b
+    Line 32 | 0x0c
+    Line 14 | 0xabcd
+    Line 15 | 0xef12
+    Line 16 | 0xff
+    Line 17 | 0x0f
+
+===================================================================
+
+COMPLIANT FILES CHECK (mainC.cpp):
+Should have 0 violations
+-------------------------------------------------------------------
+  ✓ No violations found - all compliant files are correct
+
+===================================================================
+
+SUMMARY:
+--------
+✓ PASS: All mainC.cpp files are compliant
+✓ mainNC.cpp files contain 734 violations (expected)
+
+===================================================================

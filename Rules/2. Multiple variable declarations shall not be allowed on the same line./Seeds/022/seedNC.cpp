@@ -1,11 +1,11 @@
-// Context: Smart meter demand response
+// Context: Pharmaceutical reactor PH controller
 
 #include <iostream>
 int main(){
-    double kWh=0.0, price=6.2;    // NC
-    bool peak=false, shed=false;  // NC
-    int msgs=0, alerts=0;         // NC
-    kWh += 1.5; peak = (price>7.0);
-    std::cout<<kWh<<","<<price<<","<<peak<<","<<shed<<","<<msgs<<","<<alerts<<"\n";
+    double ph=7.0, target=7.2;       // NC
+    double acid=0.0, base=0.0;       // NC
+    unsigned it=0U, maxIt=4U;        // NC
+    ph += 0.05; base += 0.02;
+    std::cout<<ph<<","<<target<<","<<acid<<","<<base<<","<<it<<","<<maxIt<<"\n";
     return 0;
 }

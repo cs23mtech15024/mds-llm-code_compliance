@@ -1,11 +1,11 @@
-// Context: Urban flood pump station capacity balancer
+// Context: Oil refinery cracking tower monitor
 
 #include <iostream>
 int main(){
-    double inflow=3.0, out=2.5;     // NC
-    float pumpA=0.0F, pumpB=0.0F;   // NC
-    unsigned steps=0U, alarms=0U;   // NC
-    pumpA += 0.2F; out += 0.1; steps++;
-    std::cout<<inflow<<","<<out<<","<<pumpA<<","<<pumpB<<","<<steps<<","<<alarms<<"\n";
+    float temp=450.0F, pressure=20.0F;    // NC
+    double throughput=0.0, efficiency=0.0; // NC
+    unsigned trays=40U, alarms=0U;        // NC
+    temp += 1.0F; trays++;
+    std::cout<<temp<<","<<pressure<<","<<throughput<<","<<efficiency<<","<<trays<<","<<alarms<<"\n";
     return 0;
 }

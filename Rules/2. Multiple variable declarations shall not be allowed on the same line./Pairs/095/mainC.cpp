@@ -1,31 +1,78 @@
-// Context: Hydroelectric turbine blade pitch optimizer
+// Context: Lottery ball randomizer validator
 
 // ------ Compliant Program (095_c.cpp)
-// Compliant: one declarator per declaration throughout.
+// Context: Lottery ball randomizer validator
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-namespace hydro_095 {
-    struct Turb { float pitch; float rpm; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void optimize(){
-        float pitch=0.5F;                          // C
-        float rpm=300.0F;                          // C
-        float step=0.0F;                           // C
-        float eff=0.0F;                            // C
-        unsigned t=0U;                             // C
-        unsigned alarms=0U;                        // C
-        std::vector<float> load{0.3F,0.6F,0.1F,-0.2F,0.4F};
-        for (std::size_t i=0;i<load.size();++i){
-            step = 0.02F + 0.01F*load[i];
-            pitch = clampf(pitch + step, 0.2F, 0.9F);
-            rpm = clampf(rpm + 2.0F + 5.0F*load[i], 250.0F, 360.0F);
-            eff = clampf(0.8F + 0.1F*load[i] - std::fabs(0.65F-pitch), 0.5F, 0.95F);
-            if (eff<0.6F){ alarms++; }
-            t++;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" pitch="<<pitch<<" rpm="<<rpm<<" eff="<<eff<<"\n"; }
+
+namespace ctrl_095 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        unsigned draws=0U;                       // C
+        unsigned balls=49U;                       // C
+        float temp=20.0F;                       // C
+        float humidity=50.0F;                       // C
+        int selections=6;                       // C
+        int matches=0;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"t="<<t<<" alarms="<<alarms<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ hydro_095::optimize(); return 0; }
+
+int main() {
+    ctrl_095::execute();
+    return 0;
+}

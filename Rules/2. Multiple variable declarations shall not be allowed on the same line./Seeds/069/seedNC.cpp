@@ -1,11 +1,11 @@
-// Context: Smart grid frequency droop emulator
+// Context: Seismograph waveform analyzer
 
 #include <iostream>
 int main(){
-    double f=50.0, set=50.0;         // NC
-    float droop=0.05F, p=0.0F;       // NC
-    int steps=0, trips=0;            // NC
-    f -= 0.2; p += 0.1F;
-    std::cout<<f<<","<<set<<","<<droop<<","<<p<<","<<steps<<","<<trips<<"\n";
+    float amplitude=0.0F, freq=0.0F;  // NC
+    double magnitude=0.0, depth=0.0;  // NC
+    int events=0, alerts=0;           // NC
+    amplitude += 0.5F; events++;
+    std::cout<<amplitude<<","<<freq<<","<<magnitude<<","<<depth<<","<<events<<","<<alerts<<"\n";
     return 0;
 }

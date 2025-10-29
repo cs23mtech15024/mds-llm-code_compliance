@@ -1,11 +1,11 @@
-// Context: Pipeline pressure relief supervisor
+// Context: Data center chilled-water valve optimizer
 
 #include <iostream>
 int main(){
-    float p=55.0F, limit=60.0F;      // NC
-    int warns=0, trips=0;            // NC
-    bool relieve=false, leak=false;  // NC
-    relieve = (p>limit);
-    std::cout<<p<<","<<limit<<","<<warns<<","<<trips<<","<<relieve<<","<<leak<<"\n";
+    float supply=7.0F, returnT=12.0F; // NC
+    float gain=1.0F, bias=0.0F;       // NC
+    unsigned loops=0U, faults=0U;     // NC
+    returnT += 0.3F; bias += 0.05F;
+    std::cout<<supply<<","<<returnT<<","<<gain<<","<<bias<<","<<loops<<","<<faults<<"\n";
     return 0;
 }

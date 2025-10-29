@@ -1,11 +1,11 @@
-// Context: Autonomous mower boundary tracker
+// Context: Solar tracker dual-axis alignment
 
 #include <iostream>
 int main(){
-    float north=0.0F, east=0.0F;     // NC
-    float speed=0.5F, turn=0.0F;     // NC
-    unsigned hits=0U, warns=0U;      // NC
-    north += 0.2F; east += 0.1F;
-    std::cout<<north<<","<<east<<","<<speed<<","<<turn<<","<<hits<<","<<warns<<"\n";
+    float az=0.0F, el=0.0F;         // NC
+    float azRate=0.0F, elRate=0.0F; // NC
+    unsigned faults=0U, moves=0U;   // NC
+    az+=0.2F; el+=0.1F; moves++;
+    std::cout<<az<<","<<el<<","<<azRate<<","<<elRate<<","<<faults<<","<<moves<<"\n";
     return 0;
 }

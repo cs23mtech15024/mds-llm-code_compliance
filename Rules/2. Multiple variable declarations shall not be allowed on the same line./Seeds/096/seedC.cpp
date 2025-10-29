@@ -1,14 +1,14 @@
-// Context: Chemical plant pH neutralization tank controller
+// Context: Chocolate tempering machine controller
 
 #include <iostream>
 int main(){
-    double ph=6.2;       // C
-    double tgt=7.0;      // C
-    float acid=0.0F;     // C
-    float base=0.0F;     // C
-    int adds=0;          // C
-    int alarms=0;        // C
-    base += 0.1F; ph += 0.2;
-    std::cout<<ph<<","<<tgt<<","<<acid<<","<<base<<","<<adds<<","<<alarms<<"\n";
+    float temp=31.5F;          // C
+    float target=32.0F;        // C
+    double viscosity=0.0;      // C
+    double crystals=0.0;       // C
+    int cycles=0;              // C
+    int batches=0;             // C
+    temp += 0.1F; cycles++;
+    std::cout<<temp<<","<<target<<","<<viscosity<<","<<crystals<<","<<cycles<<","<<batches<<"\n";
     return 0;
 }

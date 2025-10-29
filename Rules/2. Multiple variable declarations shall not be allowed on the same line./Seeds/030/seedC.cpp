@@ -1,14 +1,14 @@
-// Context: Mining haul truck tire pressure monitor
+// Context: High-speed rail pantograph contact monitor
 
 #include <iostream>
 int main(){
-    float pFL=95.0F;       // C
-    float pFR=96.0F;       // C
-    float pRL=100.0F;      // C
-    float pRR=99.0F;       // C
-    unsigned faults=0U;    // C
-    unsigned warns=0U;     // C
-    pFR -= 1.0F; pRR -= 2.0F;
-    std::cout<<pFL<<","<<pFR<<","<<pRL<<","<<pRR<<","<<faults<<","<<warns<<"\n";
+    float force=85.0F;    // C
+    float vib=0.0F;       // C
+    unsigned hits=0U;     // C
+    unsigned faults=0U;   // C
+    bool ice=false;       // C
+    bool arc=false;       // C
+    vib += 0.2F; hits+=1U;
+    std::cout<<force<<","<<vib<<","<<hits<<","<<faults<<","<<ice<<","<<arc<<"\n";
     return 0;
 }

@@ -1,14 +1,14 @@
-// Context: Airport baggage carousel jam detector
+// Context: Passport scanner OCR validator
 
 #include <iostream>
 int main(){
-    unsigned sensors=4U;  // C
-    unsigned trips=0U;    // C
-    float speed=0.8F;     // C
-    float torque=0.0F;    // C
-    int jams=0;           // C
-    int clears=0;         // C
-    torque += 0.3F; if(torque>1.0F){ ++jams; }
-    std::cout<<sensors<<","<<trips<<","<<speed<<","<<torque<<","<<jams<<","<<clears<<"\n";
+    float confidence=0.95F;    // C
+    float threshold=0.9F;      // C
+    int pages=32;              // C
+    int errors=0;              // C
+    bool mrz=true;             // C
+    bool photo=true;           // C
+    confidence += 0.01F; pages++;
+    std::cout<<confidence<<","<<threshold<<","<<pages<<","<<errors<<","<<mrz<<","<<photo<<"\n";
     return 0;
 }

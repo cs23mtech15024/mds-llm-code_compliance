@@ -1,27 +1,75 @@
-// Context: Smart building elevator load leveler
+// Context: Lunar habitat airlock pressure equalizer
 
 // ------ Non-Compliant Program (044_nc.cpp)
-// 8-0-1 violations appear where multiple declarators share a declaration.
+// Context: Lunar habitat airlock pressure equalizer
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <deque>
-#include <algorithm>
-namespace lift_044 {
-    struct Car { int load; int limit; }; // OK
-    static int clampi(int v,int lo,int hi){ return std::max(lo,std::min(hi,v)); }
-    void level(){
-        int load=0, limit=1200;                // NC
-        float bias=0.0F, rate=0.0F;            // NC
-        bool slow=false, stop=false;           // NC
-        Car c{load,limit};
-        std::deque<int> deltas{200,150,-50,300,-400,100};
-        for (std::size_t i=0;i<deltas.size();++i){
-            c.load = clampi(c.load + deltas[i], 0, c.limit);
-            rate += (deltas[i]>0?0.05F:-0.03F); bias += 0.01F;
-            if (c.load>c.limit-50){ slow=true; }
-            if (c.load==c.limit){ stop=true; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" load="<<c.load<<" rate="<<rate<<" slow="<<slow<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_044 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double cabin=55.0, lock=10.0;        // NC
+        float valve=0.0F, leak=0.0F;        // NC
+        unsigned t=0U, alarms=0U;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"stop="<<stop<<" bias="<<bias<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ lift_044::level(); return 0; }
+
+int main() {
+    ctrl_044::execute();
+    return 0;
+}

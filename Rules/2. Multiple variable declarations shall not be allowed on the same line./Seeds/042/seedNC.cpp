@@ -1,11 +1,11 @@
-// Context: Space telescope reaction wheel balancer
+// Context: Quantum computer cryostat temperature stabilizer
 
 #include <iostream>
 int main(){
-    float wx=0.0F, wy=0.0F;         // NC
-    double bias=0.0, set=0.02;      // NC
-    int alarms=0, resets=0;         // NC
-    wx+=0.01F; set+=0.001;
-    std::cout<<wx<<","<<wy<<","<<bias<<","<<set<<","<<alarms<<","<<resets<<"\n";
+    double temp=0.015, target=0.010;  // NC
+    float gain=0.5F, bias=0.0F;       // NC
+    unsigned it=0U, alarms=0U;        // NC
+    bias += 0.01F; temp -= 0.002;
+    std::cout<<temp<<","<<target<<","<<gain<<","<<bias<<","<<it<<","<<alarms<<"\n";
     return 0;
 }

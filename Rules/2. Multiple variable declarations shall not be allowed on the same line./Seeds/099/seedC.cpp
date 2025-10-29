@@ -1,14 +1,14 @@
-// Context: Autonomous rail yard switch matrix arbiter
+// Context: Piano tuner frequency analyzer
 
 #include <iostream>
 int main(){
-    unsigned tracks=7U;   // C
-    unsigned routes=3U;   // C
-    float bias=0.0F;      // C
-    float gain=0.6F;      // C
-    int moves=0;          // C
-    int conflicts=0;      // C
-    bias += 0.2F; routes += 1U;
-    std::cout<<tracks<<","<<routes<<","<<bias<<","<<gain<<","<<moves<<","<<conflicts<<"\n";
+    double freq=440.0;         // C
+    double detune=0.0;         // C
+    float amplitude=1.0F;      // C
+    float phase=0.0F;          // C
+    int key=49;                // C
+    int octave=4;              // C
+    freq += 0.1; key++;
+    std::cout<<freq<<","<<detune<<","<<amplitude<<","<<phase<<","<<key<<","<<octave<<"\n";
     return 0;
 }

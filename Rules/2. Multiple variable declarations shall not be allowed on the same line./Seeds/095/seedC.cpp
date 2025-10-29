@@ -1,14 +1,14 @@
-// Context: Hydroelectric turbine blade pitch optimizer
+// Context: Lottery ball randomizer validator
 
 #include <iostream>
 int main(){
-    float pitch=0.5F;     // C
-    float rpm=300.0F;     // C
-    float step=0.0F;      // C
-    float eff=0.0F;       // C
-    unsigned t=0U;        // C
-    unsigned alarms=0U;   // C
-    step = 0.02F; pitch += step; rpm += 2.0F;
-    std::cout<<pitch<<","<<rpm<<","<<step<<","<<eff<<","<<t<<","<<alarms<<"\n";
+    unsigned draws=0U;         // C
+    unsigned balls=49U;        // C
+    float temp=20.0F;          // C
+    float humidity=50.0F;      // C
+    int selections=6;          // C
+    int matches=0;             // C
+    draws++; balls--;
+    std::cout<<draws<<","<<balls<<","<<temp<<","<<humidity<<","<<selections<<","<<matches<<"\n";
     return 0;
 }

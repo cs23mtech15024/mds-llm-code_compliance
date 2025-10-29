@@ -1,0 +1,41 @@
+
+MISRA C++ Rule: Hexadecimal Constants Shall Use Uppercase Letters
+===================================================================
+
+RULE DESCRIPTION:
+Hexadecimal constants should use uppercase letters (A-F), not lowercase (a-f).
+
+Examples:
+  ✓ Compliant:     0xFF, 0xABCD, 0x1234
+  ✗ Non-compliant: 0xff, 0xabcd, 0x1a2b, 0xDeAdBeEf (mixed case)
+
+===================================================================
+
+STATISTICS:
+-----------
+Total hexadecimal literals found: 1880
+Total violations found: 738
+Violations in seedNC.cpp files: 0
+Violations in seedC.cpp files: 0
+
+===================================================================
+
+NON-COMPLIANT FILES (seedNC.cpp):
+Expected violations - these files should contain lowercase hex
+
+
+===================================================================
+
+COMPLIANT FILES CHECK (seedC.cpp):
+Should have 0 violations
+-------------------------------------------------------------------
+None (✓ All compliant files are correct)
+
+===================================================================
+
+SUMMARY:
+--------
+✓ PASS: All seedC.cpp files are compliant
+⚠ WARNING: No violations found in seedNC.cpp files
+
+===================================================================

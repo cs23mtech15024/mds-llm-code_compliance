@@ -1,14 +1,14 @@
-// Context: Autonomous warehouse shuttle traffic coordinator
+// Context: Desalination plant membrane pressure controller
 
 #include <iostream>
 int main(){
-    unsigned lanes=4U;      // C
-    unsigned docks=6U;      // C
-    float bias=0.0F;        // C
-    float gain=0.5F;        // C
-    int reroutes=0;         // C
-    int stalls=0;           // C
-    bias += 0.1F; lanes += 1U;
-    std::cout<<lanes<<","<<docks<<","<<bias<<","<<gain<<","<<reroutes<<","<<stalls<<"\n";
+    double inPressure=5.5;  // C
+    double outPressure=1.0; // C
+    float flow=500.0F;      // C
+    float salinity=35.0F;   // C
+    unsigned hours=0U;      // C
+    unsigned cleanings=0U;  // C
+    flow += 1.0F; hours++;
+    std::cout<<inPressure<<","<<outPressure<<","<<flow<<","<<salinity<<","<<hours<<","<<cleanings<<"\n";
     return 0;
 }

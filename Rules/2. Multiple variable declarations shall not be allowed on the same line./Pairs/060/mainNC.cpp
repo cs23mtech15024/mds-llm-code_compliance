@@ -1,27 +1,75 @@
-// Context: High-altitude balloon ballast vent control
+// Context: 5G beamforming antenna array phase controller
 
 // ------ Non-Compliant Program (060_nc.cpp)
-// Groups declarators; violates MISRA C++ 8-0-1.
+// Context: 5G beamforming antenna array phase controller
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <algorithm>
-namespace hab_060 {
-    struct Env { double alt; double tgt; }; // OK
-    static double clampd(double v,double lo,double hi){ return std::max(lo,std::min(hi,v)); }
-    void ascend(){
-        double alt=10000.0, target=12000.0;    // NC
-        float valve=0.0F, leak=0.0F;           // NC
-        unsigned ticks=0U, dumps=0U;           // NC
-        Env e{alt,target};
-        for (unsigned k=0U;k<14U;++k){
-            double eAlt = e.tgt - e.alt;
-            valve = static_cast<float>(clampd(valve + eAlt*0.0005, 0.0, 1.0));
-            e.alt = clampd(e.alt + 50.0 + static_cast<double>(valve)*30.0 - static_cast<double>(leak)*10.0, 0.0, 30000.0);
-            if (eAlt<100.0 && valve>0.8F){ dumps++; valve=0.2F; }
-            ticks++;
-            if ((k%2U)==0U){ std::cout<<"k="<<k<<" alt="<<e.alt<<" v="<<valve<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_060 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float phase=0.0F, amp=1.0F;        // NC
+        double freq=28.0, bw=100.0;        // NC
+        unsigned beams=4U, faults=0U;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"ticks="<<ticks<<" dumps="<<dumps<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ hab_060::ascend(); return 0; }
+
+int main() {
+    ctrl_060::execute();
+    return 0;
+}

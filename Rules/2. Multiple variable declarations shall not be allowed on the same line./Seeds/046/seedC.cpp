@@ -1,14 +1,14 @@
-// Context: Microgrid state-of-charge estimator
+// Context: Marine buoy wave spectral estimator
 
 #include <iostream>
 int main(){
-    double soc=0.55;      // C
-    double target=0.60;   // C
-    float eta=0.95F;      // C
-    float loss=0.0F;      // C
-    unsigned it=0U;       // C
-    unsigned maxIt=4U;    // C
-    soc += 0.01; loss += 0.001F;
-    std::cout<<soc<<","<<target<<","<<eta<<","<<loss<<","<<it<<","<<maxIt<<"\n";
+    float ax=0.0F;        // C
+    float ay=0.0F;        // C
+    float az=0.0F;        // C
+    float dt=0.05F;       // C
+    unsigned n=0U;        // C
+    unsigned spikes=0U;   // C
+    ax += 0.1F; ay -= 0.1F;
+    std::cout<<ax<<","<<ay<<","<<az<<","<<dt<<","<<n<<","<<spikes<<"\n";
     return 0;
 }

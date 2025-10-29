@@ -1,14 +1,14 @@
-// Context: UAV camera gimbal stabilizer
+// Context: Airport baggage sorter diverter
 
 #include <iostream>
 int main(){
-    float roll=0.0F;        // C
-    float pitch=0.0F;       // C
-    float yaw=0.0F;         // C
-    float drift=0.0F;       // C
-    unsigned frames=0U;     // C
-    unsigned drops=0U;      // C
-    roll+=0.01F; yaw-=0.01F;
-    std::cout<<roll<<","<<pitch<<","<<yaw<<","<<drift<<","<<frames<<","<<drops<<"\n";
+    unsigned bags=0U;     // C
+    unsigned jam=0U;      // C
+    float speed=1.0F;     // C
+    float accel=0.0F;     // C
+    bool divert=false;    // C
+    bool halt=false;      // C
+    bags+=3U; accel=0.1F;
+    std::cout<<bags<<","<<jam<<","<<speed<<","<<accel<<","<<divert<<","<<halt<<"\n";
     return 0;
 }

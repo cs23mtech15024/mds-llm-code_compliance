@@ -1,14 +1,14 @@
-// Context: Mountain tunnel ventilation controller
+// Context: Geothermal well pressure monitor
 
 #include <iostream>
 int main(){
-    float co=3.0F;        // C
-    float nox=0.5F;       // C
-    float fan=0.0F;       // C
-    float damper=0.0F;    // C
-    unsigned t=0U;        // C
-    unsigned alarms=0U;   // C
-    fan += 0.2F; damper += 0.1F;
-    std::cout<<co<<","<<nox<<","<<fan<<","<<damper<<","<<t<<","<<alarms<<"\n";
+    double pressure=250.0;     // C
+    double temperature=180.0;  // C
+    float flow=50.0F;          // C
+    float enthalpy=0.0F;       // C
+    int readings=0;            // C
+    int alarms=0;              // C
+    pressure += 0.5; readings++;
+    std::cout<<pressure<<","<<temperature<<","<<flow<<","<<enthalpy<<","<<readings<<","<<alarms<<"\n";
     return 0;
 }

@@ -1,11 +1,11 @@
-// Context: Precision agriculture variable-rate sprayer
+// Context: CNC mill spindle speed controller
 
 #include <iostream>
 int main(){
-    float speed=2.5F, width=12.0F;  // NC
-    float rate=0.0F, bias=0.0F;     // NC
-    unsigned zones=8U, faults=0U;   // NC
-    rate = 0.3F; zones += 2U;
-    std::cout<<speed<<","<<width<<","<<rate<<","<<bias<<","<<zones<<","<<faults<<"\n";
+    float rpm=1000.0F, load=0.0F;         // NC
+    float feedRate=100.0F, depth=2.0F;    // NC
+    int tools=8, changes=0;               // NC
+    rpm += 10.0F; changes++;
+    std::cout<<rpm<<","<<load<<","<<feedRate<<","<<depth<<","<<tools<<","<<changes<<"\n";
     return 0;
 }

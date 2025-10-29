@@ -1,28 +1,78 @@
-// Context: Precision agriculture variable-rate sprayer
+// Context: CNC mill spindle speed controller
 
 // ------ Compliant Program (087_c.cpp)
-// Compliant: single-declarator declarations throughout.
+// Context: CNC mill spindle speed controller
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace spray_087 {
-    struct Pass { float rate; float bias; }; // OK
-    float mean(const std::vector<float>& v){ return v.empty()?0.0F:std::accumulate(v.begin(),v.end(),0.0F)/static_cast<float>(v.size()); }
-    void apply(){
-        float speed=2.5F;                        // C
-        float width=12.0F;                       // C
-        float rate=0.0F;                          // C
-        float bias=0.0F;                          // C
-        unsigned zones=8U;                        // C
-        unsigned faults=0U;                       // C
-        std::vector<float> idx{0.3F,0.7F,0.4F,0.9F,0.2F,0.6F};
-        for (std::size_t i=0;i<idx.size();++i){
-            rate = std::min(1.0F,std::max(0.0F, rate + (idx[i]-0.5F)*0.2F));
-            bias = std::min(1.0F,std::max(0.0F, bias + (rate-0.5F)*0.1F));
-            if (rate>0.9F){ faults++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" rate="<<rate<<" bias="<<bias<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_087 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float rpm=1000.0F;                       // C
+        float load=0.0F;                       // C
+        float feedRate=100.0F;                       // C
+        float depth=2.0F;                       // C
+        int tools=8;                       // C
+        int changes=0;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"zones="<<zones<<" faults="<<faults<<" mean="<<mean(idx)<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ spray_087::apply(); return 0; }
+
+int main() {
+    ctrl_087::execute();
+    return 0;
+}

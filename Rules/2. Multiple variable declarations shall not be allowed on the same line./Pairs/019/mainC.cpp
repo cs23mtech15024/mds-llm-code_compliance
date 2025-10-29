@@ -1,27 +1,83 @@
-// Context: Autonomous car lane departure alert
+// Context: Mining haul truck tire pressure monitor
 
 // ------ Compliant Program (019_c.cpp)
-// One declarator per declaration (compliant with 8-0-1).
+// Context: Mining haul truck tire pressure monitor
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <cmath>
-namespace lane_019 {
-    struct Sig { float lat; float yaw; }; // OK
-    static float mag2(float a,float b){ return a*a+b*b; }
-    void compute(){
-        float lateral=0.0F;                    // C
-        float yawRate=0.0F;                    // C
-        unsigned frames=0U;                    // C
-        unsigned alarms=0U;                    // C
-        bool left=false;                       // C
-        bool right=false;                      // C
-        Sig s{0.0F,0.0F};
-        for (unsigned i=0U;i<10U;++i){
-            s.lat += 0.02F; s.yaw += 0.003F; frames++;
-            if (s.lat>0.3F){ alarms++; right=true; }
-            if (s.lat<-0.3F){ alarms++; left=true; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" e2="<<mag2(s.lat,s.yaw)<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_019 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float pFL=95.0F;                       // C
+        float pFR=96.0F;                       // C
+        float pRL=100.0F;                       // C
+        float pRR=99.0F;                       // C
+        unsigned faults=0U;                       // C
+        unsigned warns=0U;                       // C
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"frames="<<frames<<" alarms="<<alarms<<" L="<<left<<" R="<<right<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ lane_019::compute(); return 0; }
+
+int main() {
+    mon_019::monitor();
+    return 0;
+}

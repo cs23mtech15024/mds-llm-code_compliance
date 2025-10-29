@@ -1,11 +1,11 @@
-// Context: Airport baggage sorter diverter
+// Context: Tidal energy converter inverter control
 
 #include <iostream>
 int main(){
-    unsigned bags=0U, jam=0U;        // NC
-    float speed=1.0F, accel=0.0F;    // NC
-    bool divert=false, halt=false;   // NC
-    bags+=3U; accel=0.1F;
-    std::cout<<bags<<","<<jam<<","<<speed<<","<<accel<<","<<divert<<","<<halt<<"\n";
+    double vdc=700.0, vac=0.0;      // NC
+    float kp=0.8F, ki=0.03F;        // NC
+    unsigned cycles=0U, trips=0U;   // NC
+    vac += 5.0; vdc -= 2.0;
+    std::cout<<vdc<<","<<vac<<","<<kp<<","<<ki<<","<<cycles<<","<<trips<<"\n";
     return 0;
 }

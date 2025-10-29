@@ -1,27 +1,80 @@
-// Context: Agricultural drone fertilization nozzle map
+// Context: Arctic research station power dispatcher
 
 // ------ Non-Compliant Program (045_nc.cpp)
-// Multiple declarators per declaration -> violation of 8-0-1.
+// Context: Arctic research station power dispatcher
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace fert_045 {
-    struct Cell { float a; float b; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    float avg(const std::vector<float>& v){ return v.empty()?0.0F:std::accumulate(v.begin(),v.end(),0.0F)/static_cast<float>(v.size()); }
-    void map(){
-        float flowA=0.2F, flowB=0.2F;          // NC
-        unsigned cells=0U, faults=0U;          // NC
-        double scale=1.0, bias=0.0;            // NC
-        std::vector<float> zone{0.19F,0.20F,0.23F,0.18F};
-        for (std::size_t i=0;i<zone.size();++i){
-            flowA = clampf(zone[i]*static_cast<float>(scale)+static_cast<float>(bias),0.1F,0.3F);
-            flowB = clampf(flowA*0.95F,0.1F,0.3F);
-            cells++;
-            if (flowA<0.15F){ faults++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" A="<<flowA<<" B="<<flowB<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_045 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        double solar=1.2, wind=2.1;             // NC
+        float battery=0.6F, diesel=0.0F;             // NC
+        unsigned ticks=0U, alarms=0U;             // NC
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"cells="<<cells<<" faults="<<faults<<" Aavg="<<avg(zone)<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ fert_045::map(); return 0; }
+
+int main() {
+    mon_045::monitor();
+    return 0;
+}

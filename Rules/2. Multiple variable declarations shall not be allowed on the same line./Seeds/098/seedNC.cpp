@@ -1,11 +1,11 @@
-// Context: Harbor tide-compensated mooring tensioner
+// Context: Arcade game coin counter
 
 #include <iostream>
 int main(){
-    double tide=1.2, set=1.5;       // NC
-    float k=0.5F, tension=0.0F;     // NC
-    int cycles=0, trips=0;          // NC
-    tension += static_cast<float>((set-tide)*0.3);
-    std::cout<<tide<<","<<set<<","<<k<<","<<tension<<","<<cycles<<","<<trips<<"\n";
+    unsigned coins=0U, credits=0U;        // NC
+    float rate=0.25F, total=0.0F;         // NC
+    int games=0, players=0;               // NC
+    coins++; credits++;
+    std::cout<<coins<<","<<credits<<","<<rate<<","<<total<<","<<games<<","<<players<<"\n";
     return 0;
 }

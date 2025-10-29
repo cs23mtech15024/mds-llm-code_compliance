@@ -1,11 +1,11 @@
-// Context: Marine buoy wave spectral estimator
+// Context: Container ship ballast controller
 
 #include <iostream>
 int main(){
-    float ax=0.0F, ay=0.0F;          // NC
-    float az=0.0F, dt=0.05F;         // NC
-    unsigned n=0U, spikes=0U;        // NC
-    ax += 0.1F; ay -= 0.1F;
-    std::cout<<ax<<","<<ay<<","<<az<<","<<dt<<","<<n<<","<<spikes<<"\n";
+    double port=500.0, starboard=500.0;   // NC
+    float trim=0.0F, list=0.0F;           // NC
+    int pumps=4, valves=8;                // NC
+    port += 10.0; trim += 0.1F;
+    std::cout<<port<<","<<starboard<<","<<trim<<","<<list<<","<<pumps<<","<<valves<<"\n";
     return 0;
 }

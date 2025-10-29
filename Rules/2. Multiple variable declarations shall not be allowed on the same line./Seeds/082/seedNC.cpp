@@ -1,11 +1,11 @@
-// Context: Urban traffic adaptive signal phasing
+// Context: Bioreactor pH stabilizer
 
 #include <iostream>
 int main(){
-    unsigned north=12U, east=8U;   // NC
-    float bias=0.4F, gain=0.2F;    // NC
-    int cycles=0, holds=0;         // NC
-    bias += 0.1F; north += 1U;
-    std::cout<<north<<","<<east<<","<<bias<<","<<gain<<","<<cycles<<","<<holds<<"\n";
+    double pH=7.0, temp=37.0;             // NC
+    float dissolvedO2=80.0F, agitation=200.0F; // NC
+    unsigned samples=0U, adjustments=0U;  // NC
+    pH += 0.01; samples++;
+    std::cout<<pH<<","<<temp<<","<<dissolvedO2<<","<<agitation<<","<<samples<<","<<adjustments<<"\n";
     return 0;
 }

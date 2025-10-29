@@ -1,11 +1,11 @@
-// Context: Subway door interlock monitor
+// Context: Deep-sea ROV depth and ballast control
 
 #include <iostream>
 int main(){
-    bool left=false, right=false;   // NC
-    int cycles=0, errors=0;         // NC
-    unsigned retries=0U, trips=0U;  // NC
-    left=true; right=false;
-    std::cout<<left<<","<<right<<","<<cycles<<","<<errors<<","<<retries<<","<<trips<<"\n";
+    double depth=10.0, ballast=0.0;  // NC
+    bool blow=false, flood=false;    // NC
+    unsigned cycles=0U, alarms=0U;   // NC
+    depth += 1.0; ballast += 0.2;
+    std::cout<<depth<<","<<ballast<<","<<blow<<","<<flood<<","<<cycles<<","<<alarms<<"\n";
     return 0;
 }

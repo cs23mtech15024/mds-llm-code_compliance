@@ -1,11 +1,10 @@
-// Context: Surgical robot force threshold guardian
+// Context: DNA sequencer base caller
 
 #include <iostream>
 int main(){
-    float fz=0.0F, fx=0.0F;          // NC
-    float limit=4.0F, margin=0.5F;   // NC
-    unsigned events=0U, trips=0U;    // NC
-    fz += 0.4F; fx += 0.2F;
-    std::cout<<fz<<","<<fx<<","<<limit<<","<<margin<<","<<events<<","<<trips<<"\n";
+    float qualA=0.9F, qualT=0.9F, qualC=0.9F, qualG=0.9F; // NC
+    int reads=0, errors=0;                                 // NC
+    reads++;
+    std::cout<<qualA<<","<<qualT<<","<<qualC<<","<<qualG<<","<<reads<<","<<errors<<"\n";
     return 0;
 }

@@ -1,14 +1,14 @@
-// Context: Hydroelectric turbine governor loop
+// Context: Wind farm wake interaction analyzer
 
 #include <iostream>
 int main(){
-    double rpm=300.0;    // C
-    double set=310.0;    // C
-    float kp=0.9F;       // C
-    float ki=0.03F;      // C
-    unsigned steps=0U;   // C
-    unsigned faults=0U;  // C
-    rpm += 1.0; set -= 0.5;
-    std::cout<<rpm<<","<<set<<","<<kp<<","<<ki<<","<<steps<<","<<faults<<"\n";
+    double v1=9.0;        // C
+    double v2=8.5;        // C
+    float kd=0.05F;       // C
+    float ct=0.8F;        // C
+    int rows=2;           // C
+    int cols=3;           // C
+    v2 -= 0.2; ct -= 0.01F;
+    std::cout<<v1<<","<<v2<<","<<kd<<","<<ct<<","<<rows<<","<<cols<<"\n";
     return 0;
 }

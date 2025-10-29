@@ -1,14 +1,14 @@
-// Context: Microgrid black-start sequencer
+// Context: Aquarium life support system controller
 
 #include <iostream>
 int main(){
-    unsigned gens=2U;     // C
-    unsigned loads=5U;    // C
-    float freq=0.0F;      // C
-    float volt=0.0F;      // C
-    int steps=0;          // C
-    int fails=0;          // C
-    steps += 1; freq += 0.1F; volt += 0.2F;
-    std::cout<<gens<<","<<loads<<","<<freq<<","<<volt<<","<<steps<<","<<fails<<"\n";
+    float temp=26.0F;          // C
+    float pH=8.2F;             // C
+    double salinity=1.025;     // C
+    double alkalinity=8.0;     // C
+    unsigned pumps=3U;         // C
+    unsigned heaters=2U;       // C
+    temp += 0.1F; pumps++;
+    std::cout<<temp<<","<<pH<<","<<salinity<<","<<alkalinity<<","<<pumps<<","<<heaters<<"\n";
     return 0;
 }

@@ -1,28 +1,78 @@
-// Context: Solar tracker dual-axis controller
+// Context: Firefighting foam proportioner
 
 // ------ Compliant Program (093_c.cpp)
-// Compliant: one declarator per declaration across the file.
+// Context: Firefighting foam proportioner
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-namespace tracker_093 {
-    struct Pose { float az; float el; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void control(){
-        float az=0.0F;                            // C
-        float el=0.0F;                            // C
-        float k=0.2F;                             // C
-        float bias=0.0F;                          // C
-        unsigned steps=0U;                        // C
-        unsigned faults=0U;                       // C
-        std::vector<float> sun{0.6F,0.2F,-0.1F,0.4F,-0.2F};
-        for (std::size_t i=0;i<sun.size();++i){
-            az = clampf(az + k*sun[i] + bias, -3.14F, 3.14F);
-            el = clampf(el + 0.8F*k*sun[i], -1.3F, 1.3F);
-            steps++; if (std::fabs(sun[i])>0.5F){ faults++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" az="<<az<<" el="<<el<<"\n"; }
+
+namespace ctrl_093 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float waterFlow=500.0F;                       // C
+        float foamRate=3.0F;                       // C
+        double pressure=100.0;                       // C
+        double ratio=0.03;                       // C
+        unsigned nozzles=4U;                       // C
+        unsigned alarms=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"steps="<<steps<<" faults="<<faults<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ tracker_093::control(); return 0; }
+
+int main() {
+    ctrl_093::execute();
+    return 0;
+}

@@ -1,31 +1,78 @@
-// Context: Microgrid state-of-charge estimator
+// Context: Marine buoy wave spectral estimator
 
 // ------ Compliant Program (046_c.cpp)
-// One declarator per declaration throughout the file.
+// Context: Marine buoy wave spectral estimator
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-#include <numeric>
-namespace soc_046 {
-    struct Pack { double soc; double target; }; // OK
-    static double clamp(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    void estimate(){
-        double soc=0.55;                          // C
-        double target=0.60;                       // C
-        float eta=0.95F;                          // C
-        float loss=0.0F;                          // C
-        unsigned it=0U;                           // C
-        unsigned maxIt=8U;                        // C
-        Pack p{soc,target};
-        std::vector<double> log;
-        for (; it<maxIt; ++it){
-            double ch = 0.02 * (it%2U?1.0:-1.0);
-            p.soc = clamp(p.soc + ch*eta - static_cast<double>(loss), 0.20, 0.95);
-            log.push_back(p.soc);
-            if ((it%3U)==0U){ loss += 0.001F; }
-            if ((it%2U)==0U){ std::cout<<"it="<<it<<" soc="<<p.soc<<" loss="<<loss<<"\n"; }
+
+namespace ctrl_046 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float ax=0.0F;                       // C
+        float ay=0.0F;                       // C
+        float az=0.0F;                       // C
+        float dt=0.05F;                       // C
+        unsigned n=0U;                       // C
+        unsigned spikes=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"final="<<p.soc<<" mean="<<(log.empty()?0.0:std::accumulate(log.begin(),log.end(),0.0)/static_cast<double>(log.size()))<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ soc_046::estimate(); return 0; }
+
+int main() {
+    ctrl_046::execute();
+    return 0;
+}

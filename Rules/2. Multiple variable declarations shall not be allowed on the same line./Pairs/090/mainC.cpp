@@ -1,29 +1,78 @@
-// Context: Wildfire perimeter UAV mapping scheduler
+// Context: Planetarium projector star field renderer
 
 // ------ Compliant Program (090_c.cpp)
-// Compliant: single-declarator declarations throughout.
+// Context: Planetarium projector star field renderer
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <deque>
-#include <algorithm>
-namespace fire_090 {
-    struct Pass { float alt; float speed; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void schedule(){
-        float alt=120.0F;                         // C
-        float speed=18.0F;                        // C
-        float overlap=0.7F;                       // C
-        float bias=0.0F;                          // C
-        unsigned passes=0U;                       // C
-        unsigned gaps=0U;                          // C
-        std::deque<float> wind{0.3F,-0.2F,0.1F,0.4F,-0.1F};
-        for (std::size_t i=0;i<wind.size();++i){
-            speed = clampf(speed + wind[i], 10.0F, 25.0F);
-            overlap = clampf(overlap + (speed<15.0F?0.05F:-0.03F), 0.6F, 0.9F);
-            if (overlap<0.65F){ ++gaps; }
-            ++passes;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" alt="<<alt<<" sp="<<speed<<" ov="<<overlap<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_090 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double ra=12.5;                       // C
+        double dec=45.0;                       // C
+        float magnitude=2.5F;                       // C
+        float color=0.5F;                       // C
+        unsigned stars=5000U;                       // C
+        unsigned constellations=88U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"passes="<<passes<<" gaps="<<gaps<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ fire_090::schedule(); return 0; }
+
+int main() {
+    ctrl_090::execute();
+    return 0;
+}

@@ -1,11 +1,11 @@
-// Context: 3D printer thermal safety loop
+// Context: Urban traffic light adaptive timing
 
 #include <iostream>
 int main(){
-    double bed=50.0, nozzle=200.0;   // NC
-    double target=210.0, ramp=0.0;   // NC
-    int alarms=0, warns=0;           // NC
-    ramp = target - nozzle; nozzle += 5.0;
-    std::cout<<bed<<","<<nozzle<<","<<target<<","<<ramp<<","<<alarms<<","<<warns<<"\n";
+    unsigned nS=20U, nE=15U;         // NC
+    float bias=0.0F, gain=1.0F;      // NC
+    int faults=0, rescales=0;        // NC
+    bias += 0.1F; gain += 0.05F;
+    std::cout<<nS<<","<<nE<<","<<bias<<","<<gain<<","<<faults<<","<<rescales<<"\n";
     return 0;
 }

@@ -1,31 +1,75 @@
-// Context: Warehouse AGV path follower
+// Context: Pipeline pressure relief supervisor
 
 // ------ Non-Compliant Program (021_nc.cpp)
-// Rule: MISRA C++ 8-0-1 — a declaration shall contain no more than one declarator.
-// This file purposefully groups multiple declarators (// NC) to show violations.
+// Context: Pipeline pressure relief supervisor
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <cmath>
+#include <iomanip>
+#include <array>
 #include <cstddef>
-namespace agv_021 {
-    struct Pose { float x; float y; float th; }; // OK: members are separate
-    static float wrap(float a){ while(a>3.14159F) a-=6.28318F; while(a<-3.14159F) a+=6.28318F; return a; }
-    static float clamp(float v,float lo,float hi){ return v<lo?lo:(v>hi?hi:v); }
-    void follow(){
-        float x=0.0F, y=0.0F;                 // NC
-        float vx=0.10F, vy=0.00F;             // NC
-        unsigned steps=0U, maxS=12U;          // NC
-        Pose p{0.0F,0.0F,0.0F};
-        std::vector<Pose> wp{{0.5F,0.0F,0.0F},{1.0F,0.0F,0.0F},{1.0F,0.5F,1.57F}};
-        for (std::size_t i=0U; i<wp.size(); ++i){
-            float ex = wp[i].x - p.x; float ey = wp[i].y - p.y;
-            vx = clamp(ex*0.6F,-0.2F,0.2F); vy = clamp(ey*0.6F,-0.2F,0.2F);
-            p.x += vx; p.y += vy; p.th = wrap(wp[i].th);
-            x = p.x; y = p.y; steps++;
-            if ((i%1U)==0U){ std::cout<<"i="<<i<<" x="<<x<<" y="<<y<<" th="<<p.th<<"\n"; }
-            if (steps>=maxS){ break; }
+#include <cmath>
+
+namespace ctrl_021 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float p=55.0F, limit=60.0F;        // NC
+        int warns=0, trips=0;        // NC
+        bool relieve=false, leak=false;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"steps="<<steps<<" maxS="<<maxS<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ agv_021::follow(); return 0; }
+
+int main() {
+    ctrl_021::execute();
+    return 0;
+}

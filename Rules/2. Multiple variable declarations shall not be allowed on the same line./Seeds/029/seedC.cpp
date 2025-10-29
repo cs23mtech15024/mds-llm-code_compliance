@@ -1,14 +1,14 @@
-// Context: Telecom base-station power budget
+// Context: Microgrid state-of-charge estimator
 
 #include <iostream>
 int main(){
-    double rf=800.0;       // C
-    double bb=200.0;       // C
-    double aux=30.0;       // C
-    double total=0.0;      // C
-    unsigned sectors=3U;   // C
-    unsigned alarms=0U;    // C
-    total = rf+bb+aux;
-    std::cout<<total<<","<<sectors<<","<<alarms<<"\n";
+    double soc=0.55;      // C
+    double target=0.60;   // C
+    float eta=0.95F;      // C
+    float loss=0.0F;      // C
+    unsigned it=0U;       // C
+    unsigned maxIt=4U;    // C
+    soc += 0.01; loss += 0.001F;
+    std::cout<<soc<<","<<target<<","<<eta<<","<<loss<<","<<it<<","<<maxIt<<"\n";
     return 0;
 }

@@ -1,29 +1,75 @@
-// Context: Space telescope reaction wheel balancer
+// Context: Quantum computer cryostat temperature stabilizer
 
 // ------ Non-Compliant Program (042_nc.cpp)
-// 8-0-1 violations via multiple declarators per declaration (// NC).
+// Context: Quantum computer cryostat temperature stabilizer
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <cmath>
+#include <iomanip>
+#include <array>
 #include <cstddef>
-namespace rw_042 {
-    struct Wheel { float wx; float wy; }; // OK
-    static float clip(float v,float m){ return std::max(-m,std::min(m,v)); }
-    void balance(){
-        float wx=0.0F, wy=0.0F;                // NC
-        double bias=0.0, set=0.02;             // NC
-        int alarms=0, resets=0;                // NC
-        Wheel w{wx,wy};
-        std::vector<float> errs;
-        for (std::size_t k=0;k<14U;++k){
-            float e = static_cast<float>(set) - w.wx;
-            float u = clip(e*0.5F + static_cast<float>(bias), 0.02F);
-            w.wx += u; w.wy -= u*0.3F; errs.push_back(e);
-            if (std::fabs(e)>0.05F){ alarms++; }
-            if ((k%5U)==0U){ resets++; }
-            if ((k%2U)==0U){ std::cout<<"k="<<k<<" wx="<<w.wx<<" wy="<<w.wy<<" e="<<e<<"\n"; }
+#include <cmath>
+
+namespace ctrl_042 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double temp=0.015, target=0.010;        // NC
+        float gain=0.5F, bias=0.0F;        // NC
+        unsigned it=0U, alarms=0U;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"alarms="<<alarms<<" resets="<<resets<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ rw_042::balance(); return 0; }
+
+int main() {
+    ctrl_042::execute();
+    return 0;
+}

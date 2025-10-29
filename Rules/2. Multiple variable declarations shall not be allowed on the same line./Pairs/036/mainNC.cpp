@@ -1,22 +1,75 @@
-// Context: Hospital negative-pressure room monitor
+// Context: Automated dairy vacuum regulator
 
 // ------ Non-Compliant Program (036_nc.cpp)
-// Intentionally groups declarators; violates 8-0-1.
+// Context: Automated dairy vacuum regulator
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
 #include <iomanip>
-namespace iso_036 {
-    struct Press { double pa; double target; }; // OK
-    void run(){
-        double pa=-5.0, target=-8.0;           // NC
-        float flow=0.0F, leak=0.0F;            // NC
-        int alarms=0, warns=0;                 // NC
-        Press p{pa,target};
-        for (unsigned i=0U;i<10U;++i){
-            flow += 0.2F; p.pa -= 0.3; if (p.pa>-6.0){ alarms++; }
-            if (flow>1.5F){ warns++; }
-            if ((i%3U)==0U){ std::cout<<"i="<<i<<" pa="<<p.pa<<" flow="<<flow<<"\n"; }
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_036 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double vac=45.0, target=50.0;        // NC
+        float leak=0.0F, trim=0.0F;        // NC
+        int alarms=0, resets=0;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"A="<<alarms<<" W="<<warns<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ iso_036::run(); return 0; }
+
+int main() {
+    ctrl_036::execute();
+    return 0;
+}

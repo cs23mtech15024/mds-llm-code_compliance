@@ -1,14 +1,14 @@
-// Context: Robotic welder seam tracker
+// Context: Telecom base-station power budget
 
 #include <iostream>
 int main(){
-    float offset=0.0F;     // C
-    float speed=0.0F;      // C
-    double kp=0.6;         // C
-    double ki=0.02;        // C
-    int good=0;            // C
-    int bad=0;             // C
-    offset+=0.05F; speed=0.8F;
-    std::cout<<offset<<","<<speed<<","<<kp<<","<<ki<<","<<good<<","<<bad<<"\n";
+    double rf=800.0;       // C
+    double bb=200.0;       // C
+    double aux=30.0;       // C
+    double total=0.0;      // C
+    unsigned sectors=3U;   // C
+    unsigned alarms=0U;    // C
+    total = rf+bb+aux;
+    std::cout<<total<<","<<sectors<<","<<alarms<<"\n";
     return 0;
 }

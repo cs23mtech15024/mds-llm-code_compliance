@@ -1,14 +1,14 @@
-// Context: Factory conveyor vision reject gate
+// Context: Chemical plant pH neutralization tank controller
 
 #include <iostream>
 int main(){
-    unsigned good=0U;      // C
-    unsigned bad=0U;       // C
-    float conf=0.0F;       // C
-    float thr=0.85F;       // C
-    bool jam=false;        // C
-    bool reject=false;     // C
-    conf = 0.9F; reject = (conf<thr); if(reject){ ++bad; } else { ++good; }
-    std::cout<<good<<","<<bad<<","<<conf<<","<<thr<<","<<jam<<","<<reject<<"\n";
+    double ph=6.2;       // C
+    double tgt=7.0;      // C
+    float acid=0.0F;     // C
+    float base=0.0F;     // C
+    int adds=0;          // C
+    int alarms=0;        // C
+    base += 0.1F; ph += 0.2;
+    std::cout<<ph<<","<<tgt<<","<<acid<<","<<base<<","<<adds<<","<<alarms<<"\n";
     return 0;
 }

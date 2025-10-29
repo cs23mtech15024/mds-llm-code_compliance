@@ -1,30 +1,78 @@
-// Context: Harbor tide-compensated mooring tensioner
+// Context: Arcade game coin counter
 
 // ------ Compliant Program (098_c.cpp)
-// Compliant: one declarator per declaration throughout the file.
+// Context: Arcade game coin counter
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-#include <algorithm>
-namespace moor_098 {
-    struct Line { double tide; float tension; }; // OK
-    static double clampd(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    void tension(){
-        double tide=1.2;                           // C
-        double set=1.5;                            // C
-        float k=0.5F;                              // C
-        float tension=0.0F;                        // C
-        int cycles=0;                               // C
-        int trips=0;                                // C
-        std::vector<double> t{1.1,1.3,1.6,1.8,1.4,1.2};
-        for (std::size_t i=0;i<t.size();++i){
-            tide = clampd(t[i], -1.0, 3.0);
-            double e = set - tide;
-            tension = std::min(1.0F,std::max(0.0F, tension + static_cast<float>(k*e)));
-            if (tension>0.9F){ trips++; }
-            cycles++;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" tide="<<tide<<" T="<<tension<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_098 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        unsigned coins=0U;                       // C
+        unsigned credits=0U;                       // C
+        float rate=0.25F;                       // C
+        float total=0.0F;                       // C
+        int games=0;                       // C
+        int players=0;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"cycles="<<cycles<<" trips="<<trips<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ moor_098::tension(); return 0; }
+
+int main() {
+    ctrl_098::execute();
+    return 0;
+}

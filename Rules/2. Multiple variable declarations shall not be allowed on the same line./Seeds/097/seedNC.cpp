@@ -1,11 +1,11 @@
-// Context: Smart prosthetic knee gait stabilizer
+// Context: Slot machine payout calculator
 
 #include <iostream>
 int main(){
-    float angle=0.0F, rate=0.0F;    // NC
-    float target=15.0F, damp=0.2F;  // NC
-    unsigned steps=0U, flags=0U;    // NC
-    angle += 1.5F; rate += 0.4F;
-    std::cout<<angle<<","<<rate<<","<<target<<","<<damp<<","<<steps<<","<<flags<<"\n";
+    unsigned credits=100U, bet=5U;        // NC
+    float payoutRate=0.95F, jackpot=0.0F; // NC
+    int spins=0, wins=0;                  // NC
+    credits -= bet; spins++;
+    std::cout<<credits<<","<<bet<<","<<payoutRate<<","<<jackpot<<","<<spins<<","<<wins<<"\n";
     return 0;
 }

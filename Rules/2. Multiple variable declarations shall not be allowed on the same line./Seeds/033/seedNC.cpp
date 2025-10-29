@@ -1,11 +1,11 @@
-// Context: Pharmaceutical reactor PH controller
+// Context: Planetary rover slip detection module
 
 #include <iostream>
 int main(){
-    double ph=7.0, target=7.2;       // NC
-    double acid=0.0, base=0.0;       // NC
-    unsigned it=0U, maxIt=4U;        // NC
-    ph += 0.05; base += 0.02;
-    std::cout<<ph<<","<<target<<","<<acid<<","<<base<<","<<it<<","<<maxIt<<"\n";
+    float omega=5.0F, v=0.5F;         // NC
+    float mu=0.6F, slip=0.0F;         // NC
+    unsigned frames=0U, alarms=0U;    // NC
+    slip = (omega*0.1F - v);
+    std::cout<<omega<<","<<v<<","<<mu<<","<<slip<<","<<frames<<","<<alarms<<"\n";
     return 0;
 }

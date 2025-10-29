@@ -1,38 +1,78 @@
-// Context: Hydroelectric turbine governor loop
+// Context: Wind farm wake interaction analyzer
 
 // ------ Compliant Program (031_c.cpp)
-// Fix: each declaration has a single declarator (8-0-1 compliant).
+// Context: Wind farm wake interaction analyzer
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
 #include <iomanip>
 #include <array>
+#include <cstddef>
 #include <cmath>
-namespace hydro_031 {
-    struct GovState { double rpm; double valve; }; // OK
-    static double clamp(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    void govern(){
-        double rpm=300.0;                         // C
-        double set=310.0;                         // C
-        float kp=0.9F;                            // C
-        float ki=0.03F;                           // C
-        unsigned steps=0U;                        // C
-        unsigned faults=0U;                       // C
-        GovState s{rpm, 0.0};
-        const double dt=0.2;
-        std::array<double,10U> refs{312,309,308,310,311,309,307,309,310,310};
-        for (std::size_t i=0U;i<refs.size();++i){
-            set = refs[i];
-            double err = set - s.rpm;
-            static double integ=0.0; integ += err*dt;
-            double u = static_cast<double>(kp)*err + static_cast<double>(ki)*integ;
-            u = clamp(u,-5.0,5.0);
-            s.valve = u; s.rpm += s.valve*0.8; steps++;
-            if (std::fabs(err)>20.0){ faults++; }
-            if ((i%2U)==0U){
-                std::cout<<"i="<<i<<" rpm="<<std::fixed<<std::setprecision(1)<<s.rpm
-                         <<" sp="<<set<<" v="<<s.valve<<"\n";
+
+namespace ctrl_031 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double v1=9.0;                       // C
+        double v2=8.5;                       // C
+        float kd=0.05F;                       // C
+        float ct=0.8F;                       // C
+        int rows=2;                       // C
+        int cols=3;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
             }
         }
-        std::cout<<"steps="<<steps<<" faults="<<faults<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ hydro_031::govern(); return 0; }
+
+int main() {
+    ctrl_031::execute();
+    return 0;
+}

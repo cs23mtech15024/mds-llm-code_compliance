@@ -1,29 +1,83 @@
-// Context: High-speed rail pantograph contact monitor
+// Context: Fusion reactor coolant flow monitor
 
 // ------ Compliant Program (047_c.cpp)
-// Compliant rewrite using one declarator per declaration.
+// Context: Fusion reactor coolant flow monitor
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-#include <algorithm>
-namespace pano_047 {
-    struct Contact { float f; float v; }; // OK
-    static float lim(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void monitor(){
-        float force=85.0F;                        // C
-        float vib=0.0F;                           // C
-        unsigned hits=0U;                         // C
-        unsigned faults=0U;                       // C
-        bool ice=false;                           // C
-        bool arc=false;                           // C
-        std::vector<float> bursts{0.2F,0.4F,0.1F,0.6F,0.3F};
-        for (std::size_t i=0;i<bursts.size();++i){
-            vib = lim(vib + bursts[i], 0.0F, 2.0F);
-            if (vib>0.5F){ hits++; }
-            if (vib>1.0F){ faults++; arc=true; }
-            if ((i%3U)==0U){ ice=!ice; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" vib="<<vib<<" hits="<<hits<<" arc="<<arc<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_047 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        double flow=12.0;                       // C
+        double set=14.0;                       // C
+        float k=0.6F;                       // C
+        float leak=0.0F;                       // C
+        int trips=0;                       // C
+        int warns=0;                       // C
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"hits="<<hits<<" faults="<<faults<<" ice="<<ice<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ pano_047::monitor(); return 0; }
+
+int main() {
+    mon_047::monitor();
+    return 0;
+}

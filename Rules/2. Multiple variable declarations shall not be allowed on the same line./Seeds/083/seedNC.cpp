@@ -1,11 +1,11 @@
-// Context: Deep-sea ROV buoyancy trim controller
+// Context: Brewery fermentation temperature controller
 
 #include <iostream>
 int main(){
-    double depth=50.0, tgt=47.5;   // NC
-    float pump=0.0F, bleed=0.0F;   // NC
-    unsigned steps=0U, trips=0U;   // NC
-    pump += 0.2F; depth -= 0.5;
-    std::cout<<depth<<","<<tgt<<","<<pump<<","<<bleed<<","<<steps<<","<<trips<<"\n";
+    float temp=18.0F, setpoint=18.5F;     // NC
+    double gravity=1.050, alcohol=0.0;    // NC
+    int days=0, adjustments=0;            // NC
+    temp += 0.1F; days++;
+    std::cout<<temp<<","<<setpoint<<","<<gravity<<","<<alcohol<<","<<days<<","<<adjustments<<"\n";
     return 0;
 }

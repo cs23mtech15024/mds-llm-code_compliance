@@ -1,25 +1,75 @@
-// Context: Robotic welder seam tracker
+// Context: Telecom base-station power budget
 
 // ------ Non-Compliant Program (018_nc.cpp)
-// Uses multiple declarators per declaration (8-0-1 violation).
+// Context: Telecom base-station power budget
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-namespace weld_018 {
-    struct Sample { float off; float spd; }; // OK
-    static float absf(float v){ return v<0.0F?-v:v; }
-    void track(){
-        float offset=0.0F, speed=0.0F;        // NC
-        double kp=0.6, ki=0.02;               // NC
-        int good=0, bad=0;                    // NC
-        std::vector<float> seam{0.05F, -0.02F, 0.08F, 0.01F};
-        for (std::size_t i=0;i<seam.size();++i){
-            offset = seam[i];
-            speed  = 0.8F + static_cast<float>(kp)*offset;
-            if (absf(offset)<0.06F){ good++; } else { bad++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" off="<<offset<<" spd="<<speed<<"\n"; }
+
+namespace ctrl_018 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double rf=800.0, bb=200.0;        // NC
+        double aux=30.0, total=0.0;        // NC
+        unsigned sectors=3U, alarms=0U;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"good="<<good<<" bad="<<bad<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ weld_018::track(); return 0; }
+
+int main() {
+    ctrl_018::execute();
+    return 0;
+}

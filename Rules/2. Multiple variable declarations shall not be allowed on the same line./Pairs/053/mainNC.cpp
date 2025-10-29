@@ -1,26 +1,80 @@
-// Context: Offshore crane sway dampener
+// Context: Neural network inference accelerator load balancer
 
 // ------ Non-Compliant Program (053_nc.cpp)
-// Intentionally groups declarators; violates rule 8-0-1.
+// Context: Neural network inference accelerator load balancer
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <cmath>
-#include <vector>
-namespace crane_053 {
-    struct Sway { float x; float dx; }; // OK
-    static float lim(float v,float m){ return std::max(-m,std::min(m,v)); }
-    void damp(){
-        float sway=0.0F, rate=0.0F;            // NC
-        float kp=0.8F, kd=0.12F;               // NC
-        unsigned it=0U, maxIt=12U;             // NC
-        Sway s{0.0F,0.0F};
-        for (; it<maxIt; ++it){
-            float est = s.x + 0.1F*s.dx;
-            float e = -est;
-            float u = lim(kp*e - kd*s.dx, 0.5F);
-            s.dx += u*0.2F; s.x += s.dx;
-            if ((it%3U)==0U){ std::cout<<"it="<<it<<" x="<<s.x<<" dx="<<s.dx<<" u="<<u<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_053 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float load=0.0F, thresh=0.8F;             // NC
+        unsigned cores=8U, busy=3U;             // NC
+        int tasks=10, queued=0;             // NC
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"iters="<<it<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ crane_053::damp(); return 0; }
+
+int main() {
+    mon_053::monitor();
+    return 0;
+}

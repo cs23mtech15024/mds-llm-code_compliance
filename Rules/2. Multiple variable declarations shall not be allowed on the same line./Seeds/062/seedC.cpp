@@ -1,14 +1,14 @@
-// Context: Volcano monitoring seismic trigger filter
+// Context: Hydroelectric turbine blade pitch optimizer
 
 #include <iostream>
 int main(){
-    double a=0.0;         // C
-    double b=0.0;         // C
-    float thr=0.7F;       // C
-    float env=0.0F;       // C
-    int hits=0;           // C
-    int alerts=0;         // C
-    a += 0.2; b += 0.3; env += 0.05F; if(a+b>1.0){ hits++; }
-    std::cout<<a<<","<<b<<","<<thr<<","<<env<<","<<hits<<","<<alerts<<"\n";
+    float pitch=0.5F;     // C
+    float rpm=300.0F;     // C
+    float step=0.0F;      // C
+    float eff=0.0F;       // C
+    unsigned t=0U;        // C
+    unsigned alarms=0U;   // C
+    step = 0.02F; pitch += step; rpm += 2.0F;
+    std::cout<<pitch<<","<<rpm<<","<<step<<","<<eff<<","<<t<<","<<alarms<<"\n";
     return 0;
 }

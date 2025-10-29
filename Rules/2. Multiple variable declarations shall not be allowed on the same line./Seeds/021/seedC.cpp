@@ -1,14 +1,14 @@
-// Context: Warehouse AGV path follower
+// Context: Pipeline pressure relief supervisor
 
 #include <iostream>
 int main(){
-    float x=0.0F;          // C
-    float y=0.0F;          // C
-    float vx=0.1F;         // C
-    float vy=0.0F;         // C
-    unsigned steps=0U;     // C
-    unsigned maxS=3U;      // C
-    x+=vx; y+=vy;
-    std::cout<<x<<","<<y<<","<<vx<<","<<vy<<","<<steps<<","<<maxS<<"\n";
+    float p=55.0F;        // C
+    float limit=60.0F;    // C
+    int warns=0;          // C
+    int trips=0;          // C
+    bool relieve=false;   // C
+    bool leak=false;      // C
+    relieve = (p>limit);
+    std::cout<<p<<","<<limit<<","<<warns<<","<<trips<<","<<relieve<<","<<leak<<"\n";
     return 0;
 }

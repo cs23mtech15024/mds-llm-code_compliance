@@ -1,25 +1,75 @@
-// Context: Runway lighting intensity scheduler
+// Context: Hospital HVAC surgical theater pressure control
 
 // ------ Non-Compliant Program (055_nc.cpp)
-// 8-0-1 violation via multi-declarator lines.
+// Context: Hospital HVAC surgical theater pressure control
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
+#include <iomanip>
 #include <array>
-#include <algorithm>
-namespace lights_055 {
-    struct Phase { unsigned east; unsigned west; }; // OK
-    static float clampf(float v){ return std::max(0.5F,std::min(2.0F,v)); }
-    void schedule(){
-        unsigned east=10U, west=8U;            // NC
-        float bias=1.0F, step=0.0F;            // NC
-        bool fog=false, night=true;            // NC
-        std::array<unsigned,8U> q{9,12,14,7,6,11,10,15};
-        for (std::size_t i=0;i<q.size();++i){
-            step = (q[i]>10U)?0.1F:-0.1F; bias = clampf(bias + step);
-            east += (i%2U)?1U:0U; west += (i%2U)?0U:1U;
-            if (q[i]>13U){ fog=true; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" bias="<<bias<<" E="<<east<<" W="<<west<<"\n"; }
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_055 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double room=2.0, corridor=0.5;        // NC
+        float fan=0.0F, damper=0.0F;        // NC
+        unsigned t=0U, alarms=0U;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"fog="<<fog<<" night="<<night<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ lights_055::schedule(); return 0; }
+
+int main() {
+    ctrl_055::execute();
+    return 0;
+}

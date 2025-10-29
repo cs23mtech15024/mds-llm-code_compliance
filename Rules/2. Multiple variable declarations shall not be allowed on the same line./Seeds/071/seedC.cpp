@@ -1,14 +1,14 @@
-// Context: Arctic research station power dispatcher
+// Context: Laser cutting path optimizer
 
 #include <iostream>
 int main(){
-    double solar=1.2;       // C
-    double wind=2.1;        // C
-    float battery=0.6F;     // C
-    float diesel=0.0F;      // C
-    unsigned ticks=0U;      // C
-    unsigned alarms=0U;     // C
-    solar += 0.1; wind -= 0.2; battery += 0.05F;
-    std::cout<<solar<<","<<wind<<","<<battery<<","<<diesel<<","<<ticks<<","<<alarms<<"\n";
+    float posX=0.0F;       // C
+    float posY=0.0F;       // C
+    float power=100.0F;    // C
+    float speed=50.0F;     // C
+    int cuts=0;            // C
+    int errors=0;          // C
+    posX += 1.0F; cuts++;
+    std::cout<<posX<<","<<posY<<","<<power<<","<<speed<<","<<cuts<<","<<errors<<"\n";
     return 0;
 }

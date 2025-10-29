@@ -1,14 +1,15 @@
-// Context: Electric ferry docking thruster coordinator
+// Context: Mars rover wheel slip compensator
 
 #include <iostream>
 int main(){
-    float fx=0.0F;         // C
-    float fy=0.0F;         // C
-    float yaw=0.0F;        // C
-    float gain=0.8F;       // C
-    unsigned steps=0U;     // C
-    unsigned faults=0U;    // C
-    fx += 0.2F; fy -= 0.1F; yaw += 0.05F; steps++;
-    std::cout<<fx<<","<<fy<<","<<yaw<<","<<gain<<","<<steps<<","<<faults<<"\n";
+    double slip=0.0;     // C
+    double set=0.15;     // C
+    float gain=0.4F;     // C
+    float cmd=0.0F;      // C
+    int events=0;        // C
+    int limits=0;        // C
+    cmd += static_cast<float>((set-slip)*0.5);
+    if(cmd>0.8F){ ++limits; }
+    std::cout<<slip<<","<<set<<","<<gain<<","<<cmd<<","<<events<<","<<limits<<"\n";
     return 0;
 }

@@ -1,11 +1,11 @@
-// Context: Autonomous harbor oil spill skimmer route planner
+// Context: Plasma cutter torch height controller
 
 #include <iostream>
 int main(){
-    float x=0.0F, y=0.0F;          // NC
-    float vx=0.0F, vy=0.0F;        // NC
-    unsigned tasks=0U, alerts=0U;  // NC
-    vx += 0.3F; vy -= 0.1F; x+=vx; y+=vy;
-    std::cout<<x<<","<<y<<","<<vx<<","<<vy<<","<<tasks<<","<<alerts<<"\n";
+    float height=3.0F, voltage=120.0F;    // NC
+    float speed=100.0F, current=45.0F;    // NC
+    int pierces=0, errors=0;              // NC
+    height += 0.1F; pierces++;
+    std::cout<<height<<","<<voltage<<","<<speed<<","<<current<<","<<pierces<<","<<errors<<"\n";
     return 0;
 }

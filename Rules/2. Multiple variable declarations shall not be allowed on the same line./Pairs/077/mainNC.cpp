@@ -1,26 +1,75 @@
-// Context: Fusion reactor coolant flow monitor
+// Context: Cyclotron RF cavity tuner
 
 // ------ Non-Compliant Program (077_nc.cpp)
-// Multi-declarator declarations violate 8-0-1.
+// Context: Cyclotron RF cavity tuner
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <algorithm>
-namespace fusion_077 {
-    struct Loop { double flow; double set; }; // OK
-    static double clampd(double v,double lo,double hi){ return std::max(lo,std::min(hi,v)); }
-    void monitor(){
-        double flow=12.0, set=14.0;            // NC
-        float k=0.6F, leak=0.0F;               // NC
-        int trips=0, warns=0;                  // NC
-        std::vector<double> d{0.4,0.2,-0.8,0.1,0.6,1.2,-0.3};
-        for (std::size_t i=0;i<d.size();++i){
-            flow = clampd(flow + d[i] - static_cast<double>(leak), 8.0, 20.0);
-            if (flow>16.0 || flow<10.0){ trips++; }
-            leak = std::max(0.0F, leak + ((i%3U)==0U?0.05F:-0.02F));
-            if (d[i]>1.0){ warns++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" flow="<<flow<<" leak="<<leak<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_077 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double freq=28.0, voltage=50000.0;        // NC
+        float phase=0.0F, power=0.0F;        // NC
+        unsigned cycles=0U, faults=0U;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"trips="<<trips<<" warns="<<warns<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ fusion_077::monitor(); return 0; }
+
+int main() {
+    ctrl_077::execute();
+    return 0;
+}

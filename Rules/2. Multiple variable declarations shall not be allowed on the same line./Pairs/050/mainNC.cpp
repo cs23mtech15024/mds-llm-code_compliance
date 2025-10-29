@@ -1,25 +1,80 @@
-// Context: Planetary rover slip detection module
+// Context: Planetary habitat thermal radiator manager
 
 // ------ Non-Compliant Program (050_nc.cpp)
-// 8-0-1 violated by grouping declarators.
+// Context: Planetary habitat thermal radiator manager
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <cmath>
-namespace rover_050 {
-    struct Wheel { float omega; float v; }; // OK
-    static float slip(float om,float v){ return (om*0.1F - v); }
-    void detect(){
-        float omega=5.0F, v=0.5F;              // NC
-        float mu=0.6F, slipVal=0.0F;           // NC
-        unsigned frames=0U, alarms=0U;         // NC
-        std::vector<float> tr{5.1F,5.3F,5.5F,5.2F,5.0F};
-        for (std::size_t i=0;i<tr.size();++i){
-            omega = tr[i]; slipVal = slip(omega,v);
-            if (slipVal>mu*0.1F){ alarms++; }
-            frames++;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" om="<<omega<<" s="<<slipVal<<" alarms="<<alarms<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_050 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        double temp=290.0, tgt=295.0;             // NC
+        float pump=0.0F, valve=0.0F;             // NC
+        unsigned cycles=0U, trips=0U;             // NC
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"frames="<<frames<<" alarms="<<alarms<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ rover_050::detect(); return 0; }
+
+int main() {
+    mon_050::monitor();
+    return 0;
+}

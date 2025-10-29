@@ -1,14 +1,14 @@
-// Context: Wildfire perimeter UAV mapping scheduler
+// Context: Planetarium projector star field renderer
 
 #include <iostream>
 int main(){
-    float alt=120.0F;     // C
-    float speed=18.0F;    // C
-    float overlap=0.7F;   // C
-    float bias=0.0F;      // C
-    unsigned passes=0U;   // C
-    unsigned gaps=0U;     // C
-    speed -= 1.0F; overlap += 0.05F;
-    std::cout<<alt<<","<<speed<<","<<overlap<<","<<bias<<","<<passes<<","<<gaps<<"\n";
+    double ra=12.5;                // C
+    double dec=45.0;               // C
+    float magnitude=2.5F;          // C
+    float color=0.5F;              // C
+    unsigned stars=5000U;          // C
+    unsigned constellations=88U;   // C
+    ra += 0.01; stars++;
+    std::cout<<ra<<","<<dec<<","<<magnitude<<","<<color<<","<<stars<<","<<constellations<<"\n";
     return 0;
 }

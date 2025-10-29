@@ -1,11 +1,11 @@
-// Context: Smart irrigation moisture guard
+// Context: Offshore crane sway dampener
 
 #include <iostream>
 int main(){
-    float soil=0.35F, thresh=0.30F;  // NC
-    bool valve=false, alert=false;   // NC
-    unsigned polls=0U, drops=0U;     // NC
-    valve = (soil<thresh);
-    std::cout<<soil<<","<<thresh<<","<<valve<<","<<alert<<","<<polls<<","<<drops<<"\n";
+    float sway=0.0F, rate=0.0F;      // NC
+    float kp=0.8F, kd=0.12F;         // NC
+    unsigned it=0U, maxIt=5U;        // NC
+    sway += 0.05F; rate -= 0.01F;
+    std::cout<<sway<<","<<rate<<","<<kp<<","<<kd<<","<<it<<","<<maxIt<<"\n";
     return 0;
 }

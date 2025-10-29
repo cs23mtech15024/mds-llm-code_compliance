@@ -1,14 +1,14 @@
-// Context: Runway lighting intensity scheduler
+// Context: Hospital HVAC surgical theater pressure control
 
 #include <iostream>
 int main(){
-    unsigned east=10U;     // C
-    unsigned west=8U;      // C
-    float bias=1.0F;       // C
-    float step=0.0F;       // C
-    bool fog=false;        // C
-    bool night=true;       // C
-    step = 0.1F; east+=1U;
-    std::cout<<east<<","<<west<<","<<bias<<","<<step<<","<<fog<<","<<night<<"\n";
+    double room=2.0;       // C
+    double corridor=0.5;   // C
+    float fan=0.0F;        // C
+    float damper=0.0F;     // C
+    unsigned t=0U;         // C
+    unsigned alarms=0U;    // C
+    fan += 0.3F; room += 0.1; corridor -= 0.05;
+    std::cout<<room<<","<<corridor<<","<<fan<<","<<damper<<","<<t<<","<<alarms<<"\n";
     return 0;
 }

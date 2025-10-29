@@ -1,0 +1,760 @@
+
+======================================================================
+MISRA C++ OCTAL CONSTANTS RULE CHECKER
+======================================================================
+Rule: Octal constants (other than zero) and octal escape sequences 
+      (other than '\0') shall not be used
+File Type: main (mainNC.cpp, mainC.cpp)
+Generated: 2025-10-29T19:04:24.464395
+
+===================================================================
+
+RULE DESCRIPTION:
+-----------------
+Octal literals and escape sequences can be confusing and error-prone.
+Only zero (0) and null terminator (\0) are allowed.
+
+Examples:
+  ✓ Compliant:
+    int x = 0;          // Plain zero is OK
+    int y = 10;         // Decimal
+    int z = 0x10;       // Hexadecimal
+    char c = '\0';      // Null terminator is OK
+    
+  ✗ Non-compliant:
+    int a = 077;        // Octal constant (other than 0)
+    int b = 0123;       // Octal constant
+    char d = '\033';    // Octal escape sequence (other than \0)
+    char e = '\177';    // Octal escape sequence
+
+===================================================================
+
+STATISTICS:
+-----------
+Total literals found: 7200
+Total violations found: 401
+  - Octal constants: 396
+  - Octal escape sequences: 5
+Violations in mainNC.cpp files: 401
+Violations in mainC.cpp files: 0
+
+===================================================================
+
+NON-COMPLIANT FILES (mainNC.cpp):
+Expected violations - these files should contain octal constants/escapes
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 34 | Type: Octal Escape Sequence | Code: '\033'
+    Line 42 | Type: Octal Escape Sequence | Code: "Configuration values: '\011', '\012', '\015', '\033'"
+    Line 34 | Type: Octal Escape Sequence | Code: '\015'
+    Line 34 | Type: Octal Escape Sequence | Code: '\011'
+    Line 34 | Type: Octal Escape Sequence | Code: '\012'
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0640
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0755
+    Line 34 | Type: Octal Constant | Code: 0600
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0640
+    Line 34 | Type: Octal Constant | Code: 0600
+    Line 34 | Type: Octal Constant | Code: 0755
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0600
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0640
+    Line 34 | Type: Octal Constant | Code: 0755
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0755
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0600
+    Line 34 | Type: Octal Constant | Code: 0640
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0640
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0755
+    Line 34 | Type: Octal Constant | Code: 0600
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0640
+    Line 34 | Type: Octal Constant | Code: 0600
+    Line 34 | Type: Octal Constant | Code: 0755
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0755
+    Line 34 | Type: Octal Constant | Code: 0644
+    Line 34 | Type: Octal Constant | Code: 0600
+    Line 34 | Type: Octal Constant | Code: 0640
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0200
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 0200
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 010
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 34 | Type: Octal Constant | Code: 020
+    Line 34 | Type: Octal Constant | Code: 010
+    Line 34 | Type: Octal Constant | Code: 0100
+    Line 34 | Type: Octal Constant | Code: 0200
+
+===================================================================
+
+COMPLIANT FILES CHECK (mainC.cpp):
+Should have 0 violations
+-------------------------------------------------------------------
+  ✓ No violations found - all compliant files are correct
+
+===================================================================
+
+SUMMARY:
+--------
+✓ PASS: All mainC.cpp files are compliant
+✓ mainNC.cpp files contain 401 violations (expected)
+
+===================================================================

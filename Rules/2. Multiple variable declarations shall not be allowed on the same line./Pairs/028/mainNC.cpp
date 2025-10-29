@@ -1,24 +1,80 @@
-// Context: Industrial freezer temperature guard
+// Context: Space telescope reaction wheel balancer
 
 // ------ Non-Compliant Program (028_nc.cpp)
-// 8-0-1 breaches via multiple declarators per declaration.
+// Context: Space telescope reaction wheel balancer
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <algorithm>
-namespace cold_028 {
-    struct Pair { double a; double b; }; // OK
-    static double lim(double v,double lo,double hi){ return std::max(lo,std::min(hi,v)); }
-    void guard(){
-        double tA=-18.0, tB=-19.5;            // NC
-        float drift=0.0F, slope=0.0F;         // NC
-        int open=0, alerts=0;                 // NC
-        Pair p{tA,tB};
-        for (unsigned i=0U;i<10U;++i){
-            drift += 0.2F; slope = -0.05F; p.a = lim(p.a,-30.0, 5.0); p.b = lim(p.b,-30.0, 5.0);
-            if (p.a>-15.0 || p.b>-15.0){ alerts++; }
-            if ((i%3U)==0U){ open++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" a="<<p.a<<" b="<<p.b<<" d="<<drift<<" s="<<slope<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_028 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float wx=0.0F, wy=0.0F;             // NC
+        double bias=0.0, set=0.02;             // NC
+        int alarms=0, resets=0;             // NC
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"open="<<open<<" alerts="<<alerts<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ cold_028::guard(); return 0; }
+
+int main() {
+    mon_028::monitor();
+    return 0;
+}

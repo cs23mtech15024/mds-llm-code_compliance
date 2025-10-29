@@ -1,12 +1,11 @@
-// Context: Subsea pipeline leak rate estimator
+// Context: Kiln temperature ramp scheduler
 
 #include <iostream>
 int main(){
-    double p1=120.0, p2=118.5;     // NC
-    float rate=0.0F, gain=0.4F;    // NC
-    unsigned ticks=0U, alarms=0U;  // NC
-    rate += static_cast<float>((p1-p2)*0.2);
-    if(rate>0.8F){ ++alarms; }
-    std::cout<<p1<<","<<p2<<","<<rate<<","<<gain<<","<<ticks<<","<<alarms<<"\n";
+    float temp=20.0F, target=1200.0F;     // NC
+    float rampRate=5.0F, holdTime=60.0F;  // NC
+    int segments=4, alarms=0;             // NC
+    temp += rampRate; segments++;
+    std::cout<<temp<<","<<target<<","<<rampRate<<","<<holdTime<<","<<segments<<","<<alarms<<"\n";
     return 0;
 }

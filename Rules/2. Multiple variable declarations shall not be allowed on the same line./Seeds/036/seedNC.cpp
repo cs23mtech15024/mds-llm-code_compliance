@@ -1,11 +1,11 @@
-// Context: Hospital negative-pressure room monitor
+// Context: Automated dairy vacuum regulator
 
 #include <iostream>
 int main(){
-    double pa=-5.0, target=-8.0;     // NC
-    float flow=0.0F, leak=0.0F;      // NC
-    int alarms=0, warns=0;           // NC
-    flow += 0.2F; pa -= 0.3;
-    std::cout<<pa<<","<<target<<","<<flow<<","<<leak<<","<<alarms<<","<<warns<<"\n";
+    double vac=45.0, target=50.0;    // NC
+    float leak=0.0F, trim=0.0F;      // NC
+    int alarms=0, resets=0;          // NC
+    trim += 0.2F; vac += 0.5;
+    std::cout<<vac<<","<<target<<","<<leak<<","<<trim<<","<<alarms<<","<<resets<<"\n";
     return 0;
 }

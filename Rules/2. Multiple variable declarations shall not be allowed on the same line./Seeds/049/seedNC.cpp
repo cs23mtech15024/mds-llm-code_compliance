@@ -1,11 +1,11 @@
-// Context: Data center chilled-water valve optimizer
+// Context: Electric scooter fleet charger balancer
 
 #include <iostream>
 int main(){
-    float supply=7.0F, returnT=12.0F; // NC
-    float gain=1.0F, bias=0.0F;       // NC
-    unsigned loops=0U, faults=0U;     // NC
-    returnT += 0.3F; bias += 0.05F;
-    std::cout<<supply<<","<<returnT<<","<<gain<<","<<bias<<","<<loops<<","<<faults<<"\n";
+    unsigned plugs=12U, bays=6U;     // NC
+    float load=0.0F, bias=0.0F;      // NC
+    int moves=0, faults=0;           // NC
+    load += 0.3F; bias += 0.05F;
+    std::cout<<plugs<<","<<bays<<","<<load<<","<<bias<<","<<moves<<","<<faults<<"\n";
     return 0;
 }

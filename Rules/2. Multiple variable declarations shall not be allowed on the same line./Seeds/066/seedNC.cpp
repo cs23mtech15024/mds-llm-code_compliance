@@ -1,11 +1,11 @@
-// Context: Satellite battery heater thermostat
+// Context: MRI scanner gradient coil driver
 
 #include <iostream>
 int main(){
-    double t=-5.0, set=0.0;          // NC
-    float pwr=0.0F, duty=0.0F;       // NC
-    unsigned on=0U, trips=0U;        // NC
-    duty += 0.1F; t += 0.2;
-    std::cout<<t<<","<<set<<","<<pwr<<","<<duty<<","<<on<<","<<trips<<"\n";
+    float gradX=0.0F, gradY=0.0F, gradZ=0.0F; // NC
+    double current=2.5, voltage=12.0;         // NC
+    int pulses=0, faults=0;                   // NC
+    gradX += 0.1F; pulses++;
+    std::cout<<gradX<<","<<gradY<<","<<gradZ<<","<<current<<","<<voltage<<","<<pulses<<","<<faults<<"\n";
     return 0;
 }

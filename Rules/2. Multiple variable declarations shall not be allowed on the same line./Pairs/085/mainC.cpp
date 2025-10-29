@@ -1,30 +1,78 @@
-// Context: Wind farm battery smoothing controller
+// Context: Tsunami warning buoy data processor
 
 // ------ Compliant Program (085_c.cpp)
-// Compliant: one declarator per declaration across the file.
+// Context: Tsunami warning buoy data processor
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-namespace wind_085 {
-    struct Store { float soc; float rate; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void smooth(){
-        double p=3.5;                           // C
-        double tgt=4.0;                         // C
-        float soc=0.6F;                         // C
-        float rate=0.0F;                        // C
-        unsigned ticks=0U;                      // C
-        unsigned trips=0U;                      // C
-        std::vector<double> gust{4.6,3.9,4.2,3.4,4.8,3.6};
-        for (std::size_t i=0;i<gust.size();++i){
-            double e = tgt - p; rate = clampf(rate + static_cast<float>(e*0.2), -1.0F, 1.0F);
-            soc = clampf(soc + rate*0.02F, 0.1F, 0.9F);
-            p = 0.9*p + 0.1*gust[i] + static_cast<double>(rate)*0.1;
-            if (soc<0.15F || soc>0.85F){ trips++; }
-            ticks++;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" p="<<p<<" soc="<<soc<<" r="<<rate<<"\n"; }
+
+namespace ctrl_085 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double waveHeight=0.0;                       // C
+        double period=0.0;                       // C
+        float latitude=0.0F;                       // C
+        float longitude=0.0F;                       // C
+        unsigned samples=0U;                       // C
+        unsigned warnings=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"ticks="<<ticks<<" trips="<<trips<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ wind_085::smooth(); return 0; }
+
+int main() {
+    ctrl_085::execute();
+    return 0;
+}

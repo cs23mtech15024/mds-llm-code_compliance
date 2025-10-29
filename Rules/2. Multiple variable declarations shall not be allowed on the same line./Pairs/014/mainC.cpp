@@ -1,28 +1,83 @@
-// Context: Medical syringe pump dosage loop
+// Context: Subway door interlock monitor
 
 // ------ Compliant Program (014_c.cpp)
-// All declarations are one declarator each (8-0-1 compliant).
+// Context: Subway door interlock monitor
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
 #include <iomanip>
-namespace dose_014 {
-    struct Stats { int alarms; int warns; }; // OK
-    void loop(){
-        double mlPerHr=5.0;                    // C
-        double target=6.0;                     // C
-        float err=0.0F;                        // C
-        float acc=0.0F;                        // C
-        int alarms=0;                          // C
-        int warns=0;                           // C
-        Stats st{0,0};
-        for (unsigned i=0U;i<5U;++i){
-            err = static_cast<float>(target-mlPerHr);
-            acc += err*0.1F; mlPerHr += 0.2;
-            if (mlPerHr>8.0){ alarms++; }
-            if (mlPerHr<3.0){ warns++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" ml="<<mlPerHr<<" err="<<err<<"\n"; }
+#include <string>
+#include <array>
+
+namespace mon_014 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        bool left=false;                       // C
+        bool right=false;                       // C
+        int cycles=0;                       // C
+        int errors=0;                       // C
+        unsigned retries=0U;                       // C
+        unsigned trips=0U;                       // C
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        st.alarms=alarms; st.warns=warns;
-        std::cout<<"A="<<st.alarms<<" W="<<st.warns<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ dose_014::loop(); return 0; }
+
+int main() {
+    mon_014::monitor();
+    return 0;
+}

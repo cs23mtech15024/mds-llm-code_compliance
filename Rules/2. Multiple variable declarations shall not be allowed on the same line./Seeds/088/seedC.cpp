@@ -1,14 +1,14 @@
-// Context: Data center hot-aisle containment fan control
+// Context: Tokamak plasma diagnostic system
 
 #include <iostream>
 int main(){
-    double tin=28.0;      // C
-    double tout=32.0;     // C
-    float fan=0.0F;       // C
-    float damper=0.0F;    // C
-    unsigned steps=0U;    // C
-    unsigned trips=0U;    // C
-    fan += 0.2F; tout -= 0.3;
-    std::cout<<tin<<","<<tout<<","<<fan<<","<<damper<<","<<steps<<","<<trips<<"\n";
+    double temperature=15000000.0; // C
+    double density=0.0;            // C
+    float confinement=0.0F;        // C
+    float beta=0.0F;               // C
+    unsigned pulses=0U;            // C
+    unsigned disruptions=0U;       // C
+    temperature += 1000.0; pulses++;
+    std::cout<<temperature<<","<<density<<","<<confinement<<","<<beta<<","<<pulses<<","<<disruptions<<"\n";
     return 0;
 }

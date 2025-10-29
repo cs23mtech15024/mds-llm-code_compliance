@@ -1,21 +1,75 @@
-// Context: Drone geofencing boundary check
+// Context: Coal plant boiler feedwater control
 
 // ------ Non-Compliant Program (024_nc.cpp)
-// Shows 8-0-1 violations through grouped declarators.
+// Context: Coal plant boiler feedwater control
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-namespace fence_024 {
-    struct Geo { double lat; double lon; }; // OK
-    static double h(double a,double b){ return (a*a+b*b); }
-    void check(){
-        double lat=0.0, lon=0.0;               // NC
-        float r=100.0F, d=0.0F;                // NC
-        int breaches=0, warns=0;               // NC
-        std::vector<Geo> path{{0.0,0.0},{0.001,-0.001},{0.002,-0.002}};
-        for (std::size_t i=0U;i<path.size();++i){ lat=path[i].lat; lon=path[i].lon; d = 50.0F; if (h(lat,lon)>0.00001){ warns++; }
-            if ((i%1U)==0U){ std::cout<<"i="<<i<<" lat="<<lat<<" lon="<<lon<<" d="<<d<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_024 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double lvl=50.0, sp=55.0;        // NC
+        float kp=1.1F, ki=0.04F;        // NC
+        int opens=0, closes=0;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"breaches="<<breaches<<" warns="<<warns<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ fence_024::check(); return 0; }
+
+int main() {
+    ctrl_024::execute();
+    return 0;
+}

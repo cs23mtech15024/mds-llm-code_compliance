@@ -1,11 +1,11 @@
-// Context: High-altitude balloon ballast vent control
+// Context: 5G beamforming antenna array phase controller
 
 #include <iostream>
 int main(){
-    double alt=10000.0, target=12000.0; // NC
-    float valve=0.0F, leak=0.0F;        // NC
-    unsigned ticks=0U, dumps=0U;        // NC
-    valve += 0.1F; alt += 50.0;
-    std::cout<<alt<<","<<target<<","<<valve<<","<<leak<<","<<ticks<<","<<dumps<<"\n";
+    float phase=0.0F, amp=1.0F;       // NC
+    double freq=28.0, bw=100.0;       // NC
+    unsigned beams=4U, faults=0U;     // NC
+    phase += 0.5F; amp -= 0.1F; beams++;
+    std::cout<<phase<<","<<amp<<","<<freq<<","<<bw<<","<<beams<<","<<faults<<"\n";
     return 0;
 }

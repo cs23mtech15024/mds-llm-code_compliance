@@ -1,14 +1,14 @@
-// Context: Smart grid feeder balancing
+// Context: 3D printer thermal safety loop
 
 #include <iostream>
 int main(){
-    double phaseA=230.0;  // C
-    double phaseB=231.0;  // C
-    double phaseC=229.5;  // C
-    double total=0.0;     // C
-    int taps=0;           // C
-    int changes=0;        // C
-    total = phaseA+phaseB+phaseC;
-    std::cout<<total<<","<<taps<<","<<changes<<"\n";
+    double bed=50.0;      // C
+    double nozzle=200.0;  // C
+    double target=210.0;  // C
+    double ramp=0.0;      // C
+    int alarms=0;         // C
+    int warns=0;          // C
+    ramp = target - nozzle; nozzle += 5.0;
+    std::cout<<bed<<","<<nozzle<<","<<target<<","<<ramp<<","<<alarms<<","<<warns<<"\n";
     return 0;
 }

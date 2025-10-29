@@ -1,11 +1,11 @@
-// Context: Autonomous taxi lane-merge negotiator
+// Context: Urban flood pump station capacity balancer
 
 #include <iostream>
 int main(){
-    float v=12.0F, gap=8.0F;         // NC
-    float intent=0.0F, accel=0.0F;    // NC
-    unsigned tries=0U, yield=0U;      // NC
-    intent = 0.6F; accel = 0.2F;
-    std::cout<<v<<","<<gap<<","<<intent<<","<<accel<<","<<tries<<","<<yield<<"\n";
+    double inflow=3.0, out=2.5;     // NC
+    float pumpA=0.0F, pumpB=0.0F;   // NC
+    unsigned steps=0U, alarms=0U;   // NC
+    pumpA += 0.2F; out += 0.1; steps++;
+    std::cout<<inflow<<","<<out<<","<<pumpA<<","<<pumpB<<","<<steps<<","<<alarms<<"\n";
     return 0;
 }

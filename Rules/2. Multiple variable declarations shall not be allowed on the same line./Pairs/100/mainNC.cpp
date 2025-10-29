@@ -1,29 +1,80 @@
-// Context: Urban flood pump station capacity balancer
+// Context: Oil refinery cracking tower monitor
 
 // ------ Non-Compliant Program (100_nc.cpp)
-// Groups multiple declarators per declaration (// NC) — violates 8-0-1.
+// Context: Oil refinery cracking tower monitor
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace pump_100 {
-    struct Station { double inflow; double out; }; // OK
-    static double clampd(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    double mean(const std::vector<double>& v){ return v.empty()?0.0:std::accumulate(v.begin(),v.end(),0.0)/static_cast<double>(v.size()); }
-    void balance(){
-        double inflow=3.0, out=2.5;             // NC
-        float pumpA=0.0F, pumpB=0.0F;           // NC
-        unsigned steps=0U, alarms=0U;           // NC
-        std::vector<double> rain{0.6,0.9,0.4,1.2,0.5,0.8};
-        for (std::size_t i=0;i<rain.size();++i){
-            inflow = clampd(inflow + rain[i]-0.3, 0.5, 6.0);
-            pumpA  = std::min(1.0F,std::max(0.0F, pumpA + static_cast<float>((inflow-out)*0.15)));
-            pumpB  = std::min(1.0F,std::max(0.0F, pumpB + static_cast<float>((inflow-out)*0.10)));
-            out    = clampd(out + static_cast<double>(pumpA)*0.5 + static_cast<double>(pumpB)*0.3, 0.0, 6.0);
-            if (inflow-out>2.0){ ++alarms; }
-            ++steps;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" in="<<inflow<<" out="<<out<<" A="<<pumpA<<" B="<<pumpB<<"\n"; }
+#include <iomanip>
+#include <string>
+#include <array>
+
+namespace mon_100 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float temp=450.0F, pressure=20.0F;             // NC
+        double throughput=0.0, efficiency=0.0;             // NC
+        unsigned trays=40U, alarms=0U;             // NC
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"steps="<<steps<<" alarms="<<alarms<<" rain_mean="<<mean(rain)<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ pump_100::balance(); return 0; }
+
+int main() {
+    mon_100::monitor();
+    return 0;
+}

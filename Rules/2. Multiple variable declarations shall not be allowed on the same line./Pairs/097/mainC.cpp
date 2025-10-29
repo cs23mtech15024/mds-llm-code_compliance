@@ -1,30 +1,78 @@
-// Context: Smart prosthetic knee gait stabilizer
+// Context: Slot machine payout calculator
 
 // ------ Compliant Program (097_c.cpp)
-// Compliant: single-declarator declarations across the file.
+// Context: Slot machine payout calculator
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
+#include <iomanip>
 #include <array>
+#include <cstddef>
 #include <cmath>
-namespace knee_097 {
-    struct Knee { float angle; float rate; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void stabilize(){
-        float angle=0.0F;                         // C
-        float rate=0.0F;                          // C
-        float target=15.0F;                       // C
-        float damp=0.2F;                          // C
-        unsigned steps=0U;                        // C
-        unsigned flags=0U;                        // C
-        std::array<float,10U> imu{1.1F,0.7F,-0.2F,0.9F,1.4F,-0.5F,0.3F,1.0F,0.6F,-0.1F};
-        for (std::size_t i=0;i<imu.size();++i){
-            float e = target - angle;
-            rate  = clampf(rate + 0.3F*e - 0.1F*damp, -4.0F, 4.0F);
-            angle = clampf(angle + 0.5F*rate + 0.2F*imu[i], -30.0F, 45.0F);
-            if (std::fabs(rate)>3.5F){ ++flags; }
-            ++steps;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" ang="<<angle<<" rate="<<rate<<"\n"; }
+
+namespace ctrl_097 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        unsigned credits=100U;                       // C
+        unsigned bet=5U;                       // C
+        float payoutRate=0.95F;                       // C
+        float jackpot=0.0F;                       // C
+        int spins=0;                       // C
+        int wins=0;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"steps="<<steps<<" flags="<<flags<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ knee_097::stabilize(); return 0; }
+
+int main() {
+    ctrl_097::execute();
+    return 0;
+}

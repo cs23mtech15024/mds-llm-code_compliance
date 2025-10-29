@@ -1,11 +1,11 @@
-// Context: Agricultural drone fertilization nozzle map
+// Context: Arctic research station power dispatcher
 
 #include <iostream>
 int main(){
-    float flowA=0.2F, flowB=0.2F;    // NC
-    unsigned cells=0U, faults=0U;    // NC
-    double scale=1.0, bias=0.0;      // NC
-    scale+=0.05; flowA+=0.01F;
-    std::cout<<flowA<<","<<flowB<<","<<cells<<","<<faults<<","<<scale<<","<<bias<<"\n";
+    double solar=1.2, wind=2.1;       // NC
+    float battery=0.6F, diesel=0.0F;  // NC
+    unsigned ticks=0U, alarms=0U;     // NC
+    solar += 0.1; wind -= 0.2; battery += 0.05F;
+    std::cout<<solar<<","<<wind<<","<<battery<<","<<diesel<<","<<ticks<<","<<alarms<<"\n";
     return 0;
 }

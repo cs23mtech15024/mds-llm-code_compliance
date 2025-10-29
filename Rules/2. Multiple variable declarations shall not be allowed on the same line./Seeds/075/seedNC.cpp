@@ -1,11 +1,11 @@
-// Context: Drone swarm perimeter sentry ring
+// Context: Insulin pump bolus calculator
 
 #include <iostream>
 int main(){
-    float r=50.0F, ang=0.0F;         // NC
-    float v=2.0F, turn=0.0F;         // NC
-    unsigned drones=6U, flags=0U;    // NC
-    ang += 0.2F; r += 0.5F;
-    std::cout<<r<<","<<ang<<","<<v<<","<<turn<<","<<drones<<","<<flags<<"\n";
+    float glucose=120.0F, target=100.0F;  // NC
+    float bolus=0.0F, basal=1.0F;         // NC
+    int deliveries=0, warnings=0;         // NC
+    bolus += 0.5F; deliveries++;
+    std::cout<<glucose<<","<<target<<","<<bolus<<","<<basal<<","<<deliveries<<","<<warnings<<"\n";
     return 0;
 }

@@ -1,31 +1,78 @@
-// Context: Chemical plant pH neutralization tank controller
+// Context: Chocolate tempering machine controller
 
 // ------ Compliant Program (096_c.cpp)
-// Compliant: one declarator per declaration (8-0-1).
+// Context: Chocolate tempering machine controller
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-#include <numeric>
-namespace neutral_096 {
-    struct Tank { double ph; double tgt; }; // OK
-    static double clampd(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    double mean(const std::vector<double>& v){ return v.empty()?0.0:std::accumulate(v.begin(),v.end(),0.0)/static_cast<double>(v.size()); }
-    void control(){
-        double ph=6.2;                             // C
-        double tgt=7.0;                            // C
-        float acid=0.0F;                            // C
-        float base=0.0F;                            // C
-        int adds=0;                                  // C
-        int alarms=0;                                // C
-        std::vector<double> dist{-0.1,0.2,0.3,-0.2,0.0,0.4};
-        for (std::size_t i=0;i<dist.size();++i){
-            ph = clampd(ph + dist[i], 5.0, 9.0);
-            base = std::min(1.0F,std::max(0.0F, base + static_cast<float>((tgt-ph)*0.1)));
-            acid = std::min(1.0F,std::max(0.0F, acid + static_cast<float>((ph-tgt)*0.1)));
-            if (ph<6.5 || ph>7.5){ alarms++; }
-            adds++;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" ph="<<ph<<" a="<<acid<<" b="<<base<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_096 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        float temp=31.5F;                       // C
+        float target=32.0F;                       // C
+        double viscosity=0.0;                       // C
+        double crystals=0.0;                       // C
+        int cycles=0;                       // C
+        int batches=0;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"adds="<<adds<<" alarms="<<alarms<<" mean="<<mean(dist)<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ neutral_096::control(); return 0; }
+
+int main() {
+    ctrl_096::execute();
+    return 0;
+}

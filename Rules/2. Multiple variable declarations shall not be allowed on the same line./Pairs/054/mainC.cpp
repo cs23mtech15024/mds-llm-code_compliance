@@ -1,28 +1,78 @@
-// Context: Automated dairy vacuum regulator
+// Context: Wind farm battery smoothing controller
 
 // ------ Compliant Program (054_c.cpp)
-// One declarator per declaration; identical control logic.
+// Context: Wind farm battery smoothing controller
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-namespace dairy_054 {
-    struct Vac { double kPa; double trim; }; // OK
-    void regulate(){
-        double vac=45.0;                        // C
-        double target=50.0;                     // C
-        float leak=0.0F;                        // C
-        float trim=0.0F;                        // C
-        int alarms=0;                            // C
-        int resets=0;                            // C
-        Vac v{vac,0.0};
-        for (int i=0;i<15;++i){
-            double e = target - v.kPa;
-            trim += static_cast<float>(e*0.02);
-            v.kPa += e*0.2 - static_cast<double>(leak);
-            if (v.kPa>55.0){ alarms++; }
-            if ((i%5)==0){ resets++; leak += 0.1F; }
-            if ((i%3)==0){ std::cout<<"i="<<i<<" kPa="<<v.kPa<<" trim="<<trim<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_054 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double p=3.5;                       // C
+        double tgt=4.0;                       // C
+        float soc=0.6F;                       // C
+        float rate=0.0F;                       // C
+        unsigned ticks=0U;                       // C
+        unsigned trips=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"A="<<alarms<<" R="<<resets<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ dairy_054::regulate(); return 0; }
+
+int main() {
+    ctrl_054::execute();
+    return 0;
+}

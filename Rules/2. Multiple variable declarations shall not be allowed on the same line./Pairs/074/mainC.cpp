@@ -1,31 +1,78 @@
-// Context: Smart dam spillway gate scheduler
+// Context: Weather balloon telemetry decoder
 
 // ------ Compliant Program (074_c.cpp)
-// Compliant: single declarator per declaration.
+// Context: Weather balloon telemetry decoder
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
+#include <iomanip>
 #include <array>
-#include <algorithm>
-namespace dam_074 {
-    struct Basin { double level; double set; }; // OK
-    static double clampd(double v,double lo,double hi){ return std::max(lo,std::min(hi,v)); }
-    void schedule(){
-        double level=7.2;                          // C
-        double set=6.8;                            // C
-        float open=0.0F;                           // C
-        float rate=0.0F;                           // C
-        int alerts=0;                              // C
-        int cycles=0;                              // C
-        std::array<double,8U> inflow{0.3,0.6,0.2,0.9,1.1,0.5,0.4,0.7};
-        for (std::size_t i=0;i<inflow.size();++i){
-            double err = level - set;
-            rate = static_cast<float>(clampd(rate + err*0.05, 0.0, 1.0));
-            open = std::min(1.0F, open + rate*0.1F);
-            level = clampd(level + inflow[i] - static_cast<double>(open)*0.8, 5.5, 9.5);
-            cycles++;
-            if (level>9.0){ alerts++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" level="<<level<<" open="<<open<<"\n"; }
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_074 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double altitude=0.0;                       // C
+        double temp=0.0;                       // C
+        float humidity=0.0F;                       // C
+        float pressure=1013.0F;                       // C
+        unsigned packets=0U;                       // C
+        unsigned lost=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"alerts="<<alerts<<" cycles="<<cycles<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ dam_074::schedule(); return 0; }
+
+int main() {
+    ctrl_074::execute();
+    return 0;
+}

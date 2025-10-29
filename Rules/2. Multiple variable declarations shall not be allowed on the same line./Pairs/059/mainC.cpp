@@ -1,30 +1,78 @@
-// Context: Smart city water leak localization
+// Context: Subsea pipeline leak rate estimator
 
 // ------ Compliant Program (059_c.cpp)
-// Compliant rewrite with one declarator per declaration.
+// Context: Subsea pipeline leak rate estimator
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
+#include <iomanip>
+#include <array>
+#include <cstddef>
 #include <cmath>
-namespace leak_059 {
-    struct Seg { double flow; double p; }; // OK
-    static double score(double f,double p,double thr){ return (f>thr)?(f-thr)*p:0.0; }
-    void localize(){
-        double flow=20.0;                        // C
-        double press=3.5;                        // C
-        float thr=0.5F;                          // C
-        float scoreAcc=0.0F;                     // C
-        int zones=4;                              // C
-        int alarms=0;                             // C
-        std::vector<double> F{19.8,20.6,21.1,20.2};
-        std::vector<double> P{3.5,3.4,3.3,3.6};
-        for (int i=0;i<zones;++i){
-            flow = F[i]; press = P[i];
-            double s = score(flow,press,static_cast<double>(thr));
-            if (s>0.8){ alarms++; }
-            scoreAcc = static_cast<float>(scoreAcc + s);
-            if ((i%2)==0){ std::cout<<"i="<<i<<" f="<<flow<<" p="<<press<<" s="<<s<<"\n"; }
+
+namespace ctrl_059 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double p1=120.0;                       // C
+        double p2=118.5;                       // C
+        float rate=0.0F;                       // C
+        float gain=0.4F;                       // C
+        unsigned ticks=0U;                       // C
+        unsigned alarms=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"alarms="<<alarms<<" score="<<scoreAcc<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ leak_059::localize(); return 0; }
+
+int main() {
+    ctrl_059::execute();
+    return 0;
+}

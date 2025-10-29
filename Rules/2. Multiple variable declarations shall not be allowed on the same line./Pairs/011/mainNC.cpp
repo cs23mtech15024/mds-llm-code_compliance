@@ -1,35 +1,75 @@
 // Context: Maritime autopilot heading hold
 
 // ------ Non-Compliant Program (011_nc.cpp)
-// Rule 8-0-1 violation: multiple declarators per declaration are used below.
+// Context: Maritime autopilot heading hold
+// MISRA C++ 8-0-1 violations: multiple declarators per declaration
 #include <iostream>
 #include <iomanip>
-#include <cmath>
 #include <array>
-namespace ship_011 {
-    struct State { double hdg; double rate; }; // OK
-    static double clamp(double v,double lo,double hi){ return v<lo?lo:(v>hi?hi:v); }
-    void run(){
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_011 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
         double heading=0.0, setpoint=90.0;        // NC
-        float kp=1.2F, ki=0.02F;                  // NC
-        int ticks=0, faults=0;                    // NC
-        State s{0.0,0.0};
-        const double dt=0.1;
-        std::array<double,8U> refs{85,88,90,92,90,89,91,90};
-        for (std::size_t i=0U;i<refs.size();++i){
-            setpoint = refs[i];
-            double err = setpoint - s.hdg;
-            static double integ=0.0; integ += err*dt;
-            double u = static_cast<double>(kp)*err + static_cast<double>(ki)*integ;
-            u = clamp(u,-10.0,10.0);
-            s.rate = u; s.hdg += s.rate*dt; ticks++;
-            if (std::fabs(err)>20.0){ faults++; }
-            if ((i%2U)==0U){
-                std::cout<<"i="<<i<<" hdg="<<std::fixed<<std::setprecision(1)<<s.hdg
-                         <<" sp="<<setpoint<<" u="<<u<<"\n";
+        float kp=1.2F, ki=0.02F;        // NC
+        int ticks=0, faults=0;        // NC
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
             }
         }
-        std::cout<<"ticks="<<ticks<<" faults="<<faults<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ ship_011::run(); return 0; }
+
+int main() {
+    ctrl_011::execute();
+    return 0;
+}

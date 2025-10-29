@@ -1,32 +1,78 @@
-// Context: Data center hot-aisle containment fan control
+// Context: Tokamak plasma diagnostic system
 
 // ------ Compliant Program (088_c.cpp)
-// Compliant: one declarator per declaration across the file.
+// Context: Tokamak plasma diagnostic system
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
-#include <vector>
-#include <algorithm>
-namespace dc_088 {
-    struct Air { double tin; double tout; }; // OK
-    static double clampd(double v,double lo,double hi){ return std::max(lo,std::min(hi,v)); }
-    void control(){
-        double tin=28.0;                         // C
-        double tout=32.0;                        // C
-        float fan=0.0F;                           // C
-        float damper=0.0F;                        // C
-        unsigned steps=0U;                        // C
-        unsigned trips=0U;                        // C
-        std::vector<double> heat{1.0,0.5,-0.2,1.2,0.3,-0.5,0.8};
-        for (std::size_t i=0;i<heat.size();++i){
-            double e = 29.0 - tin;
-            fan = std::min(1.0F,std::max(0.0F, fan + static_cast<float>(e*0.1)));
-            damper = std::min(1.0F,std::max(0.0F, damper + static_cast<float>((tin-tout)*0.05)));
-            tin  = clampd(tin + heat[i] - static_cast<double>(fan)*0.8, 24.0, 34.0);
-            tout = clampd(tout + 0.4 - static_cast<double>(damper)*0.6, 22.0, 35.0);
-            if (tin>33.0){ trips++; }
-            steps++;
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" tin="<<tin<<" fan="<<fan<<" d="<<damper<<"\n"; }
+#include <iomanip>
+#include <array>
+#include <cstddef>
+#include <cmath>
+
+namespace ctrl_088 {
+    struct ControlState {
+        float output;
+        float derivative;
+    }; // OK: struct members allowed
+    
+    static float clamp(float value, float min_val, float max_val) {
+        if (value < min_val) return min_val;
+        if (value > max_val) return max_val;
+        return value;
+    }
+    
+    static float compute_pid(float error, float kp, float ki, float kd,
+                            float integral, float derivative) {
+        return (kp * error) + (ki * integral) + (kd * derivative);
+    }
+    
+    void execute() {
+        double temperature=15000000.0;                       // C
+        double density=0.0;                       // C
+        float confinement=0.0F;                       // C
+        float beta=0.0F;                       // C
+        unsigned pulses=0U;                       // C
+        unsigned disruptions=0U;                       // C
+        ControlState state{0.0F, 0.0F};
+        const float dt = 0.01F;
+        const float target_value = 10.0F;
+        std::array<float,12U> setpoints{
+            9.0F, 9.5F, 10.0F, 10.5F, 11.0F, 10.5F,
+            10.0F, 9.5F, 9.0F, 9.5F, 10.0F, 10.5F
+        };
+        
+        float integral = 0.0F;
+        float prev_error = 0.0F;
+        
+        for (std::size_t i = 0U; i < setpoints.size(); ++i) {
+            float reference = setpoints[i];
+            float error = reference - state.output;
+            integral += error * dt;
+            float derivative = (error - prev_error) / dt;
+            prev_error = error;
+            
+            float control = compute_pid(error, 1.0F, 0.1F, 0.05F, 
+                                       integral, derivative);
+            control = clamp(control, -5.0F, 5.0F);
+            
+            state.output += control * dt;
+            state.derivative = derivative;
+            
+            if ((i % 3U) == 0U) {
+                std::cout << "step=" << i
+                         << " ref=" << std::fixed << std::setprecision(2) << reference
+                         << " out=" << state.output
+                         << " err=" << error
+                         << " ctrl=" << control
+                         << std::endl;
+            }
         }
-        std::cout<<"steps="<<steps<<" trips="<<trips<<"\n";
+        
+        std::cout << "Control loop completed. Final output=" << state.output << std::endl;
     }
 }
-int main(){ dc_088::control(); return 0; }
+
+int main() {
+    ctrl_088::execute();
+    return 0;
+}

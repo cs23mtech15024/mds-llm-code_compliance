@@ -1,30 +1,83 @@
-// Context: Warehouse picking robot joint limit supervisor
+// Context: Particle accelerator beam position monitor
 
 // ------ Compliant Program (067_c.cpp)
-// Single-declarator declarations everywhere (compliant with 8-0-1).
+// Context: Particle accelerator beam position monitor
+// MISRA C++ 8-0-1 compliant: one declarator per declaration
 #include <iostream>
+#include <iomanip>
+#include <string>
 #include <array>
-#include <algorithm>
-namespace joints_067 {
-    struct Joint { float q; float v; }; // OK
-    static float clampf(float v,float lo,float hi){ return std::max(lo,std::min(hi,v)); }
-    void supervise(){
-        float q1=0.0F;                            // C
-        float q2=0.0F;                            // C
-        float v1=0.0F;                            // C
-        float v2=0.0F;                            // C
-        unsigned trips=0U;                        // C
-        unsigned warns=0U;                        // C
-        std::array<float,8U> cmd{0.5F,0.4F,-0.3F,0.2F,0.6F,-0.7F,0.1F,0.0F};
-        for (std::size_t i=0;i<cmd.size();++i){
-            v1 = clampf(v1 + 0.1F*cmd[i], -1.0F, 1.0F);
-            v2 = clampf(v2 + 0.2F*cmd[i], -1.0F, 1.0F);
-            q1 = clampf(q1 + v1, -1.5F, 1.5F);
-            q2 = clampf(q2 + v2, -1.5F, 1.5F);
-            if (std::fabs(q1)>1.4F || std::fabs(q2)>1.4F){ trips++; }
-            if ((i%2U)==0U){ std::cout<<"i="<<i<<" q1="<<q1<<" q2="<<q2<<"\n"; }
+
+namespace mon_067 {
+    struct StatusEvent {
+        int event_id;
+        const char* description;
+        unsigned timestamp;
+    }; // OK
+    
+    static void log_event(const StatusEvent& evt) {
+        std::cout << "[LOG] t=" << evt.timestamp
+                 << " id=" << evt.event_id
+                 << " desc=" << evt.description
+                 << std::endl;
+    }
+    
+    static bool check_status(unsigned value, unsigned threshold) {
+        return value >= threshold;
+    }
+    
+    void monitor() {
+        float posX=0.0F;                       // C
+        float posY=0.0F;                       // C
+        double energy=1.5;                       // C
+        double intensity=0.0;                       // C
+        int shots=0;                       // C
+        int trips=0;                       // C
+        StatusEvent current_event{0, "system_init", 0U};
+        const unsigned check_interval = 5U;
+        const unsigned max_cycles = 20U;
+        std::array<unsigned,20U> sensor_data{
+            10U, 15U, 20U, 25U, 30U, 35U, 40U, 45U, 50U, 55U,
+            60U, 65U, 70U, 75U, 80U, 85U, 90U, 95U, 100U, 105U
+        };
+        
+        unsigned cycle_count = 0U;
+        unsigned alert_count = 0U;
+        
+        for (std::size_t i = 0U; i < sensor_data.size(); ++i) {
+            unsigned reading = sensor_data[i];
+            cycle_count++;
+            
+            if (check_status(reading, 50U)) {
+                alert_count++;
+                current_event = StatusEvent{1, "threshold_exceeded", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % check_interval) == 0U) {
+                current_event = StatusEvent{2, "periodic_check", cycle_count};
+                log_event(current_event);
+            }
+            
+            if (reading == 75U) {
+                current_event = StatusEvent{3, "milestone_reached", cycle_count};
+                log_event(current_event);
+            }
+            
+            if ((i % 4U) == 0U) {
+                std::cout << "cycle=" << cycle_count
+                         << " reading=" << reading
+                         << " alerts=" << alert_count
+                         << std::endl;
+            }
         }
-        std::cout<<"trips="<<trips<<" warns="<<warns<<"\n";
+        
+        std::cout << "Monitoring completed. Total cycles=" << cycle_count
+                 << " Total alerts=" << alert_count << std::endl;
     }
 }
-int main(){ joints_067::supervise(); return 0; }
+
+int main() {
+    mon_067::monitor();
+    return 0;
+}

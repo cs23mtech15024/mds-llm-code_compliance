@@ -1,14 +1,14 @@
-// Context: Electric scooter fleet charger balancer
+// Context: Holographic projector phase array
 
 #include <iostream>
 int main(){
-    unsigned plugs=12U;    // C
-    unsigned bays=6U;      // C
-    float load=0.0F;       // C
-    float bias=0.0F;       // C
-    int moves=0;           // C
-    int faults=0;          // C
-    load += 0.3F; bias += 0.05F;
-    std::cout<<plugs<<","<<bays<<","<<load<<","<<bias<<","<<moves<<","<<faults<<"\n";
+    float phaseX=0.0F;         // C
+    float phaseY=0.0F;         // C
+    float intensity=1.0F;      // C
+    float wavelength=532.0F;   // C
+    int pixels=1920;           // C
+    int lines=1080;            // C
+    phaseX += 0.1F; pixels++;
+    std::cout<<phaseX<<","<<phaseY<<","<<intensity<<","<<wavelength<<","<<pixels<<","<<lines<<"\n";
     return 0;
 }

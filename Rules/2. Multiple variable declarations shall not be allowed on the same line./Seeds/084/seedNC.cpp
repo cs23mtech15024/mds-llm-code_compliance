@@ -1,11 +1,11 @@
-// Context: High-speed rail pantograph contact monitor
+// Context: Electron microscope lens voltage controller
 
 #include <iostream>
 int main(){
-    float force=0.0F, rate=0.0F;    // NC
-    float thr=90.0F, margin=5.0F;   // NC
-    unsigned hits=0U, alarms=0U;    // NC
-    force += 4.0F; if(force>thr){ ++hits; }
-    std::cout<<force<<","<<rate<<","<<thr<<","<<margin<<","<<hits<<","<<alarms<<"\n";
+    double voltage=200000.0, current=0.0; // NC
+    float focus=0.0F, stigX=0.0F, stigY=0.0F; // NC
+    int images=0, calibrations=0;         // NC
+    voltage += 100.0; images++;
+    std::cout<<voltage<<","<<current<<","<<focus<<","<<stigX<<","<<stigY<<","<<images<<","<<calibrations<<"\n";
     return 0;
 }

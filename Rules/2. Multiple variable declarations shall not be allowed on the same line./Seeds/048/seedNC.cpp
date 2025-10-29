@@ -1,11 +1,11 @@
-// Context: Wind farm wake interaction analyzer
+// Context: Mountain tunnel ventilation controller
 
 #include <iostream>
 int main(){
-    double v1=9.0, v2=8.5;           // NC
-    float kd=0.05F, ct=0.8F;         // NC
-    int rows=2, cols=3;              // NC
-    v2 -= 0.2; ct -= 0.01F;
-    std::cout<<v1<<","<<v2<<","<<kd<<","<<ct<<","<<rows<<","<<cols<<"\n";
+    float co=3.0F, nox=0.5F;         // NC
+    float fan=0.0F, damper=0.0F;     // NC
+    unsigned t=0U, alarms=0U;        // NC
+    fan += 0.2F; damper += 0.1F;
+    std::cout<<co<<","<<nox<<","<<fan<<","<<damper<<","<<t<<","<<alarms<<"\n";
     return 0;
 }
