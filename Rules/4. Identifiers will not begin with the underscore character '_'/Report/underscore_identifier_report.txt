@@ -1,0 +1,908 @@
+
+======================================================================
+MISRA C++ UNDERSCORE IDENTIFIER RULE CHECKER
+======================================================================
+Rule: Identifiers will not begin with the underscore character '_'
+File Type: main (mainNC.cpp, mainC.cpp)
+Generated: 2025-11-05T17:26:38.873757
+
+===================================================================
+
+RULE DESCRIPTION:
+-----------------
+Identifiers (variables, functions, parameters, members) should not begin
+with an underscore character as these are typically reserved for system
+and compiler implementations.
+
+Examples:
+  ✓ Compliant:
+    int counter;
+    void processData();
+    int myVariable;
+
+  ✗ Non-compliant:
+    int _counter;       // Variable starts with underscore
+    void _process();    // Function starts with underscore
+    int _value;         // Parameter starts with underscore
+
+===================================================================
+
+STATISTICS:
+-----------
+Total identifiers found: 3696
+Total violations (identifiers starting with '_'): 553
+Violations in mainNC.cpp files: 553
+Violations in mainC.cpp files: 0
+
+===================================================================
+
+NON-COMPLIANT FILES (mainNC.cpp):
+Expected violations - these files should contain identifiers starting with '_'
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _limit
+    Line 19 | parameter: _watchdog_ms
+    Line 19 | function: _emit
+    Line 23 | function: _scan
+    Line 23 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 13 | function: _clip
+    Line 21 | function: _Filter
+    Line 23 | function: _setAlpha
+    Line 25 | function: _apply_filter
+    Line 31 | member: _alpha
+    Line 34 | function: _scan
+    Line 34 | parameter: _in
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clipQ
+    Line 19 | function: _emit
+    Line 19 | parameter: _q_factor
+    Line 24 | parameter: _v
+    Line 24 | function: _scan
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _hold_ms
+    Line 19 | function: _emit
+    Line 23 | function: _demo
+    Line 23 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _release_ms
+    Line 19 | function: _emit
+    Line 24 | parameter: _vals
+    Line 24 | function: _run
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _apply
+    Line 13 | parameter: _hysteresis
+    Line 21 | function: _scan
+    Line 21 | parameter: _vals
+    Line 21 | parameter: _hysteresis
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 12 | function: _clipF
+    Line 18 | function: _set
+    Line 18 | parameter: _decim_factor
+    Line 22 | parameter: _f
+    Line 22 | function: _demo
+    Line 23 | variable: _decim_factor
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 13 | parameter: _lost
+    Line 13 | function: _pct
+    Line 13 | parameter: _sent
+    Line 18 | function: _show
+    Line 18 | parameter: _cases
+    Line 20 | variable: _sent
+    Line 21 | variable: _lost
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | function: _emit
+    Line 19 | parameter: _jitter_ms
+    Line 24 | parameter: _vals
+    Line 24 | function: _run
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clipHz
+    Line 19 | function: _set_bandwidth
+    Line 19 | parameter: _bw_hz
+    Line 24 | parameter: _vals
+    Line 24 | function: _run
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | parameter: _output_min
+    Line 13 | function: _lift
+    Line 21 | function: _scan
+    Line 21 | parameter: _output_min
+    Line 21 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | parameter: _prev_error
+    Line 13 | function: _deriv
+    Line 18 | parameter: _errors
+    Line 18 | function: _run
+    Line 19 | variable: _prev_error
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _apply
+    Line 15 | parameter: _gain
+    Line 15 | function: _print
+    Line 20 | parameter: _gains
+    Line 20 | function: _sweep
+
+  File: mainNC.cpp
+  Found 8 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _setpoint
+    Line 19 | function: _set
+    Line 23 | parameter: _setpoint
+    Line 23 | function: _print
+    Line 28 | function: _demo
+    Line 28 | parameter: _vals
+    Line 29 | variable: _setpoint
+
+  File: mainNC.cpp
+  Found 11 violation(s):
+    Line 22 | function: _isLettersOnly
+    Line 29 | function: _isAmountValid
+    Line 35 | function: _Processor
+    Line 38 | function: _run
+    Line 47 | member: _recs
+    Line 47 | variable: _recs
+    Line 49 | function: _filterValid
+    Line 60 | function: _log
+    Line 61 | variable: _valid_count
+    Line 69 | function: _avg
+    Line 71 | variable: _total
+
+  File: mainNC.cpp
+  Found 9 violation(s):
+    Line 13 | function: _sanitize
+    Line 19 | parameter: _min
+    Line 19 | function: _in_range
+    Line 19 | parameter: _val
+    Line 19 | parameter: _max
+    Line 26 | parameter: _vals
+    Line 26 | parameter: _max
+    Line 26 | function: _report
+    Line 26 | parameter: _min
+
+  File: mainNC.cpp
+  Found 2 violation(s):
+    Line 12 | function: _loop
+    Line 13 | variable: _iteration
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _limit
+    Line 19 | parameter: _altitude_m
+    Line 19 | function: _comp
+    Line 24 | parameter: _alts
+    Line 24 | function: _report
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 11 | function: _scale
+    Line 15 | parameter: _c
+    Line 15 | function: _celsius_to_fahrenheit
+    Line 19 | parameter: _vals
+    Line 19 | function: _report
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _attack_ms
+    Line 19 | function: _emit
+    Line 24 | function: _run
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 12 | function: _inc
+    Line 16 | parameter: _sequence_num
+    Line 16 | function: _print
+    Line 24 | variable: _sequence_num
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _sanitizeSize
+    Line 19 | function: _hash_index
+    Line 24 | function: _batch
+    Line 24 | parameter: _keys
+    Line 24 | parameter: _size
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 12 | function: _limit
+    Line 18 | function: _set
+    Line 18 | parameter: _queue_capacity
+    Line 23 | parameter: _queue_capacity
+    Line 23 | function: _sweep
+    Line 31 | variable: _queue_capacity
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _clip
+    Line 19 | function: _add
+    Line 19 | parameter: _step_count
+    Line 24 | parameter: _deltas
+    Line 24 | function: _run
+    Line 25 | variable: _step_count
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _clip_hz
+    Line 19 | parameter: _center_hz
+    Line 19 | function: _set_center
+    Line 23 | function: _demo
+    Line 23 | parameter: _vals
+    Line 24 | variable: _center_hz
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 12 | parameter: _packet_ptr
+    Line 12 | function: _fillHeader
+    Line 17 | function: _checksum
+    Line 17 | parameter: _packet_ptr
+    Line 28 | variable: _packet_ptr
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 12 | function: _wrap
+    Line 18 | parameter: _write_ptr
+    Line 18 | function: _advance
+    Line 22 | function: _simulate
+    Line 23 | variable: _write_ptr
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 13 | function: _clampNonNeg
+    Line 20 | function: _FrameCounter
+    Line 22 | function: _increment_frame
+    Line 26 | function: _value
+    Line 31 | member: _count
+    Line 34 | parameter: _steps
+    Line 34 | function: _simulate
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _clipPri
+    Line 19 | parameter: _priority
+    Line 19 | function: _set
+    Line 23 | function: _demo
+    Line 23 | parameter: _vals
+    Line 24 | variable: _priority
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _limit
+    Line 19 | function: _show
+    Line 19 | parameter: _kp
+    Line 24 | function: _scan
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _xorAll
+    Line 13 | parameter: _data
+    Line 19 | parameter: _check
+    Line 19 | function: _verify_checksum
+    Line 19 | parameter: _data
+    Line 23 | function: _demo
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 14 | function: _clipOdd
+    Line 21 | function: _median
+    Line 27 | function: _run
+    Line 27 | parameter: _window_size
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _debounce_ms
+    Line 19 | function: _report
+    Line 23 | function: _scan
+    Line 23 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 13 | function: _safeMul
+    Line 21 | parameter: _fps
+    Line 21 | function: _bitrate
+    Line 21 | parameter: _width
+    Line 21 | parameter: _height
+    Line 27 | function: _show
+    Line 27 | parameter: _cases
+    Line 29 | variable: _width
+    Line 30 | variable: _height
+    Line 31 | variable: _fps
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 11 | function: _mul60
+    Line 15 | parameter: _freq
+    Line 15 | function: _calculate_rpm
+    Line 19 | function: _report
+    Line 19 | parameter: _freqs
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 12 | function: _sanitize
+    Line 18 | function: _print
+    Line 18 | parameter: _block_size
+    Line 22 | function: _demo
+    Line 22 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 12 | function: _sanitize
+    Line 18 | function: _print_ms
+    Line 18 | parameter: _interval_ms
+    Line 27 | variable: _interval_ms
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | function: _check_velocity_limit
+    Line 25 | function: _scan
+    Line 25 | parameter: _v
+    Line 25 | parameter: _limit
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 14 | function: _clip8
+    Line 20 | function: _normalize
+    Line 20 | parameter: _luma
+    Line 24 | parameter: _raw
+    Line 24 | function: _scan
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 13 | function: _max3
+    Line 18 | function: _rgb_to_hsv
+    Line 18 | parameter: _b
+    Line 18 | parameter: _r
+    Line 18 | parameter: _g
+    Line 23 | parameter: _v
+    Line 23 | function: _samples
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _sanitize
+    Line 19 | function: _printAlloc
+    Line 19 | parameter: _buffer_size
+    Line 24 | function: _batch
+    Line 24 | parameter: _sizes
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 18 | function: _name
+    Line 20 | variable: _State
+    Line 26 | function: _print
+    Line 26 | parameter: _current_state
+    Line 27 | variable: _State
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _safe
+    Line 18 | parameter: _carrier
+    Line 18 | parameter: _modulation
+    Line 18 | function: _index
+    Line 23 | parameter: _pairs
+    Line 23 | function: _scan
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 12 | function: _sanitize
+    Line 18 | function: _showLen
+    Line 18 | parameter: _impulse_len
+    Line 22 | parameter: _vals
+    Line 22 | function: _batch
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 13 | function: _ConnPool
+    Line 15 | function: _open
+    Line 16 | function: _close
+    Line 17 | function: _count
+    Line 20 | member: _active
+    Line 23 | parameter: _p
+    Line 23 | function: _simulate
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 19 | function: _validId
+    Line 23 | function: _applyOffset
+    Line 23 | parameter: _calibration_offset
+    Line 29 | function: _Analyzer
+    Line 31 | function: _mean
+    Line 38 | function: _print
+    Line 49 | variable: _calibration_offset
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _wrap
+    Line 19 | function: _print
+    Line 19 | parameter: _phase_deg
+    Line 24 | function: _run
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _clip8
+    Line 19 | function: _calc_duty_cycle
+    Line 24 | function: _show
+    Line 24 | parameter: _p
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 13 | function: _mul
+    Line 15 | function: _scale_pressure
+    Line 15 | parameter: _factor
+    Line 15 | parameter: _raw
+    Line 19 | function: _show
+    Line 19 | parameter: _factor
+    Line 19 | parameter: _raws
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _ms
+    Line 19 | function: _set_timeout
+    Line 24 | function: _batch
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clipOff
+    Line 19 | function: _transform_x
+    Line 23 | parameter: _xs
+    Line 23 | parameter: _off
+    Line 23 | function: _apply
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _limit
+    Line 13 | parameter: _output_max
+    Line 19 | parameter: _vals
+    Line 19 | parameter: _output_max
+    Line 19 | function: _scan
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _Rotator
+    Line 15 | function: _rotate
+    Line 16 | function: _rotateMany
+    Line 17 | function: _count
+    Line 20 | member: _rotation_count
+
+  File: mainNC.cpp
+  Found 8 violation(s):
+    Line 13 | function: _clamp01
+    Line 19 | parameter: _prev
+    Line 19 | function: _ema_update
+    Line 19 | parameter: _alpha
+    Line 19 | parameter: _new_val
+    Line 24 | parameter: _vals
+    Line 24 | parameter: _alpha
+    Line 24 | function: _process
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _wrap
+    Line 19 | parameter: _buffer_index
+    Line 19 | function: _advance
+    Line 23 | parameter: _size
+    Line 23 | function: _demo
+    Line 24 | variable: _buffer_index
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _absf
+    Line 15 | function: _detect_peak
+    Line 19 | parameter: _v
+    Line 19 | function: _scan
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _safeTime
+    Line 17 | function: _calc_slew_rate
+    Line 21 | parameter: _cases
+    Line 21 | function: _table
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | parameter: _value
+    Line 13 | function: _limit_bandwidth
+    Line 13 | parameter: _max_bw
+    Line 17 | function: _scan
+    Line 17 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _bound
+    Line 19 | parameter: _ki
+    Line 19 | function: _show
+    Line 24 | function: _scan
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip01
+    Line 19 | function: _show
+    Line 19 | parameter: _alpha
+    Line 24 | parameter: _vals
+    Line 24 | function: _scan
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _sanitize
+    Line 19 | parameter: _lock_timeout
+    Line 19 | function: _show
+    Line 23 | parameter: _vals
+    Line 23 | function: _scan
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _limit
+    Line 19 | parameter: _ff_gain
+    Line 19 | function: _emit
+    Line 24 | function: _scan
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _rev
+    Line 18 | parameter: _encoder_ticks
+    Line 18 | function: _print
+    Line 24 | function: _batch
+    Line 24 | parameter: _v
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 11 | function: _clip255
+    Line 17 | parameter: _threshold
+    Line 17 | function: _apply_threshold
+    Line 21 | parameter: _threshold
+    Line 21 | function: _process
+    Line 21 | parameter: _pixels
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _sanBits
+    Line 19 | parameter: _bits
+    Line 19 | function: _calc_q_step
+    Line 24 | parameter: _vals
+    Line 24 | function: _table
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _is_error
+    Line 17 | function: _report
+    Line 17 | parameter: _codes
+    Line 23 | parameter: _s
+    Line 23 | function: _parse
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 11 | function: _clip8
+    Line 17 | function: _print_brightness
+    Line 17 | parameter: _brightness
+    Line 26 | variable: _brightness
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _k
+    Line 15 | parameter: _degrees
+    Line 15 | function: _deg_to_rad
+    Line 19 | parameter: _d
+    Line 19 | function: _table
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 12 | function: _bound
+    Line 18 | parameter: _worker_threads
+    Line 18 | function: _set
+    Line 23 | parameter: _worker_threads
+    Line 23 | function: _sweep
+    Line 31 | variable: _worker_threads
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _boundKB
+    Line 19 | function: _allocate_stack
+    Line 19 | parameter: _size_kb
+    Line 24 | parameter: _vals
+    Line 24 | function: _demo
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | function: _printDepth
+    Line 19 | parameter: _queue_depth
+    Line 23 | function: _replay
+    Line 23 | parameter: _depths
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _clip01
+    Line 19 | function: _apply
+    Line 19 | parameter: _deadband
+    Line 26 | parameter: _vals
+    Line 26 | function: _scan
+    Line 26 | parameter: _deadband
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 12 | function: _clipRate
+    Line 18 | parameter: _duration
+    Line 18 | function: _samplesFor
+    Line 18 | parameter: _sample_rate
+    Line 22 | parameter: _sample_rate
+    Line 22 | function: _report
+    Line 22 | parameter: _durs
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _kd
+    Line 19 | function: _show
+    Line 24 | function: _scan
+    Line 24 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 11 | function: _print
+    Line 11 | parameter: _longitude
+    Line 11 | parameter: _latitude
+    Line 15 | function: _valid
+    Line 23 | variable: _latitude
+    Line 24 | variable: _longitude
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _clamp
+    Line 19 | parameter: _error_sum
+    Line 19 | function: _accumulate
+    Line 24 | function: _run
+    Line 24 | parameter: _samples
+    Line 25 | variable: _error_sum
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _sanitize
+    Line 18 | parameter: _event_time
+    Line 18 | function: _record
+    Line 22 | parameter: _event_time
+    Line 22 | function: _print
+    Line 30 | variable: _event_time
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _sanitize
+    Line 19 | function: _apply
+    Line 19 | parameter: _sample_time
+    Line 24 | parameter: _vals
+    Line 24 | function: _scan
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _allocate_memory
+    Line 13 | parameter: _size
+    Line 22 | function: _demo
+    Line 22 | parameter: _sizes
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 15 | parameter: _freq_hz
+    Line 15 | function: _set_crossover
+    Line 23 | function: _demo
+    Line 23 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _tf
+    Line 17 | function: _report
+    Line 17 | parameter: _isr_triggered
+    Line 21 | parameter: _seq
+    Line 21 | function: _scan
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _event_bit
+    Line 19 | function: _emit
+    Line 23 | parameter: _bits
+    Line 23 | function: _scan
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 15 | parameter: _coef
+    Line 15 | function: _set_damping
+    Line 23 | parameter: _vals
+    Line 23 | function: _demo
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _clip
+    Line 19 | parameter: _task_id
+    Line 19 | parameter: _prio
+    Line 19 | function: _set_task_priority
+    Line 23 | function: _batch
+    Line 23 | parameter: _pairs
+
+  File: mainNC.cpp
+  Found 8 violation(s):
+    Line 13 | function: _validDiv
+    Line 18 | parameter: _divisor
+    Line 18 | function: _compute_out
+    Line 18 | parameter: _input_freq
+    Line 22 | function: _print
+    Line 22 | parameter: _cases
+    Line 24 | variable: _input_freq
+    Line 25 | variable: _divisor
+
+  File: mainNC.cpp
+  Found 15 violation(s):
+    Line 13 | function: _sq
+    Line 15 | parameter: _y2
+    Line 15 | function: _dist2
+    Line 15 | parameter: _x1
+    Line 15 | parameter: _x2
+    Line 15 | parameter: _y1
+    Line 19 | parameter: _x2
+    Line 19 | parameter: _y1
+    Line 19 | function: _print
+    Line 19 | parameter: _x1
+    Line 19 | parameter: _y2
+    Line 28 | variable: _x1
+    Line 29 | variable: _y1
+    Line 30 | variable: _x2
+    Line 31 | variable: _y2
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 11 | function: _get_array_size
+    Line 15 | function: _demo
+    Line 15 | parameter: _v
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _clipLong
+    Line 20 | function: _calc_delta
+    Line 26 | parameter: _cases
+    Line 26 | function: _test
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 12 | function: _add
+    Line 14 | function: _bump
+    Line 14 | parameter: _retry_count
+    Line 18 | parameter: _ops
+    Line 18 | function: _run
+    Line 19 | variable: _retry_count
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 12 | function: _bound
+    Line 18 | function: _init
+    Line 18 | parameter: _sem_count
+    Line 22 | parameter: _vals
+    Line 22 | function: _demo
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 14 | function: _scramble
+    Line 20 | parameter: _data
+    Line 20 | function: _compute_crc
+    Line 25 | parameter: _v
+    Line 25 | function: _printSeq
+
+  File: mainNC.cpp
+  Found 3 violation(s):
+    Line 12 | function: _is_valid_transition
+    Line 16 | function: _scan
+    Line 16 | parameter: _pairs
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 14 | function: _sanitizeBits
+    Line 20 | function: _create_mask
+    Line 20 | parameter: _bits
+    Line 26 | function: _table
+    Line 26 | parameter: _vals
+
+  File: mainNC.cpp
+  Found 7 violation(s):
+    Line 15 | member: _voltage
+    Line 16 | member: _current
+    Line 19 | function: _power
+    Line 23 | function: _inRange
+    Line 27 | parameter: _v
+    Line 27 | function: _print
+    Line 37 | function: _filter
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _check_heartbeat
+    Line 13 | parameter: _interval
+    Line 17 | parameter: _vals
+    Line 17 | function: _scan
+
+  File: mainNC.cpp
+  Found 10 violation(s):
+    Line 14 | function: _sq
+    Line 16 | parameter: _z
+    Line 16 | function: _magsq
+    Line 16 | parameter: _x
+    Line 16 | parameter: _y
+    Line 20 | function: _show
+    Line 20 | parameter: _v
+    Line 22 | variable: _x
+    Line 23 | variable: _y
+    Line 24 | variable: _z
+
+  File: mainNC.cpp
+  Found 5 violation(s):
+    Line 13 | function: _protect
+    Line 18 | parameter: _hz
+    Line 18 | function: _analyze_freq
+    Line 23 | function: _table
+    Line 23 | parameter: _hzs
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _sanitize
+    Line 19 | parameter: _resource_count
+    Line 19 | function: _accumulate
+    Line 31 | variable: _resource_count
+
+  File: mainNC.cpp
+  Found 4 violation(s):
+    Line 13 | function: _clamp
+    Line 19 | function: _saturate
+    Line 23 | parameter: _v
+    Line 23 | function: _scan
+
+  File: mainNC.cpp
+  Found 6 violation(s):
+    Line 13 | function: _limit
+    Line 19 | function: _weight
+    Line 19 | parameter: _calibration
+    Line 23 | function: _table
+    Line 23 | parameter: _raws
+    Line 23 | parameter: _calibration
+
+===================================================================
+
+COMPLIANT FILES CHECK (mainC.cpp):
+Should have 0 violations
+-------------------------------------------------------------------
+  ✓ No violations found - all compliant files are correct
+
+===================================================================
+
+SUMMARY:
+--------
+✓ PASS: All mainC.cpp files are compliant
+✓ mainNC.cpp files contain 553 violations (expected)
+
+===================================================================
