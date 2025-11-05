@@ -1,0 +1,429 @@
+import scala.io.Source
+import java.io.{File, PrintWriter}
+import scala.util.Try
+
+println("[*] Starting hexadecimal uppercase violation check...")
+
+val jsonlPath = "/Users/sumandey/Desktop/IITH/Classes/Sem 5/primevul data/Joern Analysis/primevul_test_paired.jsonl"
+val outputPath = "/Users/sumandey/Desktop/hex_violations_output.json"
+val tempDir = "/tmp/joern_hex_check"
+
+new File(tempDir).mkdirs()
+
+val hexLowercasePattern = """0[xX][0-9a-fA-F]*[a-f]+[0-9a-fA-F]*""".r
+
+var processedCount = 0
+var violationCount = 0
+var errorCount = 0
+
+def extractFunc(line: String): Option[String] = {
+  val startIdx = line.indexOf("\"func\": \"")
+  if (startIdx < 0) return None
+  val funcStart = startIdx + 9
+  val endIdx = line.indexOf("\", \"func_hash\"", funcStart)
+  if (endIdx < 0) return None
+  val funcEscaped = line.substring(funcStart, endIdx)
+  val funcCode = funcEscaped.replace("\\n", "\n").replace("\\t", "\t").replace("\\\"", "\"").replace("\\\\", "\\").replace("\\r", "\r")
+  Some(funcCode)
+}
+
+def extractJsonNumber(line: String, field: String): Option[String] = {
+  val pattern = s""""$field":\\s*(\\d+)""".r
+  pattern.findFirstMatchIn(line).map(_.group(1))
+}
+
+def extractJsonField(line: String, field: String): Option[String] = {
+  val pattern = s""""$field":\\s*"([^"]*?)"""".r
+  pattern.findFirstMatchIn(line).map(_.group(1))
+}
+
+def escapeJson(s: String): String = {
+  s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+}
+
+println("[*] Loading JSONL file...")
+val lines = Source.fromFile(jsonlPath).getLines().toList
+val totalEntries = lines.size
+println(s"[*] Total entries to process: $totalEntries")
+println("[*] Starting processing...")
+
+val results = scala.collection.mutable.Map[String, String]()
+
+val startTime = System.currentTimeMillis()
+
+lines.zipWithIndex.foreach { case (line, index) =>
+  Try {
+    val idx = extractJsonNumber(line, "idx").getOrElse("unknown")
+    val project = extractJsonField(line, "project").getOrElse("unknown")
+    val cve = extractJsonField(line, "cve").getOrElse("N/A")
+    val target = extractJsonNumber(line, "target").getOrElse("1")
+    val fileName = extractJsonField(line, "file_name").getOrElse("unknown")
+    val status = if (target == "0") "COMPLIANT" else "VULNERABLE"
+    
+    extractFunc(line).foreach { funcCode =>
+      processedCount += 1
+      
+      // Progress tracker - show every 10 entries
+      if (processedCount % 10 == 0 || processedCount == 1) {
+        val progress = (processedCount.toDouble / totalEntries * 100).formatted("%.1f")
+        val elapsed = (System.currentTimeMillis() - startTime) / 1000.0
+        val rate = if (elapsed > 0) (processedCount / elapsed).formatted("%.2f") else "0"
+        val eta = if (processedCount > 0 && elapsed > 0) {
+          val remaining = totalEntries - processedCount
+          val etaSeconds = (remaining / (processedCount / elapsed)).toInt
+          val etaMin = etaSeconds / 60
+          val etaSec = etaSeconds % 60
+          s"${etaMin}m ${etaSec}s"
+        } else "calculating..."
+        
+        println(s"[*] Progress: $processedCount/$totalEntries ($progress%) | Violations: $violationCount | Errors: $errorCount | Rate: ${rate}/sec | ETA: $eta")
+      }
+      
+      val tempFile = new File(s"$tempDir/sample_${idx}.c")
+      val tempWriter = new PrintWriter(tempFile)
+      tempWriter.write(funcCode)
+      tempWriter.close()
+      
+      Try {
+        importCode(tempFile.getAbsolutePath)
+        
+        val violations = cpg.literal
+          .code("0[xX].*")
+          .filter { lit => hexLowercasePattern.findFirstIn(lit.code).isDefined }
+          .map { lit => 
+            val lineNum = lit.lineNumber.getOrElse(-1)
+            val code = lit.code
+            val context = if (lineNum > 0) {
+              val sourceLines = funcCode.split("\n")
+              if (lineNum <= sourceLines.length) sourceLines(lineNum - 1).trim else ""
+            } else ""
+            Map("line" -> lineNum, "hex_value" -> code, "context" -> context)
+          }
+          .l
+        
+        if (violations.nonEmpty) {
+          violationCount += 1
+          
+          val violationsJson = violations.map { v =>
+            s"""{"line": ${v("line")}, "hex_value": "${v("hex_value")}", "context": "${escapeJson(v("context").toString)}"}"""
+          }.mkString(", ")
+          
+          val entryJson = s"""{
+    "idx": $idx,
+    "project": "$project",
+    "file_name": "$fileName",
+    "cve": "$cve",
+    "status": "$status",
+    "violation_count": ${violations.size},
+    "violations": [$violationsJson]
+  }"""
+          
+          results(idx) = entryJson
+        }
+        
+        workspace.reset
+        
+      }.recover { case e: Exception => 
+        errorCount += 1
+        if (errorCount <= 5) { 
+          println(s"[!] Error processing IDX $idx: ${e.getMessage}") 
+        }
+      }
+      
+      tempFile.delete()
+    }
+  }.recover { case e: Exception => errorCount += 1 }
+}
+
+val totalTime = (System.currentTimeMillis() - startTime) / 1000.0
+println(s"\n[*] Processing complete in ${totalTime.formatted("%.1f")} seconds")
+
+val writer = new PrintWriter(new File(outputPath))
+writer.println("{")
+writer.println(s"""  "metadata": {""")
+writer.println(s"""    "generated": "${java.time.LocalDateTime.now()}",""")
+writer.println(s"""    "total_processed": $processedCount,""")
+writer.println(s"""    "entries_with_violations": $violationCount,""")
+writer.println(s"""    "errors": $errorCount,""")
+writer.println(s"""    "processing_time_seconds": ${totalTime.formatted("%.1f")}""")
+writer.println(s"""  },""")
+writer.println(s"""  "violations": {""")
+
+val entries = results.toList
+entries.zipWithIndex.foreach { case ((idx, json), i) =>
+  writer.print(s"""    "$idx": $json""")
+  if (i < entries.size - 1) writer.println(",") else writer.println()
+}
+
+writer.println(s"""  }""")
+writer.println("}")
+writer.close()
+
+println(s"\n[*] Analysis complete!")
+println(s"[*] Processed: $processedCount entries")
+println(s"[*] Found violations in: $violationCount entries")
+println(s"[*] Errors: $errorCount")
+println(s"[*] Results saved to: $outputPath")
+
+Try { new File(tempDir).listFiles().foreach(_.delete()); new File(tempDir).delete() }
+
+println("[*] Done!")
+
+
+---------------------------------------------
+
+import scala.io.Source
+import java.io.{File, PrintWriter}
+import scala.util.Try
+
+println("[*] Starting underscore identifier violation check (with filtering)...")
+
+val jsonlPath = "/Users/sumandey/Desktop/IITH/Classes/Sem 5/primevul data/Joern Analysis/primevul_test_paired.jsonl"
+val outputPath = "/Users/sumandey/Desktop/IITH/Classes/Sem 5/mds-llm-code_compliance/Rules/4. Identifiers will not begin with the underscore character '_'/underscore_violations_output.json"
+val tempDir = "/tmp/joern_underscore_check"
+
+new File(tempDir).mkdirs()
+
+// Pattern to match identifiers starting with underscore
+val underscorePattern = """^_[a-zA-Z0-9_]+""".r
+
+// Exclusion lists for false positives
+val excludedBuiltins = Set(
+  "__func__", "__FUNCTION__", "__LINE__", "__FILE__", "__DATE__", "__TIME__",
+  "__PRETTY_FUNCTION__", "__STDC__", "__cplusplus"
+)
+
+val excludedKernelMacros = Set(
+  "_RET_IP_", "__GFP_ZERO", "__GFP_NOWARN", "__GFP_NORETRY", "__GFP_COMP",
+  "__user", "__kernel", "__iomem", "__force", "__bitwise", "__rcu"
+)
+
+val excludedSystemTypes = Set(
+  "__be16", "__be32", "__be64", "__le16", "__le32", "__le64",
+  "__u8", "__u16", "__u32", "__u64", "__s8", "__s16", "__s32", "__s64",
+  "__int8", "__int16", "__int32", "__int64"
+)
+
+val excludedSystemConstants = Set(
+  "_O_BINARY", "_O_TEXT", "_O_RDONLY", "_O_WRONLY", "_O_RDWR",
+  "__GLOB_FLAGS", "_SC_PAGESIZE", "_PC_PATH_MAX"
+)
+
+// Pattern-based exclusions (regex patterns for common conventions)
+val excludedPatterns = List(
+  """^__[a-z]+[a-z0-9_]*$""".r,  // Double underscore prefix (kernel internal functions)
+  """^_[A-Z][A-Z0-9_]*$""".r,    // _UPPERCASE (typically macros/constants)
+  """^__[A-Z][A-Z0-9_]*$""".r    // __UPPERCASE (system macros)
+)
+
+def isExcluded(identifier: String): Boolean = {
+  // Check exact matches
+  if (excludedBuiltins.contains(identifier) ||
+      excludedKernelMacros.contains(identifier) ||
+      excludedSystemTypes.contains(identifier) ||
+      excludedSystemConstants.contains(identifier)) {
+    return true
+  }
+  
+  // Check pattern-based exclusions
+  if (excludedPatterns.exists(pattern => pattern.findFirstIn(identifier).isDefined)) {
+    return true
+  }
+  
+  // Exclude macro-generated identifiers (common patterns)
+  if (identifier.matches("^_[a-z]{1,4}$")) {  // Short like _tok, _i, _ret
+    return true
+  }
+  
+  false
+}
+
+var processedCount = 0
+var violationCount = 0
+var errorCount = 0
+var filteredCount = 0
+
+def extractFunc(line: String): Option[String] = {
+  val startIdx = line.indexOf("\"func\": \"")
+  if (startIdx < 0) return None
+  val funcStart = startIdx + 9
+  val endIdx = line.indexOf("\", \"func_hash\"", funcStart)
+  if (endIdx < 0) return None
+  val funcEscaped = line.substring(funcStart, endIdx)
+  val funcCode = funcEscaped.replace("\\n", "\n").replace("\\t", "\t").replace("\\\"", "\"").replace("\\\\", "\\").replace("\\r", "\r")
+  Some(funcCode)
+}
+
+def extractJsonNumber(line: String, field: String): Option[String] = {
+  val pattern = s""""$field":\\s*(\\d+)""".r
+  pattern.findFirstMatchIn(line).map(_.group(1))
+}
+
+def extractJsonField(line: String, field: String): Option[String] = {
+  val pattern = s""""$field":\\s*"([^"]*?)"""".r
+  pattern.findFirstMatchIn(line).map(_.group(1))
+}
+
+def escapeJson(s: String): String = {
+  s.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+}
+
+println("[*] Loading JSONL file...")
+val lines = Source.fromFile(jsonlPath).getLines().toList
+val totalEntries = lines.size
+println(s"[*] Total entries to process: $totalEntries")
+println("[*] Starting processing...")
+
+val results = scala.collection.mutable.Map[String, String]()
+
+val startTime = System.currentTimeMillis()
+
+lines.zipWithIndex.foreach { case (line, index) =>
+  Try {
+    val idx = extractJsonNumber(line, "idx").getOrElse("unknown")
+    val project = extractJsonField(line, "project").getOrElse("unknown")
+    val cve = extractJsonField(line, "cve").getOrElse("N/A")
+    val target = extractJsonNumber(line, "target").getOrElse("1")
+    val fileName = extractJsonField(line, "file_name").getOrElse("unknown")
+    val status = if (target == "0") "COMPLIANT" else "VULNERABLE"
+    
+    extractFunc(line).foreach { funcCode =>
+      processedCount += 1
+      
+      // Progress tracker - show every 10 entries
+      if (processedCount % 10 == 0 || processedCount == 1) {
+        val progress = (processedCount.toDouble / totalEntries * 100).formatted("%.1f")
+        val elapsed = (System.currentTimeMillis() - startTime) / 1000.0
+        val rate = if (elapsed > 0) (processedCount / elapsed).formatted("%.2f") else "0"
+        val eta = if (processedCount > 0 && elapsed > 0) {
+          val remaining = totalEntries - processedCount
+          val etaSeconds = (remaining / (processedCount / elapsed)).toInt
+          val etaMin = etaSeconds / 60
+          val etaSec = etaSeconds % 60
+          s"${etaMin}m ${etaSec}s"
+        } else "calculating..."
+        
+        println(s"[*] Progress: $processedCount/$totalEntries ($progress%) | Violations: $violationCount | Filtered: $filteredCount | Errors: $errorCount | Rate: ${rate}/sec | ETA: $eta")
+      }
+      
+      val tempFile = new File(s"$tempDir/sample_${idx}.c")
+      val tempWriter = new PrintWriter(tempFile)
+      tempWriter.write(funcCode)
+      tempWriter.close()
+      
+      Try {
+        importCode(tempFile.getAbsolutePath)
+        
+        // Find all identifiers (variables, parameters, functions) starting with underscore
+        val allViolations = (
+          cpg.identifier.name("_.*").l ++
+          cpg.parameter.name("_.*").l ++
+          cpg.local.name("_.*").l ++
+          cpg.method.name("_.*").isExternal(false).l
+        ).distinct.map { node =>
+          val name = node match {
+            case id: io.shiftleft.codepropertygraph.generated.nodes.Identifier => id.name
+            case param: io.shiftleft.codepropertygraph.generated.nodes.MethodParameterIn => param.name
+            case local: io.shiftleft.codepropertygraph.generated.nodes.Local => local.name
+            case method: io.shiftleft.codepropertygraph.generated.nodes.Method => method.name
+            case _ => "unknown"
+          }
+          
+          val lineNum = node.lineNumber.getOrElse(-1)
+          val nodeType = node match {
+            case _: io.shiftleft.codepropertygraph.generated.nodes.Identifier => "identifier"
+            case _: io.shiftleft.codepropertygraph.generated.nodes.MethodParameterIn => "parameter"
+            case _: io.shiftleft.codepropertygraph.generated.nodes.Local => "local_variable"
+            case _: io.shiftleft.codepropertygraph.generated.nodes.Method => "function"
+            case _ => "unknown"
+          }
+          
+          val context = if (lineNum > 0) {
+            val sourceLines = funcCode.split("\n")
+            if (lineNum <= sourceLines.length) sourceLines(lineNum - 1).trim else ""
+          } else ""
+          
+          (name, lineNum, nodeType, context)
+        }.filter { case (name, _, _, _) => 
+          // Only keep identifiers that match our underscore pattern
+          underscorePattern.findFirstIn(name).isDefined
+        }
+        
+        // Filter out false positives
+        val violations = allViolations.filterNot { case (name, _, _, _) =>
+          val excluded = isExcluded(name)
+          if (excluded) filteredCount += 1
+          excluded
+        }.map { case (name, lineNum, nodeType, context) =>
+          Map("line" -> lineNum, "identifier" -> name, "type" -> nodeType, "context" -> context)
+        }
+        
+        if (violations.nonEmpty) {
+          violationCount += 1
+          
+          val violationsJson = violations.map { v =>
+            s"""{"line": ${v("line")}, "identifier": "${v("identifier")}", "type": "${v("type")}", "context": "${escapeJson(v("context").toString)}"}"""
+          }.mkString(", ")
+          
+          val entryJson = s"""{
+    "idx": $idx,
+    "project": "$project",
+    "file_name": "$fileName",
+    "cve": "$cve",
+    "status": "$status",
+    "violation_count": ${violations.size},
+    "violations": [$violationsJson]
+  }"""
+          
+          results(idx) = entryJson
+        }
+        
+        workspace.reset
+        
+      }.recover { case e: Exception => 
+        errorCount += 1
+        if (errorCount <= 5) { 
+          println(s"[!] Error processing IDX $idx: ${e.getMessage}") 
+        }
+      }
+      
+      tempFile.delete()
+    }
+  }.recover { case e: Exception => errorCount += 1 }
+}
+
+val totalTime = (System.currentTimeMillis() - startTime) / 1000.0
+println(s"\n[*] Processing complete in ${totalTime.formatted("%.1f")} seconds")
+
+val writer = new PrintWriter(new File(outputPath))
+writer.println("{")
+writer.println(s"""  "metadata": {""")
+writer.println(s"""    "generated": "${java.time.LocalDateTime.now()}",""")
+writer.println(s"""    "total_processed": $processedCount,""")
+writer.println(s"""    "entries_with_violations": $violationCount,""")
+writer.println(s"""    "filtered_false_positives": $filteredCount,""")
+writer.println(s"""    "errors": $errorCount,""")
+writer.println(s"""    "processing_time_seconds": ${totalTime.formatted("%.1f")}""")
+writer.println(s"""  },""")
+writer.println(s"""  "violations": {""")
+
+val entries = results.toList
+entries.zipWithIndex.foreach { case ((idx, json), i) =>
+  writer.print(s"""    "$idx": $json""")
+  if (i < entries.size - 1) writer.println(",") else writer.println()
+}
+
+writer.println(s"""  }""")
+writer.println("}")
+writer.close()
+
+println(s"\n[*] Analysis complete!")
+println(s"[*] Processed: $processedCount entries")
+println(s"[*] Found violations in: $violationCount entries")
+println(s"[*] Filtered false positives: $filteredCount")
+println(s"[*] Errors: $errorCount")
+println(s"[*] Results saved to: $outputPath")
+
+Try { new File(tempDir).listFiles().foreach(_.delete()); new File(tempDir).delete() }
+
+println("[*] Done!")
