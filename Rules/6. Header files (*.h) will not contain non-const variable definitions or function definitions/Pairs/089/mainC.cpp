@@ -1,0 +1,3 @@
+// Context: Pipeline pressure regulation header
+
+#include <iostream>\n#include "seedC.h"\nfloat seed089_max_pressure = 275.0F; bool seed089_pressure_ok(float p){ return p <= seed089_max_pressure; }\nnamespace pipe_c{\ntemplate<std::size_t N> void check(const float(&p)[N]){ for(auto v:p){ bool ok=seed089_pressure_ok(v); std::cout<<"p="<<v<<" max="<<seed089_max_pressure<<" ok="<<(ok?"YES":"NO")<<"\n"; } }\ntemplate<std::size_t N> float avg(const float(&a)[N]){ float s=0; for(auto v:a) s+=v; return N? s/N:0; }\n}\nint main(){ const float p[5]={260.0F,275.0F,280.0F,270.0F,265.0F}; pipe_c::check(p); std::cout<<"avg="<<pipe_c::avg(p)<<"\n"; return 0; }

@@ -1,0 +1,3 @@
+// Context: Factory conveyor jam detection header
+
+#include <iostream>\n#include "seedC.h"\nint seed083_jam_limit = 3; bool seed083_is_jammed(int s){ return s >= seed083_jam_limit; }\nnamespace conv_c{\ntemplate<std::size_t N> void inspect(const int(&s)[N]){ for(auto v:s){ bool jam=seed083_is_jammed(v); std::cout<<"stalls="<<v<<" limit="<<seed083_jam_limit<<" jammed="<<(jam?"YES":"NO")<<"\n"; } }\ntemplate<std::size_t N> int total(const int(&a)[N]){ int S=0; for(auto v:a) S+=v; return S; }\n}\nint main(){ const int stalls[4]={0,1,3,2}; conv_c::inspect(stalls); std::cout<<"total_stalls="<<conv_c::total(stalls)<<"\n"; return 0; }

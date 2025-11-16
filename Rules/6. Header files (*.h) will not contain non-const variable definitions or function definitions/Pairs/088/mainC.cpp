@@ -1,0 +1,3 @@
+// Context: Nuclear reactor coolant flow limit header
+
+#include <iostream>\n#include "seedC.h"\ndouble seed088_flow_min = 120.0; bool seed088_low_flow(double f){ return f < seed088_flow_min; }\nnamespace reactor_c{\ntemplate<std::size_t N> void validate(const double(&flows)[N]){ for(auto v:flows){ bool low = seed088_low_flow(v); std::cout<<"flow="<<v<<" min="<<seed088_flow_min<<" low="<<(low?"YES":"NO")<<"\n"; } }\ntemplate<std::size_t N> double minv(const double(&a)[N]){ double m=a[0]; for(auto v:a) if(v<m) m=v; return m; }\n}\nint main(){ const double f[4]={150.0,125.0,118.0,130.0}; reactor_c::validate(f); std::cout<<"min_flow="<<reactor_c::minv(f)<<"\n"; return 0; }

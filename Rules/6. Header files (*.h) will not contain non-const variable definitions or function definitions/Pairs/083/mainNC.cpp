@@ -1,0 +1,3 @@
+// Context: Factory conveyor jam detection header
+
+#include <iostream>\n#include "seedNC.h"\nnamespace conv_nc{\nvoid inspect(int s[], std::size_t n){ for(std::size_t i=0;i<n;++i){ bool jam = seed083_is_jammed(s[i]); std::cout<<"stalls="<<s[i]<<" limit="<<seed083_jam_limit<<" jammed="<<(jam?"YES":"NO")<<"\n"; } }\nint total(int a[], std::size_t n){ int S=0; for(size_t i=0;i<n;++i) S+=a[i]; return S; }\n}\nint main(){ int stalls[4]={0,1,3,2}; conv_nc::inspect(stalls,4); std::cout<<"total_stalls="<<conv_nc::total(stalls,4)<<"\n"; return 0; }

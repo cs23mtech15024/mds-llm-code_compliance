@@ -1,0 +1,3 @@
+// Context: Autonomous car lane deviation threshold header
+
+#include <iostream>\n#include "seedC.h"\ndouble seed086_lane_threshold = 0.35; bool seed086_is_out(double d){ return d > seed086_lane_threshold; }\nnamespace av_c{\ntemplate<std::size_t N> void evaluate(const double(&devs)[N]){ for(auto v:devs){ bool out=seed086_is_out(v); std::cout<<"dev="<<v<<" thr="<<seed086_lane_threshold<<" outside="<<(out?"YES":"NO")<<"\n"; } }\ntemplate<std::size_t N> double maxd(const double(&a)[N]){ double m=a[0]; for(auto v:a) if(v>m) m=v; return m; }\n}\nint main(){ const double dev[5]={0.12,0.4,0.2,0.36,0.05}; av_c::evaluate(dev); std::cout<<"max_dev="<<av_c::maxd(dev)<<"\n"; return 0; }

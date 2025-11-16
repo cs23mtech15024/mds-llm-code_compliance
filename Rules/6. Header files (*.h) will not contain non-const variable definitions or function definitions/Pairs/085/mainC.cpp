@@ -1,0 +1,3 @@
+// Context: Biomedical oxygen saturation smoothing header
+
+#include <iostream>\n#include "seedC.h"\nfloat seed085_spo2_alpha = 0.6F; float seed085_filter(float v){ return v * seed085_spo2_alpha; }\nnamespace bio_c{\ntemplate<std::size_t N> void filter(const float(&vals)[N]){ for(auto v:vals){ float out=seed085_filter(v); std::cout<<"raw="<<v<<" alpha="<<seed085_spo2_alpha<<" filt="<<out<<"\n"; } }\ntemplate<std::size_t N> float avg(const float(&a)[N]){ float s=0; for(auto v:a) s+=v; return N? s/N:0; }\n}\nint main(){ const float r[6]={96.0F,95.5F,97.0F,94.0F,96.5F,95.0F}; bio_c::filter(r); std::cout<<"avg_raw="<<bio_c::avg(r)<<"\n"; return 0; }

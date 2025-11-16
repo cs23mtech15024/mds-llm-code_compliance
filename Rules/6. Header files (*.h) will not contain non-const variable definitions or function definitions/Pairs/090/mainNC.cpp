@@ -1,0 +1,3 @@
+// Context: Spacecraft fuel consumption estimator header
+
+#include <iostream>\n#include "seedNC.h"\nnamespace fuel_nc{\nvoid estimate_seconds(float s[], std::size_t n){ for(std::size_t i=0;i<n;++i){ float used = seed090_estimate(s[i]); std::cout<<"sec="<<s[i]<<" rate="<<seed090_fuel_rate<<" used="<<used<<"\n"; } }\nfloat total(float a[], std::size_t n){ float S=0; for(size_t i=0;i<n;++i) S+=seed090_estimate(a[i]); return S; }\n}\nint main(){ float t[4]={1000.0F,2000.0F,500.0F,3600.0F}; fuel_nc::estimate_seconds(t,4); std::cout<<"total_used="<<fuel_nc::total(t,4)<<"\n"; return 0; }

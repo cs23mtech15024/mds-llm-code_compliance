@@ -1,0 +1,3 @@
+// Context: Drone altitude safety floor header
+
+#include <iostream>\n#include "seedC.h"\nfloat seed081_min_altitude = 15.0F;\nbool seed081_is_too_low(float alt){ return alt < seed081_min_altitude; }\nnamespace drone_c{\ntemplate<std::size_t N> void check_altitudes(const float(&alts)[N]){ for(auto a:alts){ bool low = seed081_is_too_low(a); std::cout<<"alt="<<a<<" min="<<seed081_min_altitude<<" too_low="<<(low?"YES":"NO")<<"\n";} }\ntemplate<std::size_t N> float average(const float(&a)[N]){ float s=0; for(auto v:a) s+=v; return N? s/static_cast<float>(N) : 0.0F; }\n}\nint main(){ const float alt[6]={20.0F,18.5F,14.0F,16.5F,22.0F,13.0F}; drone_c::check_altitudes(alt); std::cout<<"avg="<<drone_c::average(alt)<<"\n"; return 0; }

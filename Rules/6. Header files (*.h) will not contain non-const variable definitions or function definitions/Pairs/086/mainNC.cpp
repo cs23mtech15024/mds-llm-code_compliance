@@ -1,0 +1,3 @@
+// Context: Autonomous car lane deviation threshold header
+
+#include <iostream>\n#include "seedNC.h"\nnamespace av_nc{\nvoid evaluate(double d[], std::size_t n){ for(std::size_t i=0;i<n;++i){ bool out = seed086_is_out(d[i]); std::cout<<"dev="<<d[i]<<" thr="<<seed086_lane_threshold<<" outside="<<(out?"YES":"NO")<<"\n"; } }\ndouble maxd(double a[], std::size_t n){ double m=a[0]; for(size_t i=1;i<n;++i) if(a[i]>m) m=a[i]; return m; }\n}\nint main(){ double dev[5]={0.12,0.4,0.2,0.36,0.05}; av_nc::evaluate(dev,5); std::cout<<"max_dev="<<av_nc::maxd(dev,5)<<"\n"; return 0; }

@@ -1,0 +1,3 @@
+// Context: Pipeline pressure regulation header
+
+#include <iostream>\n#include "seedNC.h"\nnamespace pipe_nc{\nvoid check(float p[], std::size_t n){ for(std::size_t i=0;i<n;++i){ bool ok = seed089_pressure_ok(p[i]); std::cout<<"p="<<p[i]<<" max="<<seed089_max_pressure<<" ok="<<(ok?"YES":"NO")<<"\n"; } }\nfloat avg(float a[], std::size_t n){ float s=0; for(size_t i=0;i<n;++i) s+=a[i]; return n? s/n:0; }\n}\nint main(){ float p[5]={260.0F,275.0F,280.0F,270.0F,265.0F}; pipe_nc::check(p,5); std::cout<<"avg="<<pipe_nc::avg(p,5)<<"\n"; return 0; }

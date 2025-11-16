@@ -1,0 +1,3 @@
+// Context: Weather buoy wave-height calibration header
+
+#include <iostream>\n#include "seedC.h"\nfloat seed084_wave_scale = 1.12F; float seed084_adjust_height(float h){ return h * seed084_wave_scale; }\nnamespace buoy_c{\ntemplate<std::size_t N> void process(const float(&h)[N]){ for(auto v:h){ float out=seed084_adjust_height(v); std::cout<<"raw="<<v<<" scale="<<seed084_wave_scale<<" adj="<<out<<"\n"; } }\ntemplate<std::size_t N> float maxh(const float(&a)[N]){ float m=a[0]; for(auto v:a) if(v>m) m=v; return m; }\n}\nint main(){ const float h[5]={0.8F,1.2F,0.6F,1.5F,0.9F}; buoy_c::process(h); std::cout<<"peak="<<buoy_c::maxh(h)<<"\n"; return 0; }

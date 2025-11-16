@@ -1,0 +1,3 @@
+// Context: Substation transformer thermal threshold header
+
+#include <iostream>\n#include "seedNC.h"\nnamespace xfmr_nc{\nvoid monitor(double t[], std::size_t n){ for(std::size_t i=0;i<n;++i){ bool ot = seed082_overtemp(t[i]); std::cout<<"temp="<<t[i]<<" thr="<<seed082_temp_threshold<<" overtemp="<<(ot?"YES":"NO")<<"\n"; } }\ndouble mean(double a[], std::size_t n){ double s=0; for(size_t i=0;i<n;++i) s+=a[i]; return n? s/n:0; }\n}\nint main(){ double t[5]={72.0,80.5,86.2,84.0,79.5}; xfmr_nc::monitor(t,5); std::cout<<"avg="<<xfmr_nc::mean(t,5)<<"\n"; return 0; }

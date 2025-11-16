@@ -1,0 +1,3 @@
+// Context: Data center thermal zone alarm header
+
+#include <iostream>\n#include "seedC.h"\nint seed087_alarm_temp = 42; bool seed087_trigger(int t){ return t >= seed087_alarm_temp; }\nnamespace dc_c{\ntemplate<std::size_t N> void scan(const int(&temps)[N]){ for(auto v:temps){ bool trig=seed087_trigger(v); std::cout<<"zone_temp="<<v<<" alarm_th="<<seed087_alarm_temp<<" alarm="<<(trig?"TRG":"OK")<<"\n"; } }\ntemplate<std::size_t N> int peak(const int(&a)[N]){ int m=a[0]; for(auto v:a) if(v>m) m=v; return m; }\n}\nint main(){ const int t[4]={39,41,42,40}; dc_c::scan(t); std::cout<<"peak="<<dc_c::peak(t)<<"\n"; return 0; }
